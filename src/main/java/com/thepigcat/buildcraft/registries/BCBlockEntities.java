@@ -32,6 +32,9 @@ public final class BCBlockEntities {
     public static final Supplier<BlockEntityType<CombustionEngineBE>> COMBUSTION_ENGINE = BLOCK_ENTITIES.register("combustion_engine",
             () -> BlockEntityType.Builder.of(CombustionEngineBE::new, BCBlocks.COMBUSTION_ENGINE.get()).build(null));
 
+    public static final Supplier<BlockEntityType<QuarryBE>> QUARRY = BLOCK_ENTITIES.register("quarry",
+            () -> BlockEntityType.Builder.of(QuarryBE::new, BCBlocks.QUARRY.get()).build(null));
+
     private static Block[] collectBlocks(Class<? extends Block> clazz) {
         return BuiltInRegistries.BLOCK.stream().filter(clazz::isInstance).toList().toArray(Block[]::new);
     }

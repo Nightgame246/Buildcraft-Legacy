@@ -39,6 +39,7 @@ public class BCEnUSLangProvider extends LanguageProvider {
         addBlock(BCBlocks.REDSTONE_ENGINE, "Redstone Engine");
         addBlock(BCBlocks.STIRLING_ENGINE, "Stirling Engine");
         addBlock(BCBlocks.COMBUSTION_ENGINE, "Combustion Engine");
+        addBlock(BCBlocks.QUARRY, "Quarry");
 
         addFluidType(BCFluids.OIL.fluidType, "Oil");
 

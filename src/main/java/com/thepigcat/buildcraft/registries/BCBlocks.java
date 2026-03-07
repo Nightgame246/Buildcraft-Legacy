@@ -48,8 +48,8 @@ public final class BCBlocks {
     public static final DeferredBlock<TankBlock> TANK = registerBlockAndItem("tank", TankBlock::new,
             BlockBehaviour.Properties.of().strength(0.3f).sound(SoundType.GLASS),
             () -> new TankBlockItem(new Item.Properties().component(BCDataComponents.TANK_CONTENT, SimpleFluidContent.EMPTY)));
-//    public static final DeferredBlock<Block> QUARRY = registerBlockAndItem("quarry", Block::new,
-//            BlockBehaviour.Properties.of().strength(2.0f).sound(SoundType.WOOD).mapColor(MapColor.WOOD));
+    public static final DeferredBlock<QuarryBlock> QUARRY = registerBlockAndItem("quarry", QuarryBlock::new,
+            BlockBehaviour.Properties.of().strength(5.0f).sound(SoundType.METAL).mapColor(MapColor.METAL).requiresCorrectToolForDrops());
 
     public static <T extends Block> DeferredBlock<T> registerBlockAndItem(String name, Function<BlockBehaviour.Properties, T> blockConstructor, BlockBehaviour.Properties props) {
         DeferredBlock<T> toReturn = BLOCKS.registerBlock(name, blockConstructor, props);

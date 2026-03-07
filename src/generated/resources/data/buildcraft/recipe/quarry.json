@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "tag": "c:gears/diamond"
+    },
+    "E": {
+      "item": "buildcraft:combustion_engine"
+    },
+    "G": {
+      "tag": "c:gears/gold"
+    }
+  },
+  "pattern": [
+    "DGD",
+    "GEG",
+    "DGD"
+  ],
+  "result": {
+    "count": 1,
+    "id": "buildcraft:quarry"
+  }
+}

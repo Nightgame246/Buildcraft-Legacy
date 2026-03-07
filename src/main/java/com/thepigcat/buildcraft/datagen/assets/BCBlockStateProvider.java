@@ -23,7 +23,7 @@ public class BCBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         crateBlock(BCBlocks.CRATE.get());
-//        pillarBlock(BCBlocks.QUARRY.get(), inDir(blockTexture(BCBlocks.QUARRY.get()), "machine"));
+        pillarBlock(BCBlocks.QUARRY.get(), inDir(blockTexture(BCBlocks.QUARRY.get()), "machine"));
         tankBlock(BCBlocks.TANK.get());
         engineBlock(BCBlocks.REDSTONE_ENGINE.get());
         engineBlock(BCBlocks.STIRLING_ENGINE.get());

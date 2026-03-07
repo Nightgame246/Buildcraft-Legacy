@@ -69,6 +69,16 @@ public class BCRecipeProvider extends net.minecraft.data.recipes.RecipeProvider 
                 .requires(BCBlocks.TANK)
                 .unlockedBy("has_tank", has(BCBlocks.TANK))
                 .save(recipeOutput, BuildcraftLegacy.rl("tank_reset"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BCBlocks.QUARRY)
+                .pattern("DGD")
+                .pattern("GEG")
+                .pattern("DGD")
+                .define('D', BCTags.Items.DIAMOND_GEAR)
+                .define('G', BCTags.Items.GOLD_GEAR)
+                .define('E', BCBlocks.COMBUSTION_ENGINE)
+                .unlockedBy("has_diamond_gear", has(BCTags.Items.DIAMOND_GEAR))
+                .save(recipeOutput);
     }
 
     public static Criterion<InventoryChangeTrigger.TriggerInstance> has(TagKey<Item> tag) {

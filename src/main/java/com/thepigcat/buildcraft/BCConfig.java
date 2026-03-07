@@ -35,4 +35,10 @@ public final class BCConfig {
 
     @ConfigValue(name = "Crate Item Capacity", comment = "The maximum amount of items the crate can store", category = "capacity.items")
     public static int crateItemCapacity = 4096;
+
+    @ConfigValue(name = "Quarry Energy Capacity", category = "capacity.energy")
+    public static int quarryEnergyCapacity = 50_000;
+
+    @ConfigValue(name = "Quarry Energy Per Block", comment = "FE consumed per block mined", category = "production.energy")
+    public static int quarryEnergyPerBlock = 20;
 }

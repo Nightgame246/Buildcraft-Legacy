@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "buildcraft:block/machine/quarry_top",
+    "east": "buildcraft:block/machine/quarry_side",
+    "north": "buildcraft:block/machine/quarry_side",
+    "particle": "buildcraft:block/machine/quarry_side",
+    "south": "buildcraft:block/machine/quarry_side",
+    "up": "buildcraft:block/machine/quarry_top",
+    "west": "buildcraft:block/machine/quarry_side"
+  }
+}

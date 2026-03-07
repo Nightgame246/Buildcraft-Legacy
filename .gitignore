@@ -22,5 +22,12 @@ eclipse
 run
 runs
 run-data
-
+CLAUDE.md
+.venv-aider
+.aider.chat.history.md
+.aider.input.history
+AGENTS.md
+GEMINI.md
+qwen-agent.sh
+WICHTIG für start
 repo
