@@ -1,3 +1,22 @@
+# Buildcraft Legacy (Nightgame246's Fork)
+
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://github.com/Nightgame246/Buildcraft-Legacy/blob/main/LICENSE)
+
+This is a continuation (fork) of the unofficial port by [Thepigcat76/Buildcraft-Legacy](https://github.com/Thepigcat76/Buildcraft-Legacy).
+
+I am maintaining this fork primarily for private use (for me and a friend) to fix bugs, add features, and port additional logic from the original BuildCraft
+source.
+
+### Credits & Licenses
+* **Original Mod:** [BuildCraft](https://github.com/BuildCraft/BuildCraft) (Licensed under MPL 2.0)
+* **Base Port:** [Thepigcat76/Buildcraft-Legacy](https://github.com/Thepigcat76/Buildcraft-Legacy) (Licensed under MPL 2.0)
+* **This Fork:** Licensed under **MPL 2.0**.
+
+While the base port by Thepigcat76 was originally a rewrite, this fork may include code and logic ported directly from the original BuildCraft repository to ensure
+feature parity. All code remains subject to the terms of the Mozilla Public License 2.0.
+
+---
+
 <div align="center">
 
 <img src="https://cdn.modrinth.com/data/LTaa2o7Y/2f622ecc73f0a1e5e3304e7f6f9b5bd5d3ab82a0.png" width="200">
@@ -5,9 +24,6 @@
 # Buildcraft-Legacy
 
 [![](https://cf.way2muchnoise.eu/versions/1140281(c70039).svg)](https://www.curseforge.com/minecraft/mc-mods/create/files)
-[![](https://img.shields.io/github/license/Thepigcat76/Buildcraft-Legacy?style=flat&color=900c3f)](https://github.com/Thepigcat76/Buildcraft-Legacy/blob/main/LICENSE)
-[![](http://cf.way2muchnoise.eu/1140281.svg)](https://www.curseforge.com/minecraft/mc-mods/buildcraft-legacy)
-[![](https://img.shields.io/modrinth/dt/legacy-buildcraft?logo=modrinth&label=&suffix=%20&style=flat&color=242629&labelColor=5ca424&logoColor=1c1c1c)](https://modrinth.com/mod/legacy-buildcraft)
 
 
 </div>
