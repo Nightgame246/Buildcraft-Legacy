@@ -23,8 +23,6 @@ feature parity. All code remains subject to the terms of the Mozilla Public Lice
 
 # Buildcraft-Legacy
 
-[![](https://cf.way2muchnoise.eu/versions/1140281(c70039).svg)](https://www.curseforge.com/minecraft/mc-mods/create/files)
-
 
 </div>
 
