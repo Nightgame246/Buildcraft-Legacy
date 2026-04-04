@@ -44,8 +44,8 @@ The mod is still in its early stages and prone to bugs.
 | A | **Transport** | **Basic Item Pipes**: Stone, Sandstone, Quartz, Void | Done |
 | B | **Transport** | **Specialized Item Pipes**: Iron, Obsidian, Emerald, Clay, Diamond, Lapis, Daizuli | In Progress (Stripe missing) |
 | C | **Transport** | **Fluid & Energy Systems**: Kinesis & Fluid Pipes (NeoForge Architecture) | Planned |
-| D | **Silicon** | **Logic & Automation**: Structure Pipes, Gates, Wires, Triggers, Assembly Table, Lasers | Planned |
-| E | **Energy & Factory** | **Power & Machines**: Engines, Quarry, Pump, Tank, Crate, Auto-Workbench | Planned |
+| D | **Energy & Factory** | **Power & Machines**: Engines, Quarry, Pump, Tank, Crate, Auto-Workbench | Planned |
+| E | **Silicon** | **Logic & Automation**: Structure Pipes, Gates, Wires, Triggers, Assembly Table, Lasers | Planned |
 | F | **Builders** | **Construction**: Architect Table, Builder, Library, Blueprints | Planned |
 | G | **Robotics** | **Advanced Automation**: Robots, Docking Stations | Planned |
 | H | **Polish** | **Final Touches**: Creative Tabs separation, performance fixes, advanced animations | Planned |
