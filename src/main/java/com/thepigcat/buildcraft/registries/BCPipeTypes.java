@@ -11,6 +11,7 @@ import com.thepigcat.buildcraft.content.blocks.IronItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.ItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.LapisItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.ObsidianItemPipeBlock;
+import com.thepigcat.buildcraft.content.blocks.StripeItemPipeBlock;
 import com.thepigcat.buildcraft.content.items.blocks.ItemPipeBlockItem;
 import com.thepigcat.buildcraft.util.ModelUtils;
 import com.thepigcat.buildcraft.util.PipeRegistrationHelper;
@@ -48,6 +49,10 @@ public final class BCPipeTypes {
             ModelUtils.DEFAULT_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE, ModelUtils.DEFAULT_ITEM_MODEL_FILE,
             "base", "connection");
     public static final PipeTypeHolder<DaizuliItemPipeBlock, ItemPipeBlockItem> DAIZULI = HELPER.registerPipeType("daizuli", DaizuliItemPipeBlock::new, ItemPipeBlockItem::new,
+            ModelUtils.DEFAULT_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE, ModelUtils.DEFAULT_ITEM_MODEL_FILE,
+            "base", "connection");
+
+    public static final PipeTypeHolder<StripeItemPipeBlock, ItemPipeBlockItem> STRIPE = HELPER.registerPipeType("stripe", StripeItemPipeBlock::new, ItemPipeBlockItem::new,
             ModelUtils.DEFAULT_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE, ModelUtils.DEFAULT_ITEM_MODEL_FILE,
             "base", "connection");
 

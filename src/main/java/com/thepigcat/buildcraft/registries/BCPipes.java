@@ -75,4 +75,8 @@ public final class BCPipes {
     public static final PipeHolder DAIZULI = HELPER.registerPipe("daizuli", BCPipeTypes.DAIZULI, "Daizuli Pipe", 0.25f, List.of(
             BuildcraftLegacy.rl("block/daizuli_pipe")
     ), Either.right(ResourceLocation.parse("lapis_block")), Ingredient.of(Blocks.LAPIS_BLOCK), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 13);
+
+    public static final PipeHolder STRIPE = HELPER.registerPipe("stripe", BCPipeTypes.STRIPE, "Stripe Pipe", 0.25f, List.of(
+            BuildcraftLegacy.rl("block/stripe_pipe")
+    ), Either.right(ResourceLocation.parse("gold_block")), Ingredient.of(Tags.Items.INGOTS_GOLD), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 14);
 }

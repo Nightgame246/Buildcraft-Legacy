@@ -1,4 +1,4 @@
-// 1.21.1	2026-03-28T21:29:13.982508288	Block States: buildcraft
+// 1.21.1	2026-04-04T20:44:44.450686139	Block States: buildcraft
 66793c88ac718c9cb2a4aa7704cca611bf95b75f assets/buildcraft/blockstates/clay_pipe.json
 6ce54b90596a062e43a1ee1a0d64c3a047379ae6 assets/buildcraft/blockstates/cobblestone_pipe.json
 0d6769fd3414a794c7d9073654d5be79f79ee7e9 assets/buildcraft/blockstates/combustion_engine.json
@@ -16,6 +16,7 @@ fddae5bb421547f967e2f301deb07b6d1ea1cf4a assets/buildcraft/blockstates/redstone_
 047c8dc037b02d3cda04daf712bf5a9e72780a78 assets/buildcraft/blockstates/sandstone_pipe.json
 232c0a97936f652ef5393f7bceac05e437a8df5f assets/buildcraft/blockstates/stirling_engine.json
 967fe2747e0303faf5d25dc316d270d13f484ce2 assets/buildcraft/blockstates/stone_pipe.json
+309a7eed18062689a95081c436460c7cf779292f assets/buildcraft/blockstates/stripe_pipe.json
 4ca3edc968fd588e5e5cc4d730133e4bf4ec0088 assets/buildcraft/blockstates/tank.json
 487e31f0c45841517ccfda08032e332d61e75d80 assets/buildcraft/blockstates/void_pipe.json
 f65d91e718bcc109d36ae60e9f90ae79551db632 assets/buildcraft/blockstates/wooden_pipe.json
@@ -55,6 +56,8 @@ e1533ed6da5c968981b049d79dfa283081859a21 assets/buildcraft/models/block/redstone
 a2f77d3803a4efce683461f8a9dc887c2b9c8ce6 assets/buildcraft/models/block/stirling_engine.json
 3579be031b28cbd9235f64b3ea663dfdb12d7aaa assets/buildcraft/models/block/stone_pipe_base.json
 bed43f5b6105aa5c0ec9c944c9a203b574754b0e assets/buildcraft/models/block/stone_pipe_connection.json
+abd7be8f43caf147f00fb729abfd8042ee4631f4 assets/buildcraft/models/block/stripe_pipe_base.json
+9c5d6cc54a2dd58bda70eff8ab10b60f8bfcecd5 assets/buildcraft/models/block/stripe_pipe_connection.json
 28b91e61cc13b484d8516cf69bcc20886f771ab2 assets/buildcraft/models/block/tank.json
 3cfdce48fc56730240f0df2af5d505a196e7131e assets/buildcraft/models/block/tank_bottom_joined.json
 1386c3dd4763b6b13669719ab06a157b96fd28d1 assets/buildcraft/models/block/tank_top_and_bottom_joined.json

@@ -38,6 +38,9 @@ public final class BCBlockEntities {
     public static final Supplier<BlockEntityType<DaizuliItemPipeBE>> DAIZULI_ITEM_PIPE = BLOCK_ENTITIES.register("daizuli_item_pipe",
             () -> BlockEntityType.Builder.of(DaizuliItemPipeBE::new, collectBlocks(DaizuliItemPipeBlock.class)).build(null));
 
+    public static final Supplier<BlockEntityType<StripeItemPipeBE>> STRIPE_ITEM_PIPE = BLOCK_ENTITIES.register("stripe_item_pipe",
+            () -> BlockEntityType.Builder.of(StripeItemPipeBE::new, collectBlocks(StripeItemPipeBlock.class)).build(null));
+
     public static final Supplier<BlockEntityType<TankBE>> TANK = BLOCK_ENTITIES.register("tank",
             () -> BlockEntityType.Builder.of(TankBE::new, BCBlocks.TANK.get()).build(null));
     public static final Supplier<BlockEntityType<CrateBE>> CRATE = BLOCK_ENTITIES.register("crate",
