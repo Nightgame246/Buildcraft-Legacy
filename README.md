@@ -37,21 +37,15 @@ This project, originally created for Modfest 2024, is an attempt at porting Buil
 
 The mod is still in its early stages and prone to bugs.
 
-## Roadmap
+## Current Status
 
-For anyone interested, here is a rough content roadmap:
-
-- Item Pipes, Crates, Tanks, Oil - Initial Release
-- Engines (Redstone, Stirling, Combustion, Creative) < Current
-- Pump/Quarry
-- Fluid Pipes
-- Lasers
-- Advanced filters
-- ...
-
-Note that there is no ETA for any of these features, as I maintain and develop a lot of mods, which means the time I have to work on this, may vary strongly.
-
-If you are interested in helping out, dont hesitate do submit a pr for a feature/bug-fix and join the Discord!
+| Phase | Description | Status |
+| :--- | :--- | :--- |
+| A | **Basic Item Pipes**: Stone, Sandstone, Quartz, Void | Done |
+| B | **Specialized Item Pipes**: Iron, Obsidian, Emerald, Clay, Diamond, Lapis, Daizuli | In Progress (Stripe missing) |
+| C | **Fluid & Energy Systems**: Kinesis & Fluid Pipes (NeoForge Architecture) | Planned |
+| D | **Logic & Automation**: Structure Pipes, Gates, Wires, Triggers | Planned |
+| E | **Machines & Energy**: Engines (Redstone, Stirling, Combustion), Quarry, Tank, Crate | Done (Basics) |
 
 ## Discord
 
