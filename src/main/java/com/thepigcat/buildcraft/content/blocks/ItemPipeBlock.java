@@ -27,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,7 +44,31 @@ public class ItemPipeBlock extends PipeBlock {
 
     @Override
     public PipeState getConnectionType(LevelAccessor level, BlockPos pipePos, BlockState pipeState, Direction connectionDirection, BlockPos connectPos) {
+        BlockState otherState = level.getBlockState(connectPos);
+        Block otherBlock = otherState.getBlock();
         BlockEntity be = level.getBlockEntity(connectPos);
+
+        String currentPipeId = BuiltInRegistries.BLOCK.getKey(this).getPath();
+
+        if (otherBlock instanceof PipeBlock) {
+            String otherPipeId = BuiltInRegistries.BLOCK.getKey(otherBlock).getPath();
+
+            // Classic Buildcraft: Stone, Cobblestone and Quartz don't connect to each other
+            List<String> separatePipes = List.of("stone_pipe", "cobblestone_pipe", "quartz_pipe");
+            if (separatePipes.contains(currentPipeId) && separatePipes.contains(otherPipeId)) {
+                if (!currentPipeId.equals(otherPipeId)) {
+                    return PipeState.NONE;
+                }
+            }
+
+            return PipeState.CONNECTED;
+        }
+
+        // Sandstone doesn't connect to machines/inventories
+        if (currentPipeId.equals("sandstone_pipe")) {
+            return PipeState.NONE;
+        }
+
         if (be != null && CapabilityUtils.itemHandlerCapability(be, connectionDirection.getOpposite()) != null) {
             return PipeState.CONNECTED;
         }

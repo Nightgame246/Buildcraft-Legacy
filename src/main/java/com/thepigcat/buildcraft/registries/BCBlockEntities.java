@@ -2,8 +2,7 @@ package com.thepigcat.buildcraft.registries;
 
 import com.thepigcat.buildcraft.BuildcraftLegacy;
 import com.thepigcat.buildcraft.content.blockentities.*;
-import com.thepigcat.buildcraft.content.blocks.ExtractingItemPipeBlock;
-import com.thepigcat.buildcraft.content.blocks.ItemPipeBlock;
+import com.thepigcat.buildcraft.content.blocks.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -19,6 +18,25 @@ public final class BCBlockEntities {
 
     public static final Supplier<BlockEntityType<ExtractItemPipeBE>> EXTRACTING_ITEM_PIPE = BLOCK_ENTITIES.register("extracting_item_pipe",
             () -> BlockEntityType.Builder.of(ExtractItemPipeBE::new, collectBlocks(ExtractingItemPipeBlock.class)).build(null));
+
+    public static final Supplier<BlockEntityType<IronItemPipeBE>> IRON_ITEM_PIPE = BLOCK_ENTITIES.register("iron_item_pipe",
+            () -> BlockEntityType.Builder.of(IronItemPipeBE::new, collectBlocks(IronItemPipeBlock.class)).build(null));
+
+    public static final Supplier<BlockEntityType<ObsidianItemPipeBE>> OBSIDIAN_ITEM_PIPE = BLOCK_ENTITIES.register("obsidian_item_pipe",
+            () -> BlockEntityType.Builder.of(ObsidianItemPipeBE::new, collectBlocks(ObsidianItemPipeBlock.class)).build(null));
+
+    public static final Supplier<BlockEntityType<ClayItemPipeBE>> CLAY_ITEM_PIPE = BLOCK_ENTITIES.register("clay_item_pipe",
+            () -> BlockEntityType.Builder.of(ClayItemPipeBE::new, collectBlocks(ClayItemPipeBlock.class)).build(null));
+
+    public static final Supplier<BlockEntityType<EmeraldItemPipeBE>> EMERALD_ITEM_PIPE = BLOCK_ENTITIES.register("emerald_item_pipe",
+            () -> BlockEntityType.Builder.of(EmeraldItemPipeBE::new, collectBlocks(EmeraldItemPipeBlock.class)).build(null));
+
+    public static final Supplier<BlockEntityType<DiamondItemPipeBE>> DIAMOND_ITEM_PIPE = BLOCK_ENTITIES.register("diamond_item_pipe",
+            () -> BlockEntityType.Builder.of(DiamondItemPipeBE::new, collectBlocks(DiamondItemPipeBlock.class)).build(null));
+    public static final Supplier<BlockEntityType<LapisItemPipeBE>> LAPIS_ITEM_PIPE = BLOCK_ENTITIES.register("lapis_item_pipe",
+            () -> BlockEntityType.Builder.of(LapisItemPipeBE::new, collectBlocks(LapisItemPipeBlock.class)).build(null));
+    public static final Supplier<BlockEntityType<DaizuliItemPipeBE>> DAIZULI_ITEM_PIPE = BLOCK_ENTITIES.register("daizuli_item_pipe",
+            () -> BlockEntityType.Builder.of(DaizuliItemPipeBE::new, collectBlocks(DaizuliItemPipeBlock.class)).build(null));
 
     public static final Supplier<BlockEntityType<TankBE>> TANK = BLOCK_ENTITIES.register("tank",
             () -> BlockEntityType.Builder.of(TankBE::new, BCBlocks.TANK.get()).build(null));

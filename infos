@@ -1,9 +1,0 @@
-## KI-Workflow
-
-Dieses Projekt wird im Terminal mit mehreren KI-Coding-Assistenten entwickelt:
-
-- **Claude Code** (`claude`) — komplexe Logik, Architekturentscheidungen, schwierige Bugs
-- **Gemini CLI** (`gemini`) — Analyse großer Kontexte (1M-Token-Fenster), Lesen ganzer Subsysteme auf einmal
-- **Qwen2.5-Coder 32B** (über LM Studio auf `localhost:1234`) — routinemäßiges Portieren, Boilerplate, Test-Generierung
-
-Wenn du ein großes BuildCraft-Subsystem analysierst, gib Gemini zuerst den ursprünglichen 1.12-Quellcode, um einen Migrationsplan zu erhalten. Implementiere danach Klasse für Klasse mit Claude oder dem lokalen Modell.

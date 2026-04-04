@@ -9,6 +9,8 @@ import com.thepigcat.buildcraft.client.items.EngineItemRenderer;
 import com.thepigcat.buildcraft.client.items.TankItemRenderer;
 import com.thepigcat.buildcraft.client.models.EnginePistonModel;
 import com.thepigcat.buildcraft.client.screens.CombustionEngineScreen;
+import com.thepigcat.buildcraft.client.screens.DiamondPipeScreen;
+import com.thepigcat.buildcraft.client.screens.EmeraldPipeScreen;
 import com.thepigcat.buildcraft.client.screens.StirlingEngineScreen;
 import com.thepigcat.buildcraft.registries.BCBlockEntities;
 import com.thepigcat.buildcraft.registries.BCBlocks;
@@ -81,6 +83,13 @@ public final class BuildcraftLegacyClient {
     private void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(BCBlockEntities.ITEM_PIPE.get(), PipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.EXTRACTING_ITEM_PIPE.get(), PipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.IRON_ITEM_PIPE.get(), PipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.OBSIDIAN_ITEM_PIPE.get(), PipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.CLAY_ITEM_PIPE.get(), PipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.EMERALD_ITEM_PIPE.get(), PipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.DIAMOND_ITEM_PIPE.get(), PipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.LAPIS_ITEM_PIPE.get(), PipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.DAIZULI_ITEM_PIPE.get(), PipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.CRATE.get(), CrateBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.TANK.get(), TankBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.REDSTONE_ENGINE.get(), ctx -> new EngineBERenderer(ctx, ResourceLocation.fromNamespaceAndPath(BuildcraftLegacy.MODID, "entity/wooden_engine_piston")));
@@ -104,5 +113,7 @@ public final class BuildcraftLegacyClient {
     private void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(BCMenuTypes.STIRLING_ENGINE.get(), StirlingEngineScreen::new);
         event.register(BCMenuTypes.COMBUSTION_ENGINE.get(), CombustionEngineScreen::new);
+        event.register(BCMenuTypes.DIAMOND_PIPE.get(), DiamondPipeScreen::new);
+        event.register(BCMenuTypes.EMERALD_PIPE.get(), EmeraldPipeScreen::new);
     }
 }

@@ -3,6 +3,7 @@ package com.thepigcat.buildcraft.datagen.assets;
 import com.portingdeadmods.portingdeadlibs.api.config.PDLConfigHelper;
 import com.thepigcat.buildcraft.BCConfig;
 import com.thepigcat.buildcraft.BuildcraftLegacy;
+import com.thepigcat.buildcraft.PipesRegistry;
 import com.thepigcat.buildcraft.api.blockentities.RedstoneBlockEntity;
 import com.thepigcat.buildcraft.registries.BCBlocks;
 import com.thepigcat.buildcraft.registries.BCFluids;
@@ -34,6 +35,20 @@ public class BCEnUSLangProvider extends LanguageProvider {
 
         addBlock(BCBlocks.CRATE, "Crate");
         addBlock(BCBlocks.TANK, "Tank");
+        // Pipes
+        PipesRegistry.loadPipes();
+        PipesRegistry.PIPES.forEach((id, pipe) -> {
+            String name = pipe.name().orElseGet(() -> {
+                String[] parts = id.split("_");
+                StringBuilder sb = new StringBuilder();
+                for (String part : parts) {
+                    sb.append(Character.toUpperCase(part.charAt(0))).append(part.substring(1)).append(" ");
+                }
+                return sb.toString().trim();
+            });
+            add("block." + BuildcraftLegacy.MODID + "." + id, name);
+        });
+
         addBlock(BCFluids.OIL.block, "Oil");
 
         addBlock(BCBlocks.REDSTONE_ENGINE, "Redstone Engine");
@@ -44,6 +59,7 @@ public class BCEnUSLangProvider extends LanguageProvider {
         addFluidType(BCFluids.OIL.fluidType, "Oil");
 
         add("itemGroup.buildcraft.bc_tab", "Buildcraft");
+        add("menu.buildcraft.diamond_pipe", "Diamond Pipe");
 
         addRedstoneSignalType(RedstoneBlockEntity.RedstoneSignalType.IGNORED, "Ignored");
         addRedstoneSignalType(RedstoneBlockEntity.RedstoneSignalType.LOW_SIGNAL, "Low Signal");

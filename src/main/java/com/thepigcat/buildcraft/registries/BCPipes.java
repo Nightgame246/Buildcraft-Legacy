@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 
@@ -36,11 +37,42 @@ public final class BCPipes {
     public static final PipeHolder QUARTZ = HELPER.registerPipe("quartz", BCPipeTypes.DEFAULT, "Quartz Pipe", 0.4f, List.of(
             BuildcraftLegacy.rl("block/quartz_pipe")
     ), Either.right(ResourceLocation.parse("quartz_block")), Ingredient.of(Tags.Items.GEMS_QUARTZ), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 5);
-    public static final PipeHolder DIAMOND = HELPER.registerPipe("diamond", BCPipeTypes.EXTRACTING, "Diamond Pipe", 0.5f, List.of(
-            BuildcraftLegacy.rl("block/diamond_pipe"),
-            BuildcraftLegacy.rl("block/diamond_pipe_extracting")
+    public static final PipeHolder DIAMOND = HELPER.registerPipe("diamond", BCPipeTypes.DIAMOND, "Diamond Pipe", 0.5f, List.of(
+            BuildcraftLegacy.rl("block/diamond_pipe"),       // 0 – base
+            BuildcraftLegacy.rl("block/diamond_pipe_down"),  // 1 – DOWN  (black)
+            BuildcraftLegacy.rl("block/diamond_pipe_up"),    // 2 – UP    (white)
+            BuildcraftLegacy.rl("block/diamond_pipe_north"), // 3 – NORTH (red)
+            BuildcraftLegacy.rl("block/diamond_pipe_south"), // 4 – SOUTH (blue)
+            BuildcraftLegacy.rl("block/diamond_pipe_west"),  // 5 – WEST  (green)
+            BuildcraftLegacy.rl("block/diamond_pipe_east")   // 6 – EAST  (yellow)
     ), Either.right(ResourceLocation.parse("diamond_block")), Ingredient.of(Tags.Items.GEMS_DIAMOND), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 6);
+    public static final PipeHolder IRON = HELPER.registerPipe("iron", BCPipeTypes.IRON, "Iron Pipe", 0.25f, List.of(
+            BuildcraftLegacy.rl("block/iron_pipe"),
+            BuildcraftLegacy.rl("block/iron_pipe_blocked")
+    ), Either.right(ResourceLocation.parse("iron_block")), Ingredient.of(Tags.Items.INGOTS_IRON), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 7);
+
+    public static final PipeHolder OBSIDIAN = HELPER.registerPipe("obsidian", BCPipeTypes.OBSIDIAN_SUCTION, "Obsidian Pipe", 0.25f, List.of(
+            BuildcraftLegacy.rl("block/obsidian_pipe")
+    ), Either.right(ResourceLocation.parse("obsidian")), Ingredient.of(Tags.Items.OBSIDIANS), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 8);
+
+    public static final PipeHolder CLAY = HELPER.registerPipe("clay", BCPipeTypes.CLAY, "Clay Pipe", 0.25f, List.of(
+            BuildcraftLegacy.rl("block/clay_pipe")
+    ), Either.right(ResourceLocation.parse("clay")), Ingredient.of(Items.CLAY_BALL), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 9);
+
     public static final PipeHolder VOID = HELPER.registerPipe("void", BCPipeTypes.DEFAULT, "Void Pipe", 0.25f, List.of(
             BuildcraftLegacy.rl("block/void_pipe")
     ), Either.right(ResourceLocation.parse("obsidian")), Ingredient.of(Tags.Items.OBSIDIANS), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 10);
+
+    public static final PipeHolder EMERALD = HELPER.registerPipe("emerald", BCPipeTypes.EMERALD, "Emerald Pipe", 0.25f, List.of(
+            BuildcraftLegacy.rl("block/emerald_pipe"),
+            BuildcraftLegacy.rl("block/emerald_pipe_extracting")
+    ), Either.right(ResourceLocation.parse("emerald_block")), Ingredient.of(Tags.Items.GEMS_EMERALD), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 11);
+
+    public static final PipeHolder LAPIS = HELPER.registerPipe("lapis", BCPipeTypes.LAPIS, "Lapis Pipe", 0.25f, List.of(
+            BuildcraftLegacy.rl("block/lapis_pipe")
+    ), Either.right(ResourceLocation.parse("lapis_block")), Ingredient.of(Blocks.LAPIS_BLOCK), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 12);
+
+    public static final PipeHolder DAIZULI = HELPER.registerPipe("daizuli", BCPipeTypes.DAIZULI, "Daizuli Pipe", 0.25f, List.of(
+            BuildcraftLegacy.rl("block/daizuli_pipe")
+    ), Either.right(ResourceLocation.parse("lapis_block")), Ingredient.of(Blocks.LAPIS_BLOCK), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 13);
 }

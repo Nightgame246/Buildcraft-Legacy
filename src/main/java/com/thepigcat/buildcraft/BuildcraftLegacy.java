@@ -102,6 +102,13 @@ public final class BuildcraftLegacy {
         // ITEMS
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.EXTRACTING_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.IRON_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.OBSIDIAN_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.CLAY_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.EMERALD_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.DIAMOND_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.LAPIS_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.DAIZULI_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.CRATE.get(), CrateBE::getItemHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.STIRLING_ENGINE.get(), ContainerBlockEntity::getItemHandlerOnSide);
         // FLUID

@@ -11,7 +11,10 @@ import com.thepigcat.buildcraft.datagen.data.BCRecipeProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.*;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.tags.TagKey;
@@ -46,7 +49,7 @@ public class RecipeManagerMixin {
         RecipeOutput output = new RecipeOutput() {
             @Override
             public Advancement.Builder advancement() {
-                return Advancement.Builder.recipeAdvancement().parent(RecipeBuilder.ROOT_RECIPE_ADVANCEMENT);
+                return Advancement.Builder.recipeAdvancement();
             }
 
             @Override

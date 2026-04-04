@@ -21,6 +21,38 @@ public final class ModelUtils {
                 {"apply":{"model":"%s_connection","x":90,"y":90},"when":{"west":"connected"}},
                 {"apply":{"model":"%s_base"}}]}""".formatted(pipeIdLiteral, pipeIdLiteral, pipeIdLiteral, pipeIdLiteral, pipeIdLiteral, pipeIdLiteral, pipeIdLiteral);
     };
+    /**
+     * Diamond pipe: each direction gets its own connection model with a direction-specific texture.
+     * Texture order in Pipe.textures(): [base, down, up, north, south, west, east]
+     */
+    public static final BiFunction<Pipe, ResourceLocation, String> DIAMOND_BLOCK_MODEL_DEFINITION = (pipe, pipeId) -> {
+        String p = pipeId.withPrefix("block/").toString();
+        return """
+                {"multipart":[{"apply":{"model":"%s_connection_down"},"when":{"down":"connected"}},
+                {"apply":{"model":"%s_connection_up","x":180},"when":{"up":"connected"}},
+                {"apply":{"model":"%s_connection_north","x":90,"y":180},"when":{"north":"connected"}},
+                {"apply":{"model":"%s_connection_east","x":90,"y":270},"when":{"east":"connected"}},
+                {"apply":{"model":"%s_connection_south","x":90},"when":{"south":"connected"}},
+                {"apply":{"model":"%s_connection_west","x":90,"y":90},"when":{"west":"connected"}},
+                {"apply":{"model":"%s_base"}}]}""".formatted(p, p, p, p, p, p, p);
+    };
+    public static final BiFunction<Pipe, ResourceLocation, String> IRON_BLOCK_MODEL_DEFINITION = (pipe, pipeId) -> {
+        String p = pipeId.withPrefix("block/").toString();
+        return """
+                {"multipart":[{"apply":{"model":"%s_connection"},"when":{"down":"connected"}},
+                {"apply":{"model":"%s_connection_blocked"},"when":{"down":"blocked"}},
+                {"apply":{"model":"%s_connection","x":180},"when":{"up":"connected"}},
+                {"apply":{"model":"%s_connection_blocked","x":180},"when":{"up":"blocked"}},
+                {"apply":{"model":"%s_connection","x":90,"y":180},"when":{"north":"connected"}},
+                {"apply":{"model":"%s_connection_blocked","x":90,"y":180},"when":{"north":"blocked"}},
+                {"apply":{"model":"%s_connection","x":90,"y":270},"when":{"east":"connected"}},
+                {"apply":{"model":"%s_connection_blocked","x":90,"y":270},"when":{"east":"blocked"}},
+                {"apply":{"model":"%s_connection","x":90},"when":{"south":"connected"}},
+                {"apply":{"model":"%s_connection_blocked","x":90},"when":{"south":"blocked"}},
+                {"apply":{"model":"%s_connection","x":90,"y":90},"when":{"west":"connected"}},
+                {"apply":{"model":"%s_connection_blocked","x":90,"y":90},"when":{"west":"blocked"}},
+                {"apply":{"model":"%s_base_blocked"}}]}""".formatted(p, p, p, p, p, p, p, p, p, p, p, p, p);
+    };
     public static final BiFunction<Pipe, ResourceLocation, String> EXTRACTING_BLOCK_MODEL_DEFINITION = (pipe, pipeId) -> {
         String pipeIdLiteral = pipeId.withPrefix("block/").toString();
         return """
@@ -161,13 +193,37 @@ public final class ModelUtils {
     public static final BiFunction<Pipe, ResourceLocation, String> DEFAULT_BLOCK_MODEL_FILE = ((pipe, texture) -> {
         int textureIndex = 0;
         String parent = "";
-        if (texture.getPath().endsWith("_connection")) {
+        if (texture.getPath().endsWith("_connection_extracting")) {
+            textureIndex = 1;
+            parent = "buildcraft:block/pipe_connection";
+        } else if (texture.getPath().endsWith("_connection_blocked")) {
+            textureIndex = 1;
+            parent = "buildcraft:block/pipe_connection";
+        } else if (texture.getPath().endsWith("_connection_down")) {
+            textureIndex = 1;
+            parent = "buildcraft:block/pipe_connection";
+        } else if (texture.getPath().endsWith("_connection_up")) {
+            textureIndex = 2;
+            parent = "buildcraft:block/pipe_connection";
+        } else if (texture.getPath().endsWith("_connection_north")) {
+            textureIndex = 3;
+            parent = "buildcraft:block/pipe_connection";
+        } else if (texture.getPath().endsWith("_connection_south")) {
+            textureIndex = 4;
+            parent = "buildcraft:block/pipe_connection";
+        } else if (texture.getPath().endsWith("_connection_west")) {
+            textureIndex = 5;
+            parent = "buildcraft:block/pipe_connection";
+        } else if (texture.getPath().endsWith("_connection_east")) {
+            textureIndex = 6;
+            parent = "buildcraft:block/pipe_connection";
+        } else if (texture.getPath().endsWith("_base_blocked")) {
+            textureIndex = 1;
+            parent = "buildcraft:block/pipe_base";
+        } else if (texture.getPath().endsWith("_connection")) {
             parent = "buildcraft:block/pipe_connection";
         } else if (texture.getPath().endsWith("_base")) {
             parent = "buildcraft:block/pipe_base";
-        } else if (texture.getPath().endsWith("_connection_extracting")) {
-            textureIndex = 1;
-            parent = "buildcraft:block/pipe_connection";
         }
         return """
                 {

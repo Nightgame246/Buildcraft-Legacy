@@ -1,7 +1,9 @@
 package com.thepigcat.buildcraft.content.blockentities;
 
 import com.thepigcat.buildcraft.BuildcraftLegacy;
+import com.thepigcat.buildcraft.PipesRegistry;
 import com.thepigcat.buildcraft.api.blockentities.PipeBlockEntity;
+import com.thepigcat.buildcraft.api.pipes.Pipe;
 import com.thepigcat.buildcraft.networking.SyncPipeDirectionPayload;
 import com.thepigcat.buildcraft.networking.SyncPipeMovementPayload;
 import com.thepigcat.buildcraft.registries.BCBlockEntities;
@@ -9,6 +11,7 @@ import com.thepigcat.buildcraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -20,6 +23,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -31,6 +35,7 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
     private Direction prevFrom;
     public float movement;
     public float lastMovement;
+    protected float itemSpeed = 0.01f;
 
     public ItemPipeBE(BlockPos pos, BlockState blockState) {
         this(BCBlockEntities.ITEM_PIPE.get(), pos, blockState);
@@ -39,6 +44,14 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
     public ItemPipeBE(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
         super(blockEntityType, pos, blockState);
         this.itemHandler = new ItemStackHandler(1) {
+            @Override
+            public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+                if (BuiltInRegistries.BLOCK.getKey(getBlockState().getBlock()).getPath().equals("void_pipe")) {
+                    return ItemStack.EMPTY; // Void pipe consumes everything
+                }
+                return super.insertItem(slot, stack, simulate);
+            }
+
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
@@ -74,6 +87,7 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
                         ItemPipeBE blockEntity = BlockUtils.getBE(ItemPipeBE.class, level, worldPosition.relative(this.to));
 
                         if (blockEntity != null) {
+                            blockEntity.itemSpeed = this.itemSpeed; // Pass speed to next pipe
                             moveItemForward(blockEntity);
                         }
 
@@ -91,8 +105,28 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
 
         if (!this.itemHandler.getStackInSlot(0).isEmpty()) {
                 this.lastMovement = this.movement;
-                // TODO: Use custom movement
-                this.movement += 0.01f;
+                
+                String pipeId = BuiltInRegistries.BLOCK.getKey(getBlockState().getBlock()).getPath();
+                
+                // Momentum & Friction Logic (values matched to original BuildCraft 1.12.2)
+                if (pipeId.equals("gold_pipe")) {
+                    // Active acceleration
+                    itemSpeed = Math.min(itemSpeed + 0.01f, 0.25f);
+                } else if (pipeId.equals("stone_pipe")) {
+                    // Low friction: preserves speed well
+                    itemSpeed = Math.max(itemSpeed - 0.008f, 0.01f);
+                } else if (pipeId.equals("cobblestone_pipe")) {
+                    // High friction: slows items quickly
+                    itemSpeed = Math.max(itemSpeed - 0.02f, 0.01f);
+                } else if (pipeId.equals("sandstone_pipe")) {
+                    // Low friction like stone (sandstone = no-inventory stone variant)
+                    itemSpeed = Math.max(itemSpeed - 0.008f, 0.01f);
+                } else {
+                    // Standard friction for other pipes (Quartz, Iron, etc.)
+                    itemSpeed = Math.max(itemSpeed - 0.002f, 0.01f);
+                }
+                
+                this.movement += itemSpeed;
 
                 if (!level.isClientSide()) {
                     BlockCapabilityCache<IItemHandler, Direction> fromCache = this.capabilityCaches.get(from);
@@ -135,18 +169,19 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
         return to;
     }
 
+    protected Direction chooseDirection(Set<Direction> availableDirections) {
+        if (availableDirections.isEmpty()) return from;
+        int dirIndex = level.random.nextInt(0, availableDirections.size());
+        return availableDirections.stream().toList().get(dirIndex);
+    }
+
     private void moveItemForward(ItemPipeBE blockEntity) {
         Set<Direction> directions = new HashSet<>(blockEntity.directions);
         directions.remove(to.getOpposite());
 
         blockEntity.setFrom(to.getOpposite());
 
-        if (!directions.isEmpty()) {
-            int dirIndex = level.random.nextInt(0, directions.size());
-            blockEntity.setTo(directions.stream().toList().get(dirIndex));
-        } else {
-            blockEntity.setTo(blockEntity.from);
-        }
+        blockEntity.setTo(blockEntity.chooseDirection(directions));
 
         blockEntity.lastMovement = Math.abs(1 - this.lastMovement);
         blockEntity.movement = Math.abs(1 - this.movement);
@@ -194,6 +229,8 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
         super.loadAdditional(tag, registries);
 
         this.itemHandler.deserializeNBT(registries, tag.getCompound("item_handler"));
+        this.itemSpeed = tag.getFloat("item_speed");
+        if (this.itemSpeed <= 0) this.itemSpeed = 0.01f;
 
         int toIndex = tag.getInt("to");
         if (toIndex != -1) {
@@ -210,6 +247,7 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
         super.saveAdditional(tag, registries);
 
         tag.put("item_handler", this.itemHandler.serializeNBT(registries));
+        tag.putFloat("item_speed", this.itemSpeed);
 
         tag.putInt("to", to != null ? to.ordinal() : -1);
         tag.putInt("from", from != null ? from.ordinal() : -1);

@@ -212,6 +212,7 @@ public abstract class PipeBlock extends BaseEntityBlock {
     public enum PipeState implements StringRepresentable {
         EXTRACTING("extracting"),
         CONNECTED("connected"),
+        BLOCKED("blocked"),
         NONE("none");
 
         private final String name;

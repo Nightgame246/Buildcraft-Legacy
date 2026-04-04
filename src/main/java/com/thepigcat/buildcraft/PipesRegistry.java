@@ -24,22 +24,25 @@ public final class PipesRegistry {
 
     public static void writeDefaultPipeFiles() {
         File dir = getPipesDirectory();
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
 
-        if (!dir.exists() && dir.mkdirs()) {
-            Map<String, Pipe> pipes = BCPipes.HELPER.getPipes();
-            for (Map.Entry<String, Pipe> entry : pipes.entrySet()) {
-                File file = new File(dir, entry.getKey() + ".json");
-                JsonElement json = entry.getValue().toJson();
-                if (json == null) {
-                    BuildcraftLegacy.LOGGER.error("Pipe {} could not be written to Json due to encoding error", entry.getKey());
-                    continue;
-                }
+        Map<String, Pipe> pipes = BCPipes.HELPER.getPipes();
+        for (Map.Entry<String, Pipe> entry : pipes.entrySet()) {
+            File file = new File(dir, entry.getKey() + ".json");
+            if (file.exists()) continue; // don't overwrite user-modified configs
 
-                try (FileWriter writer = new FileWriter(file)) {
-                    GSON.toJson(json, writer);
-                } catch (Exception e) {
-                    BuildcraftLegacy.LOGGER.error("An error occurred while generating pipe jsons, affected pipe: {}", entry.getKey(), e);
-                }
+            JsonElement json = entry.getValue().toJson();
+            if (json == null) {
+                BuildcraftLegacy.LOGGER.error("Pipe {} could not be written to Json due to encoding error", entry.getKey());
+                continue;
+            }
+
+            try (FileWriter writer = new FileWriter(file)) {
+                GSON.toJson(json, writer);
+            } catch (Exception e) {
+                BuildcraftLegacy.LOGGER.error("An error occurred while generating pipe jsons, affected pipe: {}", entry.getKey(), e);
             }
         }
     }

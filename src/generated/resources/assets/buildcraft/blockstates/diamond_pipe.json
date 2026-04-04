@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "buildcraft:block/diamond_pipe_connection"
+        "model": "buildcraft:block/diamond_pipe_connection_down"
       },
       "when": {
         "down": "connected"
@@ -10,15 +10,7 @@
     },
     {
       "apply": {
-        "model": "buildcraft:block/diamond_pipe_connection_extracting"
-      },
-      "when": {
-        "down": "extracting"
-      }
-    },
-    {
-      "apply": {
-        "model": "buildcraft:block/diamond_pipe_connection",
+        "model": "buildcraft:block/diamond_pipe_connection_up",
         "x": 180
       },
       "when": {
@@ -27,16 +19,7 @@
     },
     {
       "apply": {
-        "model": "buildcraft:block/diamond_pipe_connection_extracting",
-        "x": 180
-      },
-      "when": {
-        "up": "extracting"
-      }
-    },
-    {
-      "apply": {
-        "model": "buildcraft:block/diamond_pipe_connection",
+        "model": "buildcraft:block/diamond_pipe_connection_north",
         "x": 90,
         "y": 180
       },
@@ -46,17 +29,7 @@
     },
     {
       "apply": {
-        "model": "buildcraft:block/diamond_pipe_connection_extracting",
-        "x": 90,
-        "y": 180
-      },
-      "when": {
-        "north": "extracting"
-      }
-    },
-    {
-      "apply": {
-        "model": "buildcraft:block/diamond_pipe_connection",
+        "model": "buildcraft:block/diamond_pipe_connection_east",
         "x": 90,
         "y": 270
       },
@@ -66,17 +39,7 @@
     },
     {
       "apply": {
-        "model": "buildcraft:block/diamond_pipe_connection_extracting",
-        "x": 90,
-        "y": 270
-      },
-      "when": {
-        "east": "extracting"
-      }
-    },
-    {
-      "apply": {
-        "model": "buildcraft:block/diamond_pipe_connection",
+        "model": "buildcraft:block/diamond_pipe_connection_south",
         "x": 90
       },
       "when": {
@@ -85,31 +48,12 @@
     },
     {
       "apply": {
-        "model": "buildcraft:block/diamond_pipe_connection_extracting",
-        "x": 90
-      },
-      "when": {
-        "south": "extracting"
-      }
-    },
-    {
-      "apply": {
-        "model": "buildcraft:block/diamond_pipe_connection",
+        "model": "buildcraft:block/diamond_pipe_connection_west",
         "x": 90,
         "y": 90
       },
       "when": {
         "west": "connected"
-      }
-    },
-    {
-      "apply": {
-        "model": "buildcraft:block/diamond_pipe_connection_extracting",
-        "x": 90,
-        "y": 90
-      },
-      "when": {
-        "west": "extracting"
       }
     },
     {

@@ -1,8 +1,11 @@
 package com.thepigcat.buildcraft.datagen.assets;
 
 import com.thepigcat.buildcraft.BuildcraftLegacy;
+import com.thepigcat.buildcraft.PipesRegistry;
 import com.thepigcat.buildcraft.api.blocks.ExtractingPipeBlock;
 import com.thepigcat.buildcraft.api.blocks.PipeBlock;
+import com.thepigcat.buildcraft.content.blocks.DiamondItemPipeBlock;
+import com.thepigcat.buildcraft.api.pipes.Pipe;
 import com.thepigcat.buildcraft.content.blocks.CrateBlock;
 import com.thepigcat.buildcraft.content.blocks.TankBlock;
 import com.thepigcat.buildcraft.registries.BCBlocks;
@@ -30,13 +33,81 @@ public class BCBlockStateProvider extends BlockStateProvider {
         engineBlock(BCBlocks.COMBUSTION_ENGINE.get());
 
         for (Block block : BCBlocks.BLOCKS.getRegistry().get()) {
-            if (block instanceof ExtractingPipeBlock) {
+            if (BuiltInRegistries.BLOCK.getKey(block).getPath().equals("iron_pipe")) {
+                ironItemPipeBlock(block);
+            } else if (block instanceof DiamondItemPipeBlock) {
+                diamondItemPipeBlock(block);
+            } else if (block instanceof ExtractingPipeBlock) {
                 extractingPipeBlock(block);
             } else if (block instanceof PipeBlock) {
                 pipeBlock(block);
             }
 
         }
+    }
+
+    private void diamondItemPipeBlock(Block block) {
+        ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(block);
+        Pipe pipe = PipesRegistry.PIPES.get(loc.getPath());
+        MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
+        // Texture order: [base=0, down=1, up=2, north=3, south=4, west=5, east=6]
+        // Rotation order mirrors the default pipe blockstate definition
+        Direction[] dirs = {Direction.DOWN, Direction.UP, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+        String[] dirNames = {"down", "up", "north", "east", "south", "west"};
+        int[] texIdx  = {1, 2, 3, 6, 4, 5};
+        int[] rotX    = {0, 180, 90, 90, 90, 90};
+        int[] rotY    = {0,   0, 180, 270, 0, 90};
+        for (int i = 0; i < 6; i++) {
+            builder.part()
+                    .modelFile(diamondPipeConnectionModel(loc, dirNames[i], pipe.textures().get(texIdx[i])))
+                    .rotationX(rotX[i]).rotationY(rotY[i]).addModel()
+                    .condition(PipeBlock.CONNECTION[dirs[i].get3DDataValue()], PipeBlock.PipeState.CONNECTED).end();
+        }
+        builder.part().modelFile(pipeBaseModel(loc)).addModel().end();
+    }
+
+    private ModelFile diamondPipeConnectionModel(ResourceLocation blockLoc, String direction, ResourceLocation texture) {
+        return models().withExistingParent(blockLoc.getPath() + "_connection_" + direction, modLoc("block/pipe_connection"))
+                .texture("texture", texture);
+    }
+
+    private void ironItemPipeBlock(Block block) {
+        ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(block);
+        Pipe pipe = PipesRegistry.PIPES.get(loc.getPath());
+        ResourceLocation normalTex = pipe.textures().get(0);
+        ResourceLocation blockedTex = pipe.textures().get(1);
+        MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
+        ironPipeConnection(builder, loc, normalTex, blockedTex, Direction.DOWN, 0, 0);
+        ironPipeConnection(builder, loc, normalTex, blockedTex, Direction.UP, 180, 0);
+        ironPipeConnection(builder, loc, normalTex, blockedTex, Direction.NORTH, 90, 180);
+        ironPipeConnection(builder, loc, normalTex, blockedTex, Direction.EAST, 90, 270);
+        ironPipeConnection(builder, loc, normalTex, blockedTex, Direction.SOUTH, 90, 0);
+        ironPipeConnection(builder, loc, normalTex, blockedTex, Direction.WEST, 90, 90);
+        builder.part().modelFile(pipeBlockedBaseModel(loc, blockedTex)).addModel().end();
+    }
+
+    private void ironPipeConnection(MultiPartBlockStateBuilder builder, ResourceLocation loc,
+                                    ResourceLocation normalTex, ResourceLocation blockedTex,
+                                    Direction direction, int x, int y) {
+        builder.part().modelFile(pipeConnectionModelWithTex(loc, normalTex)).rotationX(x).rotationY(y).addModel()
+                .condition(PipeBlock.CONNECTION[direction.get3DDataValue()], PipeBlock.PipeState.CONNECTED).end()
+                .part().modelFile(pipeBlockedModel(loc, blockedTex)).rotationX(x).rotationY(y).addModel()
+                .condition(PipeBlock.CONNECTION[direction.get3DDataValue()], PipeBlock.PipeState.BLOCKED).end();
+    }
+
+    private ModelFile pipeBlockedBaseModel(ResourceLocation blockLoc, ResourceLocation texture) {
+        return models().withExistingParent(blockLoc.getPath() + "_base_blocked", modLoc("block/pipe_base"))
+                .texture("texture", texture);
+    }
+
+    private ModelFile pipeBlockedModel(ResourceLocation blockLoc, ResourceLocation texture) {
+        return models().withExistingParent(blockLoc.getPath() + "_connection_blocked", modLoc("block/pipe_connection"))
+                .texture("texture", texture);
+    }
+
+    private ModelFile pipeConnectionModelWithTex(ResourceLocation blockLoc, ResourceLocation texture) {
+        return models().withExistingParent(blockLoc.getPath() + "_connection", modLoc("block/pipe_connection"))
+                .texture("texture", texture);
     }
 
     private void crateBlock(CrateBlock block) {

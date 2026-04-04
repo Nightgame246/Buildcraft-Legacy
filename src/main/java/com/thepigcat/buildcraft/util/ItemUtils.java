@@ -1,7 +1,10 @@
 package com.thepigcat.buildcraft.util;
 
 import com.thepigcat.buildcraft.api.capabilties.JumboItemHandler.BigStack;
+import com.thepigcat.buildcraft.data.BCDataComponents;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -28,6 +31,22 @@ public final class ItemUtils {
 
             return true;
         }
+    }
+
+    public static void setItemColor(ItemStack stack, DyeColor color) {
+        stack.set(BCDataComponents.ITEM_COLOUR.get(), color);
+    }
+
+    public static @Nullable DyeColor getItemColor(ItemStack stack) {
+        return stack.get(BCDataComponents.ITEM_COLOUR.get());
+    }
+
+    public static DyeColor getItemColorOrDefault(ItemStack stack, DyeColor defaultColor) {
+        return stack.getOrDefault(BCDataComponents.ITEM_COLOUR.get(), defaultColor);
+    }
+
+    public static boolean hasItemColor(ItemStack stack, DyeColor color) {
+        return color.equals(getItemColor(stack));
     }
 
 }

@@ -23,6 +23,7 @@ import java.util.*;
 
 public abstract class PipeBlockEntity<CAP> extends BlockEntity {
     public Direction extracting;
+    protected final Set<Direction> blocked;
 
     protected final Map<Direction, BlockCapabilityCache<CAP, Direction>> capabilityCaches;
     protected Set<Direction> directions;
@@ -31,6 +32,24 @@ public abstract class PipeBlockEntity<CAP> extends BlockEntity {
         super(type, pos, blockState);
         this.capabilityCaches = new HashMap<>(6);
         this.directions = new ObjectArraySet<>(6);
+        this.blocked = new ObjectArraySet<>(6);
+    }
+
+    public void setBlocked(Direction direction, boolean isBlocked) {
+        if (isBlocked) {
+            blocked.add(direction);
+        } else {
+            blocked.remove(direction);
+        }
+        setChanged();
+    }
+
+    public boolean isBlocked(Direction direction) {
+        return blocked.contains(direction);
+    }
+
+    public Set<Direction> getBlocked() {
+        return blocked;
     }
 
     protected abstract BlockCapability<CAP, Direction> getCapType();
@@ -38,8 +57,8 @@ public abstract class PipeBlockEntity<CAP> extends BlockEntity {
     @Override
     public void onLoad() {
         super.onLoad();
+        PipeBlock.setPipeProperties(this);
         if (level instanceof ServerLevel serverLevel) {
-            PipeBlock.setPipeProperties(this);
             Direction[] directions = Direction.values();
             for (Direction direction : directions) {
                 capabilityCaches.put(direction, BlockCapabilityCache.create(getCapType(), serverLevel, worldPosition.relative(direction), direction.getOpposite()));
@@ -70,6 +89,12 @@ public abstract class PipeBlockEntity<CAP> extends BlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        super.onDataPacket(net, pkt, lookupProvider);
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            loadAdditional(tag, lookupProvider);
+            if (level != null && level.isClientSide) {
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
+        }
     }
 }
