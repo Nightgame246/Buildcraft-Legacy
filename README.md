@@ -39,13 +39,15 @@ The mod is still in its early stages and prone to bugs.
 
 ## Current Status
 
-| Phase | Description | Status |
-| :--- | :--- | :--- |
-| A | **Basic Item Pipes**: Stone, Sandstone, Quartz, Void | Done |
-| B | **Specialized Item Pipes**: Iron, Obsidian, Emerald, Clay, Diamond, Lapis, Daizuli | In Progress (Stripe missing) |
-| C | **Fluid & Energy Systems**: Kinesis & Fluid Pipes (NeoForge Architecture) | Planned |
-| D | **Logic & Automation**: Structure Pipes, Gates, Wires, Triggers | Planned |
-| E | **Machines & Energy**: Engines (Redstone, Stirling, Combustion), Quarry, Tank, Crate | Done (Basics) |
+| Phase | Module | Description | Status |
+| :--- | :--- | :--- | :--- |
+| A | **Transport** | **Basic Item Pipes**: Stone, Sandstone, Quartz, Void | Done |
+| B | **Transport** | **Specialized Item Pipes**: Iron, Obsidian, Emerald, Clay, Diamond, Lapis, Daizuli | In Progress (Stripe missing) |
+| C | **Transport** | **Fluid & Energy Systems**: Kinesis & Fluid Pipes (NeoForge Architecture) | Planned |
+| D | **Silicon** | **Logic & Automation**: Structure Pipes, Gates, Wires, Triggers, Assembly Table, Lasers | Planned |
+| E | **Energy & Factory** | **Power & Machines**: Engines, Quarry, Pump, Tank, Crate, Auto-Workbench | Planned |
+| F | **Builders** | **Construction**: Architect Table, Builder, Library, Blueprints | Planned |
+| G | **Robotics** | **Advanced Automation**: Robots, Docking Stations | Planned |
 
 ## Discord
 
