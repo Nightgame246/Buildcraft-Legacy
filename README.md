@@ -48,6 +48,7 @@ The mod is still in its early stages and prone to bugs.
 | E | **Energy & Factory** | **Power & Machines**: Engines, Quarry, Pump, Tank, Crate, Auto-Workbench | Planned |
 | F | **Builders** | **Construction**: Architect Table, Builder, Library, Blueprints | Planned |
 | G | **Robotics** | **Advanced Automation**: Robots, Docking Stations | Planned |
+| H | **Polish** | **Final Touches**: Creative Tabs separation, performance fixes, advanced animations | Planned |
 
 ## Discord
 
