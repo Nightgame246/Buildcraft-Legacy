@@ -82,14 +82,23 @@ public class StripeItemPipeBE extends ItemPipeBE {
                         resetMovement();
                         return;
                     }
-                    // Interaction failed — bounce item back
-                    bounceBack();
+                    // Interaction failed — drop the item into the world instead of bouncing back
+                    dropItem(stack, to, targetPos);
+                    itemHandler.setStackInSlot(0, ItemStack.EMPTY);
+                    resetMovement();
                     return;
                 }
             }
         }
 
         super.tick();
+    }
+
+    private void dropItem(ItemStack stack, Direction outputDir, BlockPos targetPos) {
+        if (!level.isClientSide()) {
+            net.minecraft.world.level.block.Block.popResource(level, targetPos, stack.copy());
+            BuildcraftLegacy.LOGGER.debug("Stripe pipe dropped item at {} because interaction failed", targetPos);
+        }
     }
 
     private boolean tryWorldInteraction(ItemStack stack, Direction outputDir, BlockPos targetPos) {
