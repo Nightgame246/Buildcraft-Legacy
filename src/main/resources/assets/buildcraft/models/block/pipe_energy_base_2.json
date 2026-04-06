@@ -1,0 +1,17 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "translucent",
+  "textures": { "particle": "#texture" },
+  "elements": [{
+    "from": [6.5, 6.5, 6.5],
+    "to": [9.5, 9.5, 9.5],
+    "faces": {
+      "down":  { "texture": "#texture" },
+      "up":    { "texture": "#texture" },
+      "north": { "texture": "#texture" },
+      "south": { "texture": "#texture" },
+      "west":  { "texture": "#texture" },
+      "east":  { "texture": "#texture" }
+    }
+  }]
+}

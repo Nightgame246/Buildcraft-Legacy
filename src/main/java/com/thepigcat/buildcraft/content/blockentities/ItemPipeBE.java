@@ -35,7 +35,7 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
     private Direction prevFrom;
     public float movement;
     public float lastMovement;
-    protected float itemSpeed = 0.01f;
+    public float itemSpeed = 0.01f;
 
     public ItemPipeBE(BlockPos pos, BlockState blockState) {
         this(BCBlockEntities.ITEM_PIPE.get(), pos, blockState);
@@ -139,7 +139,7 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
                             this.setFrom(null);
 
                             PacketDistributor.sendToAllPlayers(new SyncPipeDirectionPayload(worldPosition, Optional.empty(), Optional.empty()));
-                            PacketDistributor.sendToAllPlayers(new SyncPipeMovementPayload(worldPosition, this.movement, this.lastMovement));
+                            PacketDistributor.sendToAllPlayers(new SyncPipeMovementPayload(worldPosition, this.movement, this.lastMovement, this.itemSpeed));
                         } else {
                             moveItemBackward(1 - this.lastMovement, 1 - this.movement);
                         }
@@ -186,7 +186,7 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
         blockEntity.lastMovement = Math.abs(1 - this.lastMovement);
         blockEntity.movement = Math.abs(1 - this.movement);
 
-        PacketDistributor.sendToAllPlayers(new SyncPipeMovementPayload(blockEntity.getBlockPos(), blockEntity.movement, blockEntity.lastMovement));
+        PacketDistributor.sendToAllPlayers(new SyncPipeMovementPayload(blockEntity.getBlockPos(), blockEntity.movement, blockEntity.lastMovement, blockEntity.itemSpeed));
         PacketDistributor.sendToAllPlayers(new SyncPipeDirectionPayload(blockEntity.getBlockPos(), Optional.ofNullable(blockEntity.from), Optional.ofNullable(blockEntity.to)));
     }
 
@@ -201,7 +201,7 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
         this.lastMovement = lastMovement;
         this.movement = movement;
 
-        PacketDistributor.sendToAllPlayers(new SyncPipeMovementPayload(worldPosition, this.movement, this.lastMovement));
+        PacketDistributor.sendToAllPlayers(new SyncPipeMovementPayload(worldPosition, this.movement, this.lastMovement, this.itemSpeed));
 
         PacketDistributor.sendToAllPlayers(new SyncPipeDirectionPayload(worldPosition, Optional.ofNullable(from), Optional.ofNullable(this.to)));
     }

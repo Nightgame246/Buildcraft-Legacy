@@ -27,14 +27,23 @@ public final class BCConfig {
     public static int combustionEngineEnergyCapacity = 10_000;
 
     @ConfigValue(name = "Redstone Engine Energy Production", comment = "The amount of energy a redstone engine produces", category = "production.energy")
-    public static int redstoneEngineEnergyProduction;
-    @ConfigValue(name = "Stirling Engine Energy Production", comment = "The amount of energy a stirling engine produces", category = "production.energy")
-    public static int stirlingEngineEnergyProduction;
-    @ConfigValue(name = "Combustion Engine Energy Production", comment = "The amount of energy a combustion engine produces", category = "production.energy")
-    public static int combustionEngineEnergyProduction;
+    public static int redstoneEngineEnergyProduction = 5;
+    @ConfigValue(name = "Stirling Engine Energy Production", comment = "The amount of energy a stirling engine produces per cycle", category = "production.energy")
+    public static int stirlingEngineEnergyProduction = 20;
+    @ConfigValue(name = "Combustion Engine Energy Production", comment = "The amount of energy a combustion engine produces per cycle", category = "production.energy")
+    public static int combustionEngineEnergyProduction = 40;
 
     @ConfigValue(name = "Crate Item Capacity", comment = "The maximum amount of items the crate can store", category = "capacity.items")
     public static int crateItemCapacity = 4096;
+
+    @ConfigValue(name = "Extraction Pipe Energy Cost", comment = "FE consumed per item extraction by wooden/emerald pipes", category = "production.energy")
+    public static int extractionEnergyCost = 10;
+
+    @ConfigValue(name = "Extraction Pipe Energy Capacity", comment = "Internal energy buffer of extraction pipes", category = "capacity.energy")
+    public static int extractionPipeEnergyCapacity = 1000;
+
+    @ConfigValue(name = "Kinesis Pipe Energy Capacity", comment = "Base energy buffer of kinesis (power) pipes", category = "capacity.energy")
+    public static int kinesisPipeEnergyCapacity = 1000;
 
     @ConfigValue(name = "Quarry Energy Capacity", category = "capacity.energy")
     public static int quarryEnergyCapacity = 50_000;

@@ -234,6 +234,8 @@ public final class ModelUtils {
                 }""".formatted(parent, pipe.textures().size() > textureIndex ? pipe.textures().get(textureIndex) : "missing");
     });
 
+    // Energy stripe rendering is handled by KinesisPipeBERenderer (TESR)
+
     public static ResourceLocation modelLocationToBlockId(ResourceLocation modelLocation) {
         String[] split = modelLocation.getPath().split("/");
         String name = split[split.length - 1];

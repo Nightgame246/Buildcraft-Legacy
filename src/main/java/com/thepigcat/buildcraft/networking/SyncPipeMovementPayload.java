@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
-public record SyncPipeMovementPayload(BlockPos pos, float movement, float lastMovement) implements CustomPacketPayload {
+public record SyncPipeMovementPayload(BlockPos pos, float movement, float lastMovement, float itemSpeed) implements CustomPacketPayload {
     public static final Type<SyncPipeMovementPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(BuildcraftLegacy.MODID, "sync_pipe_movement"));
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncPipeMovementPayload> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC,
@@ -21,6 +21,8 @@ public record SyncPipeMovementPayload(BlockPos pos, float movement, float lastMo
             SyncPipeMovementPayload::movement,
             ByteBufCodecs.FLOAT,
             SyncPipeMovementPayload::lastMovement,
+            ByteBufCodecs.FLOAT,
+            SyncPipeMovementPayload::itemSpeed,
             SyncPipeMovementPayload::new
     );
 
@@ -35,6 +37,7 @@ public record SyncPipeMovementPayload(BlockPos pos, float movement, float lastMo
             if (be != null) {
                 be.lastMovement = payload.lastMovement;
                 be.movement = payload.movement;
+                be.itemSpeed = payload.itemSpeed;
             }
         });
     }

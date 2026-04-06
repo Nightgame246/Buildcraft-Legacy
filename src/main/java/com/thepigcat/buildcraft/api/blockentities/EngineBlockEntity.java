@@ -41,7 +41,7 @@ public abstract class EngineBlockEntity extends ContainerBlockEntity implements 
         super(blockEntityType, blockPos, blockState);
         addEnergyStorage(HandlerUtils::newEnergystorage, builder -> builder
                 .capacity(this.getEnergyCapacity())
-                .maxTransfer(this.getEnergyProduction()));
+                .maxTransfer(this.getEnergyCapacity()));
         this.movement = 0.5f;
         this.sidedInteractions = new HashMap<>();
         Direction facing = getBlockState().getValue(EngineBlock.FACING);
@@ -102,11 +102,17 @@ public abstract class EngineBlockEntity extends ContainerBlockEntity implements 
         }
 
         if (!level.isClientSide()) {
-            int extractedEnergy = getEnergyStorage().extractEnergy(5, false);
-            IEnergyStorage energyStorage = exportCache.getCapability();
-            if (energyStorage != null) {
-                int received = energyStorage.receiveEnergy(extractedEnergy, false);
-                getEnergyStorage().receiveEnergy(extractedEnergy - received, false);
+            int toExport = Math.min(getEnergyProduction(), getEnergyStorage().getEnergyStored());
+            if (toExport > 0) {
+                IEnergyStorage receiver = exportCache.getCapability();
+                if (receiver != null) {
+                    int received = receiver.receiveEnergy(toExport, false);
+                    if (received > 0) {
+                        getEnergyStorage().extractEnergy(received, false);
+                        BuildcraftLegacy.LOGGER.debug("Engine @{} exported {} FE (stored: {})",
+                                worldPosition, received, getEnergyStorage().getEnergyStored());
+                    }
+                }
             }
         }
     }

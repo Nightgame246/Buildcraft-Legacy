@@ -56,7 +56,22 @@ public final class BCBlockEntities {
     public static final Supplier<BlockEntityType<QuarryBE>> QUARRY = BLOCK_ENTITIES.register("quarry",
             () -> BlockEntityType.Builder.of(QuarryBE::new, BCBlocks.QUARRY.get()).build(null));
 
+    public static final Supplier<BlockEntityType<KinesisPipeBE>> KINESIS_PIPE = BLOCK_ENTITIES.register("kinesis_pipe",
+            () -> BlockEntityType.Builder.of(KinesisPipeBE::new, collectBlocks(KinesisPipeBlock.class, ExtractingKinesisPipeBlock.class)).build(null));
+
     private static Block[] collectBlocks(Class<? extends Block> clazz) {
         return BuiltInRegistries.BLOCK.stream().filter(clazz::isInstance).toList().toArray(Block[]::new);
+    }
+
+    @SafeVarargs
+    private static Block[] collectBlocks(Class<? extends Block>... classes) {
+        return BuiltInRegistries.BLOCK.stream()
+                .filter(block -> {
+                    for (Class<? extends Block> clazz : classes) {
+                        if (clazz.isInstance(block)) return true;
+                    }
+                    return false;
+                })
+                .toList().toArray(Block[]::new);
     }
 }

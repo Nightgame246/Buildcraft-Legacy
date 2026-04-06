@@ -2,6 +2,7 @@ package com.thepigcat.buildcraft.datagen.assets;
 
 import com.thepigcat.buildcraft.BuildcraftLegacy;
 import com.thepigcat.buildcraft.api.blocks.PipeBlock;
+import com.thepigcat.buildcraft.content.blocks.KinesisPipeBlock;
 import com.thepigcat.buildcraft.registries.BCBlocks;
 import com.thepigcat.buildcraft.registries.BCFluids;
 import com.thepigcat.buildcraft.registries.BCItems;
@@ -29,6 +30,11 @@ public class BCItemModelProvider extends ItemModelProvider {
             BCBlocks.REDSTONE_ENGINE.get(),
             BCBlocks.STIRLING_ENGINE.get(),
             BCBlocks.COMBUSTION_ENGINE.get()
+    );
+
+    private static final Set<Block> KINESIS_PIPE_BLACKLIST = Set.of(
+            // Kinesis pipes use the same pipe_inventory parent model
+            // No separate blacklist needed - they're handled in pipeItemModel()
     );
 
     public BCItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {

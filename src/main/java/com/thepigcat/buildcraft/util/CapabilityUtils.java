@@ -21,6 +21,10 @@ public final class CapabilityUtils {
         return blockEntityCapability(Capabilities.EnergyStorage.BLOCK, blockEntity);
     }
 
+    public static @Nullable IEnergyStorage energyStorageCapability(BlockEntity blockEntity, Direction direction) {
+        return blockEntityCapability(Capabilities.EnergyStorage.BLOCK, blockEntity, direction);
+    }
+
     public static @Nullable IItemHandler itemHandlerCapability(BlockEntity blockEntity) {
         return blockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
     }

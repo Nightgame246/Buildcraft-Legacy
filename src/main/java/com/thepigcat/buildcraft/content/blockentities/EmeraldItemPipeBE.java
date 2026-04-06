@@ -1,5 +1,6 @@
 package com.thepigcat.buildcraft.content.blockentities;
 
+import com.thepigcat.buildcraft.BCConfig;
 import com.thepigcat.buildcraft.registries.BCBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,6 +36,10 @@ public class EmeraldItemPipeBE extends ExtractItemPipeBE {
             return;
         }
 
+        if (energyStorage.getEnergyStored() < BCConfig.extractionEnergyCost) {
+            return;
+        }
+
         BlockCapabilityCache<IItemHandler, Direction> cache = capabilityCaches.get(this.extracting);
         if (cache != null) {
             IItemHandler extractingHandler = cache.getCapability();
@@ -60,6 +65,8 @@ public class EmeraldItemPipeBE extends ExtractItemPipeBE {
                 if (!extractedStack.isEmpty()) {
                     ItemStack insertRemainder = itemHandler.insertItem(0, extractedStack, false);
                     extractingHandler.insertItem(extractedSlot, insertRemainder, false);
+
+                    energyStorage.extractEnergy(BCConfig.extractionEnergyCost, false);
 
                     this.setFrom(this.extracting);
 

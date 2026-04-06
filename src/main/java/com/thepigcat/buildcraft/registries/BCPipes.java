@@ -79,4 +79,30 @@ public final class BCPipes {
     public static final PipeHolder STRIPE = HELPER.registerPipe("stripe", BCPipeTypes.STRIPE, "Stripe Pipe", 0.25f, List.of(
             BuildcraftLegacy.rl("block/stripe_pipe")
     ), Either.right(ResourceLocation.parse("gold_block")), Ingredient.of(Tags.Items.INGOTS_GOLD), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 14);
+
+    // ── Kinesis (power) pipes ────────────────────────────────────────────
+    public static final PipeHolder WOODEN_KINESIS = HELPER.registerPipe("wooden_kinesis", BCPipeTypes.KINESIS_EXTRACTING, "Wooden Kinesis Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/wooden_kinesis_pipe"),
+            BuildcraftLegacy.rl("block/wooden_kinesis_pipe_extracting")
+    ), Either.right(ResourceLocation.parse("oak_planks")), Ingredient.of(ItemTags.PLANKS), List.of(BlockTags.MINEABLE_WITH_AXE), 20);
+
+    public static final PipeHolder COBBLESTONE_KINESIS = HELPER.registerPipe("cobblestone_kinesis", BCPipeTypes.KINESIS_DEFAULT, "Cobblestone Kinesis Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/cobblestone_kinesis_pipe")
+    ), Either.right(ResourceLocation.parse("cobblestone")), Ingredient.of(Blocks.COBBLESTONE), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 21);
+
+    public static final PipeHolder STONE_KINESIS = HELPER.registerPipe("stone_kinesis", BCPipeTypes.KINESIS_DEFAULT, "Stone Kinesis Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/stone_kinesis_pipe")
+    ), Either.right(ResourceLocation.parse("stone")), Ingredient.of(Blocks.STONE), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 22);
+
+    public static final PipeHolder GOLD_KINESIS = HELPER.registerPipe("gold_kinesis", BCPipeTypes.KINESIS_DEFAULT, "Gold Kinesis Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/gold_kinesis_pipe")
+    ), Either.right(ResourceLocation.parse("gold_block")), Ingredient.of(Tags.Items.INGOTS_GOLD), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 23);
+
+    public static final PipeHolder QUARTZ_KINESIS = HELPER.registerPipe("quartz_kinesis", BCPipeTypes.KINESIS_DEFAULT, "Quartz Kinesis Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/quartz_kinesis_pipe")
+    ), Either.right(ResourceLocation.parse("quartz_block")), Ingredient.of(Tags.Items.GEMS_QUARTZ), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 24);
+
+    public static final PipeHolder DIAMOND_KINESIS = HELPER.registerPipe("diamond_kinesis", BCPipeTypes.KINESIS_DEFAULT, "Diamond Kinesis Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/diamond_kinesis_pipe")
+    ), Either.right(ResourceLocation.parse("diamond_block")), Ingredient.of(Tags.Items.GEMS_DIAMOND), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 25);
 }

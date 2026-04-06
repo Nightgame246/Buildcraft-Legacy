@@ -7,8 +7,10 @@ import com.thepigcat.buildcraft.content.blocks.DaizuliItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.DiamondItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.EmeraldItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.ExtractingItemPipeBlock;
+import com.thepigcat.buildcraft.content.blocks.ExtractingKinesisPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.IronItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.ItemPipeBlock;
+import com.thepigcat.buildcraft.content.blocks.KinesisPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.LapisItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.ObsidianItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.StripeItemPipeBlock;
@@ -55,6 +57,15 @@ public final class BCPipeTypes {
     public static final PipeTypeHolder<StripeItemPipeBlock, ItemPipeBlockItem> STRIPE = HELPER.registerPipeType("stripe", StripeItemPipeBlock::new, ItemPipeBlockItem::new,
             ModelUtils.DEFAULT_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE, ModelUtils.DEFAULT_ITEM_MODEL_FILE,
             "base", "connection");
+
+    // Kinesis (power) pipe types — energy visuals via KinesisPipeBERenderer
+    public static final PipeTypeHolder<KinesisPipeBlock, ItemPipeBlockItem> KINESIS_DEFAULT = HELPER.registerPipeType("kinesis_default", KinesisPipeBlock::new, ItemPipeBlockItem::new,
+            ModelUtils.DEFAULT_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE, ModelUtils.DEFAULT_ITEM_MODEL_FILE,
+            "base", "connection");
+
+    public static final PipeTypeHolder<ExtractingKinesisPipeBlock, ItemPipeBlockItem> KINESIS_EXTRACTING = HELPER.registerPipeType("kinesis_extracting", ExtractingKinesisPipeBlock::new, ItemPipeBlockItem::new,
+            ModelUtils.EXTRACTING_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE, ModelUtils.DEFAULT_ITEM_MODEL_FILE,
+            "base", "connection", "connection_extracting");
 
     public static void init() {
     }

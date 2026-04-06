@@ -5,6 +5,8 @@ import com.thepigcat.buildcraft.PipesRegistry;
 import com.thepigcat.buildcraft.api.blocks.ExtractingPipeBlock;
 import com.thepigcat.buildcraft.api.blocks.PipeBlock;
 import com.thepigcat.buildcraft.content.blocks.DiamondItemPipeBlock;
+import com.thepigcat.buildcraft.content.blocks.ExtractingKinesisPipeBlock;
+import com.thepigcat.buildcraft.content.blocks.KinesisPipeBlock;
 import com.thepigcat.buildcraft.api.pipes.Pipe;
 import com.thepigcat.buildcraft.content.blocks.CrateBlock;
 import com.thepigcat.buildcraft.content.blocks.TankBlock;
@@ -33,16 +35,20 @@ public class BCBlockStateProvider extends BlockStateProvider {
         engineBlock(BCBlocks.COMBUSTION_ENGINE.get());
 
         for (Block block : BCBlocks.BLOCKS.getRegistry().get()) {
-            if (BuiltInRegistries.BLOCK.getKey(block).getPath().equals("iron_pipe")) {
+            String path = BuiltInRegistries.BLOCK.getKey(block).getPath();
+            if (path.equals("iron_pipe")) {
                 ironItemPipeBlock(block);
             } else if (block instanceof DiamondItemPipeBlock) {
                 diamondItemPipeBlock(block);
+            } else if (block instanceof ExtractingKinesisPipeBlock) {
+                extractingKinesisPipeBlock(block);
+            } else if (block instanceof KinesisPipeBlock) {
+                kinesisPipeBlock(block);
             } else if (block instanceof ExtractingPipeBlock) {
                 extractingPipeBlock(block);
             } else if (block instanceof PipeBlock) {
                 pipeBlock(block);
             }
-
         }
     }
 
@@ -280,5 +286,55 @@ public class BCBlockStateProvider extends BlockStateProvider {
         }
         return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), path.toString());
     }
+
+    // ── Kinesis (Power) Pipe Blockstate Generation ───────────────────────
+
+    private void kinesisPipeBlock(Block block) {
+        ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(block);
+        MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
+        kinesisPipeConnection(builder, loc, Direction.DOWN, 0, 0);
+        kinesisPipeConnection(builder, loc, Direction.UP, 180, 0);
+        kinesisPipeConnection(builder, loc, Direction.NORTH, 90, 180);
+        kinesisPipeConnection(builder, loc, Direction.EAST, 90, 270);
+        kinesisPipeConnection(builder, loc, Direction.SOUTH, 90, 0);
+        kinesisPipeConnection(builder, loc, Direction.WEST, 90, 90);
+        builder.part().modelFile(pipeBaseModel(loc)).addModel().end();
+    }
+
+    private void kinesisPipeConnection(MultiPartBlockStateBuilder builder, ResourceLocation loc, Direction direction, int x, int y) {
+        builder.part().modelFile(kinesisPipeConnectionModel(loc)).rotationX(x).rotationY(y).addModel()
+                .condition(PipeBlock.CONNECTION[direction.get3DDataValue()], PipeBlock.PipeState.CONNECTED).end();
+    }
+
+    private ModelFile kinesisPipeConnectionModel(ResourceLocation blockLoc) {
+        return models().withExistingParent(blockLoc.getPath() + "_connection", modLoc("block/pipe_connection"))
+                .texture("texture", ResourceLocation.fromNamespaceAndPath(blockLoc.getNamespace(), "block/" + blockLoc.getPath()));
+    }
+
+    private void extractingKinesisPipeBlock(Block block) {
+        ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(block);
+        MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
+        extractingKinesisPipeConnection(builder, loc, Direction.DOWN, 0, 0);
+        extractingKinesisPipeConnection(builder, loc, Direction.UP, 180, 0);
+        extractingKinesisPipeConnection(builder, loc, Direction.NORTH, 90, 180);
+        extractingKinesisPipeConnection(builder, loc, Direction.EAST, 90, 270);
+        extractingKinesisPipeConnection(builder, loc, Direction.SOUTH, 90, 0);
+        extractingKinesisPipeConnection(builder, loc, Direction.WEST, 90, 90);
+        builder.part().modelFile(pipeBaseModel(loc)).addModel().end();
+    }
+
+    private void extractingKinesisPipeConnection(MultiPartBlockStateBuilder builder, ResourceLocation loc, Direction direction, int x, int y) {
+        builder.part().modelFile(kinesisPipeConnectionModel(loc)).rotationX(x).rotationY(y).addModel()
+                .condition(PipeBlock.CONNECTION[direction.get3DDataValue()], PipeBlock.PipeState.CONNECTED).end()
+                .part().modelFile(kinesisPipeExtractingModel(loc)).rotationX(x).rotationY(y).addModel()
+                .condition(PipeBlock.CONNECTION[direction.get3DDataValue()], PipeBlock.PipeState.EXTRACTING).end();
+    }
+
+    private ModelFile kinesisPipeExtractingModel(ResourceLocation blockLoc) {
+        return models().withExistingParent(blockLoc.getPath() + "_connection_extracting", modLoc("block/pipe_connection"))
+                .texture("texture", ResourceLocation.fromNamespaceAndPath(blockLoc.getNamespace(), "block/" + blockLoc.getPath() + "_extracting"));
+    }
+
+    // Energy stripe rendering is handled by KinesisPipeBERenderer (TESR), not baked models
 
 }

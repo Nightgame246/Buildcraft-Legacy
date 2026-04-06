@@ -150,16 +150,14 @@ public abstract class PipeBlock extends BaseEntityBlock {
         int connectionIndex = facingDirection.get3DDataValue();
         PipeBlockEntity<?> pipeBE = BlockUtils.getBE(PipeBlockEntity.class, level, blockPos);
         PipeState connectionType = getConnectionType(level, blockPos, blockState, facingDirection, facingBlockPos);
+        BlockState newState;
         if (connectionType != PipeState.NONE) {
-            pipeBE.getDirections().add(facingDirection);
-            return blockState.setValue(CONNECTION[connectionIndex], connectionType);
-        } else if (facingBlockState.isEmpty()) {
-            pipeBE.getDirections().remove(facingDirection);
-            return blockState.setValue(CONNECTION[connectionIndex], PipeState.NONE);
+            newState = blockState.setValue(CONNECTION[connectionIndex], connectionType);
+        } else {
+            newState = blockState.setValue(CONNECTION[connectionIndex], PipeState.NONE);
         }
-        setPipeProperties(pipeBE, blockState);
-
-        return blockState;
+        setPipeProperties(pipeBE, newState);
+        return newState;
     }
 
     @Nullable

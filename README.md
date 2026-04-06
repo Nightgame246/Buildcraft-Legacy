@@ -41,10 +41,10 @@ The mod is still in its early stages and prone to bugs.
 
 | Phase | Module | Description | Status |
 | :--- | :--- | :--- | :--- |
-| A | **Transport** | **Basic Item Pipes**: Stone, Sandstone, Quartz, Void | Done |
-| B | **Transport** | **Specialized Item Pipes**: Iron, Obsidian, Emerald, Clay, Diamond, Lapis, Daizuli, Stripe | Done |
-| C | **Transport** | **Fluid & Energy Systems**: Kinesis & Fluid Pipes (NeoForge Architecture) | Planned |
-| D | **Energy & Factory** | **Power & Machines**: Engines, Quarry, Pump, Tank, Crate, Auto-Workbench | Planned |
+| A | **Transport** | **Basic Item Pipes**: Stone, Sandstone, Quartz, Void, Cobblestone | Done |
+| B | **Transport** | **Specialized Item Pipes**: Iron, Obsidian, Emerald, Clay, Diamond, Lapis, Daizuli, Stripe (Polished) | Done |
+| C | **Transport** | **Fluid & Energy Systems**: Kinesis (Power) & Fluid Pipes (Energy Logic) | In Progress |
+| D | **Energy & Factory** | **Power & Machines**: Engines, Quarry, Pump, Tank, Crate, Auto-Workbench | In Progress |
 | E | **Silicon** | **Logic & Automation**: Structure Pipes, Gates, Wires, Triggers, Assembly Table, Lasers | Planned |
 | F | **Builders** | **Construction**: Architect Table, Builder, Library, Blueprints | Planned |
 | G | **Robotics** | **Advanced Automation**: Robots, Docking Stations | Planned |

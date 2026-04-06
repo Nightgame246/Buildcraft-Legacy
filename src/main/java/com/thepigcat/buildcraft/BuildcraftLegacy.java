@@ -9,7 +9,9 @@ import com.thepigcat.buildcraft.api.capabilties.JumboItemHandlerItemWrapper;
 import com.thepigcat.buildcraft.api.pipes.Pipe;
 import com.thepigcat.buildcraft.api.pipes.PipeType;
 import com.thepigcat.buildcraft.content.blockentities.CrateBE;
+import com.thepigcat.buildcraft.content.blockentities.ExtractItemPipeBE;
 import com.thepigcat.buildcraft.content.blockentities.ItemPipeBE;
+import com.thepigcat.buildcraft.content.blockentities.KinesisPipeBE;
 import com.thepigcat.buildcraft.content.blockentities.QuarryBE;
 import com.thepigcat.buildcraft.content.blockentities.TankBE;
 import com.thepigcat.buildcraft.data.BCDataComponents;
@@ -119,6 +121,11 @@ public final class BuildcraftLegacy {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.REDSTONE_ENGINE.get(), ContainerBlockEntity::getEnergyStorageOnSide);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.STIRLING_ENGINE.get(), ContainerBlockEntity::getEnergyStorageOnSide);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.COMBUSTION_ENGINE.get(), ContainerBlockEntity::getEnergyStorageOnSide);
+
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.EXTRACTING_ITEM_PIPE.get(), ExtractItemPipeBE::getEnergyStorage);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.EMERALD_ITEM_PIPE.get(), ExtractItemPipeBE::getEnergyStorage);
+
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.KINESIS_PIPE.get(), KinesisPipeBE::getEnergyStorage);
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.QUARRY.get(), QuarryBE::getItemHandler);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.QUARRY.get(), ContainerBlockEntity::getEnergyStorageOnSide);
