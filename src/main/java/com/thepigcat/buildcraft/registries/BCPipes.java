@@ -105,4 +105,22 @@ public final class BCPipes {
     public static final PipeHolder DIAMOND_KINESIS = HELPER.registerPipe("diamond_kinesis", BCPipeTypes.KINESIS_DEFAULT, "Diamond Kinesis Pipe", 0f, List.of(
             BuildcraftLegacy.rl("block/diamond_kinesis_pipe")
     ), Either.right(ResourceLocation.parse("diamond_block")), Ingredient.of(Tags.Items.GEMS_DIAMOND), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 25);
+
+    // ── Fluid pipes ─────────────────────────────────────────────────────
+    public static final PipeHolder WOODEN_FLUID = HELPER.registerPipe("wooden_fluid", BCPipeTypes.FLUID_EXTRACTING, "Wooden Fluid Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/wooden_fluid_pipe"),
+            BuildcraftLegacy.rl("block/wooden_fluid_pipe_extracting")
+    ), Either.right(ResourceLocation.parse("oak_planks")), Ingredient.of(ItemTags.PLANKS), List.of(BlockTags.MINEABLE_WITH_AXE), 30);
+
+    public static final PipeHolder COBBLESTONE_FLUID = HELPER.registerPipe("cobblestone_fluid", BCPipeTypes.FLUID_DEFAULT, "Cobblestone Fluid Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/cobblestone_fluid_pipe")
+    ), Either.right(ResourceLocation.parse("cobblestone")), Ingredient.of(Blocks.COBBLESTONE), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 31);
+
+    public static final PipeHolder STONE_FLUID = HELPER.registerPipe("stone_fluid", BCPipeTypes.FLUID_DEFAULT, "Stone Fluid Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/stone_fluid_pipe")
+    ), Either.right(ResourceLocation.parse("stone")), Ingredient.of(Blocks.STONE), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 32);
+
+    public static final PipeHolder GOLD_FLUID = HELPER.registerPipe("gold_fluid", BCPipeTypes.FLUID_DEFAULT, "Gold Fluid Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/gold_fluid_pipe")
+    ), Either.right(ResourceLocation.parse("gold_block")), Ingredient.of(Tags.Items.INGOTS_GOLD), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 33);
 }

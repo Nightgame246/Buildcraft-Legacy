@@ -10,12 +10,15 @@ import com.thepigcat.buildcraft.api.pipes.Pipe;
 import com.thepigcat.buildcraft.api.pipes.PipeType;
 import com.thepigcat.buildcraft.content.blockentities.CrateBE;
 import com.thepigcat.buildcraft.content.blockentities.ExtractItemPipeBE;
+import com.thepigcat.buildcraft.content.blockentities.ExtractingFluidPipeBE;
+import com.thepigcat.buildcraft.content.blockentities.FluidPipeBE;
 import com.thepigcat.buildcraft.content.blockentities.ItemPipeBE;
 import com.thepigcat.buildcraft.content.blockentities.KinesisPipeBE;
 import com.thepigcat.buildcraft.content.blockentities.QuarryBE;
 import com.thepigcat.buildcraft.content.blockentities.TankBE;
 import com.thepigcat.buildcraft.data.BCDataComponents;
 import com.thepigcat.buildcraft.networking.RedstoneSignalTypeSyncPayload;
+import com.thepigcat.buildcraft.networking.SyncFluidPipePayload;
 import com.thepigcat.buildcraft.networking.SyncPipeDirectionPayload;
 import com.thepigcat.buildcraft.networking.SyncPipeMovementPayload;
 import com.thepigcat.buildcraft.registries.*;
@@ -117,6 +120,7 @@ public final class BuildcraftLegacy {
         // FLUID
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, BCBlockEntities.COMBUSTION_ENGINE.get(), ContainerBlockEntity::getFluidHandlerOnSide);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, BCBlockEntities.TANK.get(), ContainerBlockEntity::getFluidHandlerOnSide);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, BCBlockEntities.FLUID_PIPE.get(), FluidPipeBE::getFluidHandler);
         // ENERGY
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.REDSTONE_ENGINE.get(), ContainerBlockEntity::getEnergyStorageOnSide);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.STIRLING_ENGINE.get(), ContainerBlockEntity::getEnergyStorageOnSide);
@@ -126,6 +130,11 @@ public final class BuildcraftLegacy {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.EMERALD_ITEM_PIPE.get(), ExtractItemPipeBE::getEnergyStorage);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.KINESIS_PIPE.get(), KinesisPipeBE::getEnergyStorage);
+
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.FLUID_PIPE.get(), (be, dir) -> {
+            if (be instanceof ExtractingFluidPipeBE ext) return ext.getEnergyStorage(dir);
+            return null;
+        });
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.QUARRY.get(), QuarryBE::getItemHandler);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.QUARRY.get(), ContainerBlockEntity::getEnergyStorageOnSide);
@@ -139,6 +148,7 @@ public final class BuildcraftLegacy {
         registrar.playToClient(SyncPipeDirectionPayload.TYPE, SyncPipeDirectionPayload.STREAM_CODEC, SyncPipeDirectionPayload::handle);
         registrar.playToClient(SyncPipeMovementPayload.TYPE, SyncPipeMovementPayload.STREAM_CODEC, SyncPipeMovementPayload::handle);
         registrar.playToServer(RedstoneSignalTypeSyncPayload.TYPE, RedstoneSignalTypeSyncPayload.STREAM_CODEC, RedstoneSignalTypeSyncPayload::handle);
+        registrar.playToClient(SyncFluidPipePayload.TYPE, SyncFluidPipePayload.STREAM_CODEC, SyncFluidPipePayload::handle);
     }
 
     private void onRegister(RegisterEvent event) {
