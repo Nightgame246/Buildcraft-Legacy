@@ -50,7 +50,8 @@ public class ItemPipeBlock extends PipeBlock {
 
         String currentPipeId = BuiltInRegistries.BLOCK.getKey(this).getPath();
 
-        if (otherBlock instanceof PipeBlock) {
+        // Connect to other item pipes (not fluid or kinesis pipes)
+        if (isItemPipe(otherBlock)) {
             String otherPipeId = BuiltInRegistries.BLOCK.getKey(otherBlock).getPath();
 
             // Classic Buildcraft: Stone, Cobblestone and Quartz don't connect to each other
@@ -64,6 +65,11 @@ public class ItemPipeBlock extends PipeBlock {
             return PipeState.CONNECTED;
         }
 
+        // Never connect to non-item pipes (fluid pipes, kinesis pipes)
+        if (otherBlock instanceof PipeBlock) {
+            return PipeState.NONE;
+        }
+
         // Sandstone doesn't connect to machines/inventories
         if (currentPipeId.equals("sandstone_pipe")) {
             return PipeState.NONE;
@@ -73,6 +79,16 @@ public class ItemPipeBlock extends PipeBlock {
             return PipeState.CONNECTED;
         }
         return PipeState.NONE;
+    }
+
+    /**
+     * Check if a block is any kind of item pipe (not fluid or kinesis).
+     */
+    static boolean isItemPipe(Block block) {
+        return block instanceof PipeBlock
+                && !(block instanceof KinesisPipeBlock)
+                && !(block instanceof ExtractingKinesisPipeBlock)
+                && !(block instanceof FluidPipeBlock);
     }
 
     @Override

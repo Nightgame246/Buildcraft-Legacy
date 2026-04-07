@@ -18,7 +18,7 @@ public class ExtractingFluidPipeBE extends FluidPipeBE {
     protected final EnergyStorage energyStorage;
 
     public ExtractingFluidPipeBE(BlockPos pos, BlockState blockState) {
-        this(BCBlockEntities.FLUID_PIPE.get(), pos, blockState);
+        this(BCBlockEntities.EXTRACTING_FLUID_PIPE.get(), pos, blockState);
     }
 
     protected ExtractingFluidPipeBE(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {

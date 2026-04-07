@@ -115,7 +115,7 @@ public class ExtractingFluidPipeBlock extends ExtractingPipeBlock {
 
     @Override
     protected BlockEntityType<? extends PipeBlockEntity<?>> getBlockEntityType() {
-        return BCBlockEntities.FLUID_PIPE.get();
+        return BCBlockEntities.EXTRACTING_FLUID_PIPE.get();
     }
 
     @Override

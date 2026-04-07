@@ -60,7 +60,10 @@ public final class BCBlockEntities {
             () -> BlockEntityType.Builder.of(KinesisPipeBE::new, collectBlocks(KinesisPipeBlock.class, ExtractingKinesisPipeBlock.class)).build(null));
 
     public static final Supplier<BlockEntityType<FluidPipeBE>> FLUID_PIPE = BLOCK_ENTITIES.register("fluid_pipe",
-            () -> BlockEntityType.Builder.of(FluidPipeBE::new, collectBlocks(FluidPipeBlock.class, ExtractingFluidPipeBlock.class)).build(null));
+            () -> BlockEntityType.Builder.of(FluidPipeBE::new, collectBlocks(FluidPipeBlock.class)).build(null));
+
+    public static final Supplier<BlockEntityType<ExtractingFluidPipeBE>> EXTRACTING_FLUID_PIPE = BLOCK_ENTITIES.register("extracting_fluid_pipe",
+            () -> BlockEntityType.Builder.of(ExtractingFluidPipeBE::new, collectBlocks(ExtractingFluidPipeBlock.class)).build(null));
 
     private static Block[] collectBlocks(Class<? extends Block> clazz) {
         return BuiltInRegistries.BLOCK.stream().filter(clazz::isInstance).toList().toArray(Block[]::new);

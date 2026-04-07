@@ -121,6 +121,7 @@ public final class BuildcraftLegacy {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, BCBlockEntities.COMBUSTION_ENGINE.get(), ContainerBlockEntity::getFluidHandlerOnSide);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, BCBlockEntities.TANK.get(), ContainerBlockEntity::getFluidHandlerOnSide);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, BCBlockEntities.FLUID_PIPE.get(), FluidPipeBE::getFluidHandler);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, BCBlockEntities.EXTRACTING_FLUID_PIPE.get(), FluidPipeBE::getFluidHandler);
         // ENERGY
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.REDSTONE_ENGINE.get(), ContainerBlockEntity::getEnergyStorageOnSide);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.STIRLING_ENGINE.get(), ContainerBlockEntity::getEnergyStorageOnSide);
@@ -131,10 +132,7 @@ public final class BuildcraftLegacy {
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.KINESIS_PIPE.get(), KinesisPipeBE::getEnergyStorage);
 
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.FLUID_PIPE.get(), (be, dir) -> {
-            if (be instanceof ExtractingFluidPipeBE ext) return ext.getEnergyStorage(dir);
-            return null;
-        });
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.EXTRACTING_FLUID_PIPE.get(), ExtractingFluidPipeBE::getEnergyStorage);
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.QUARRY.get(), QuarryBE::getItemHandler);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.QUARRY.get(), ContainerBlockEntity::getEnergyStorageOnSide);
