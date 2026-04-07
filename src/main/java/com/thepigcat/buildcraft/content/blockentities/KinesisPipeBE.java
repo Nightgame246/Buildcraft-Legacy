@@ -125,11 +125,6 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
             return;
         }
 
-        // Wooden kinesis pipes actively extract energy from their extracting side
-        if (extracting != null) {
-            extractEnergy();
-        }
-
         distributeEnergy();
         updatePowerLevel();
     }
@@ -175,26 +170,6 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
                 // Flag 2 = send to client, no neighbor block update (avoids cascade)
                 level.setBlock(worldPosition, state.setValue(KinesisPipeBlock.POWER_LEVEL, newLevel), 2);
             }
-        }
-    }
-
-    /**
-     * Wooden kinesis: pull energy from the engine / source on the extracting side.
-     */
-    private void extractEnergy() {
-        BlockCapabilityCache<IEnergyStorage, Direction> cache = capabilityCaches.get(extracting);
-        if (cache == null) return;
-        IEnergyStorage source = cache.getCapability();
-        if (source == null || !source.canExtract()) return;
-
-        int space = energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored();
-        int toExtract = Math.min(space, maxTransfer);
-        if (toExtract <= 0) return;
-
-        int extracted = source.extractEnergy(toExtract, false);
-        if (extracted > 0) {
-            energyStorage.receiveEnergy(extracted, false);
-            setChanged();
         }
     }
 

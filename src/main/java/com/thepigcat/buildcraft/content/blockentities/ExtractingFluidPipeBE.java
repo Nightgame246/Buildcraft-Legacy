@@ -36,24 +36,29 @@ public class ExtractingFluidPipeBE extends FluidPipeBE {
 
     private void extractFluid() {
         if (extracting == null) return;
-        if (energyStorage.getEnergyStored() < BCConfig.extractionEnergyCost) return;
+
+        int energyAvailable = energyStorage.getEnergyStored();
+        if (energyAvailable <= 0) return;
 
         BlockCapabilityCache<IFluidHandler, Direction> cache = capabilityCaches.get(extracting);
         if (cache == null) return;
         IFluidHandler source = cache.getCapability();
         if (source == null) return;
 
-        // Try to drain from the source
-        FluidStack simulated = source.drain(transferPerTick, IFluidHandler.FluidAction.SIMULATE);
+        // Proportional extraction like original BC: engine power determines extraction speed
+        // More FE available = more mB extracted per tick
+        int maxMb = energyAvailable * BCConfig.fluidExtractionRate;
+
+        FluidStack simulated = source.drain(maxMb, IFluidHandler.FluidAction.SIMULATE);
         if (simulated.isEmpty()) return;
 
-        // Insert into our extracting-side section
-        IFluidHandler mySection = getFluidHandler(extracting);
-        int accepted = mySection.fill(simulated, IFluidHandler.FluidAction.EXECUTE);
+        // Fill section directly, bypassing per-tick transport limits
+        int accepted = fillSectionForExtraction(extracting, simulated, simulated.getAmount());
         if (accepted > 0) {
             source.drain(simulated.copyWithAmount(accepted), IFluidHandler.FluidAction.EXECUTE);
-            energyStorage.extractEnergy(BCConfig.extractionEnergyCost, false);
-            setChanged();
+            // Deduct energy proportionally (ceiling division to prevent free extraction)
+            int feCost = (accepted + BCConfig.fluidExtractionRate - 1) / BCConfig.fluidExtractionRate;
+            energyStorage.extractEnergy(feCost, false);
         }
     }
 

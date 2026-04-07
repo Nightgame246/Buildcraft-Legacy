@@ -109,14 +109,14 @@ public class KinesisPipeBERenderer implements BlockEntityRenderer<KinesisPipeBE>
             case NORTH -> { // Z: 0 -> cMin
                 quadY(pose, vc, cMin, cMax, 0, cMin, cMin, 0, v0, 1, v1, light, overlay);
                 quadY(pose, vc, cMin, cMax, 0, cMin, cMax, 0, v0, 1, v1, light, overlay);
-                quadX(pose, vc, 0, cMin, cMin, cMax, cMin, 0, v0, 1, v1, light, overlay);
-                quadX(pose, vc, 0, cMin, cMin, cMax, cMax, 0, v0, 1, v1, light, overlay);
+                quadX(pose, vc, cMin, cMax, 0, cMin, cMin, 0, v0, 1, v1, light, overlay);
+                quadX(pose, vc, cMin, cMax, 0, cMin, cMax, 0, v0, 1, v1, light, overlay);
             }
             case SOUTH -> { // Z: cMax -> 1
                 quadY(pose, vc, cMin, cMax, cMax, 1, cMin, 0, v0, 1, v1, light, overlay);
                 quadY(pose, vc, cMin, cMax, cMax, 1, cMax, 0, v0, 1, v1, light, overlay);
-                quadX(pose, vc, cMax, 1, cMin, cMax, cMin, 0, v0, 1, v1, light, overlay);
-                quadX(pose, vc, cMax, 1, cMin, cMax, cMax, 0, v0, 1, v1, light, overlay);
+                quadX(pose, vc, cMin, cMax, cMax, 1, cMin, 0, v0, 1, v1, light, overlay);
+                quadX(pose, vc, cMin, cMax, cMax, 1, cMax, 0, v0, 1, v1, light, overlay);
             }
             case WEST -> { // X: 0 -> cMin
                 quadY(pose, vc, 0, cMin, cMin, cMax, cMin, 0, v0, 1, v1, light, overlay);

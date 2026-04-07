@@ -42,6 +42,9 @@ public final class BCConfig {
     @ConfigValue(name = "Extraction Pipe Energy Capacity", comment = "Internal energy buffer of extraction pipes", category = "capacity.energy")
     public static int extractionPipeEnergyCapacity = 1000;
 
+    @ConfigValue(name = "Fluid Extraction Rate", comment = "Millibuckets of fluid extracted per FE consumed by wooden fluid pipe (like original BC: engine power determines extraction speed)", category = "production.fluid")
+    public static int fluidExtractionRate = 5;
+
     @ConfigValue(name = "Kinesis Pipe Energy Capacity", comment = "Base energy buffer of kinesis (power) pipes", category = "capacity.energy")
     public static int kinesisPipeEnergyCapacity = 1000;
 

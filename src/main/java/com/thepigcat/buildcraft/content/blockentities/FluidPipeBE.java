@@ -278,6 +278,37 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
         return sections[direction.ordinal()];
     }
 
+    /**
+     * Fill a section directly for extraction purposes.
+     * Unlike normal fill, this is only bounded by section capacity, not by per-tick transport limits.
+     */
+    protected int fillSectionForExtraction(Direction dir, FluidStack fluid, int maxAmount) {
+        if (fluid.isEmpty()) return 0;
+        Section section = sections[dir.ordinal()];
+
+        if (currentFluid.isEmpty()) {
+            currentFluid = fluid.copyWithAmount(1);
+            needsSync = true;
+            for (Section s : sections) {
+                s.resizeIncoming(delay);
+            }
+        } else if (!FluidStack.isSameFluidSameComponents(currentFluid, fluid)) {
+            return 0;
+        }
+
+        int available = capacity - section.amount;
+        int amountToFill = Math.min(available, maxAmount);
+        if (amountToFill <= 0) return 0;
+
+        section.incoming[section.currentTime] += amountToFill;
+        section.incomingTotalCache += amountToFill;
+        section.amount += amountToFill;
+        section.ticksInDirection = COOLDOWN_INPUT;
+        setChanged();
+
+        return amountToFill;
+    }
+
     // ── Client Sync ──────────────────────────────────────────────────────
 
     private void checkAndSync() {
@@ -512,7 +543,7 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
 
             if (action.execute()) {
                 if (currentFluid.isEmpty()) {
-                    currentFluid = resource.copyWithAmount(0);
+                    currentFluid = resource.copyWithAmount(1);
                     needsSync = true;
                     // Resize incoming arrays for new fluid
                     for (Section s : sections) {
