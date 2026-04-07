@@ -2,6 +2,7 @@ package com.thepigcat.buildcraft;
 
 import com.thepigcat.buildcraft.client.blockentities.CrateBERenderer;
 import com.thepigcat.buildcraft.client.blockentities.EngineBERenderer;
+import com.thepigcat.buildcraft.client.blockentities.FluidPipeBERenderer;
 import com.thepigcat.buildcraft.client.blockentities.KinesisPipeBERenderer;
 import com.thepigcat.buildcraft.client.blockentities.PipeBERenderer;
 import com.thepigcat.buildcraft.client.blockentities.TankBERenderer;
@@ -91,6 +92,7 @@ public final class BuildcraftLegacyClient {
         event.registerBlockEntityRenderer(BCBlockEntities.LAPIS_ITEM_PIPE.get(), PipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.DAIZULI_ITEM_PIPE.get(), PipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.KINESIS_PIPE.get(), KinesisPipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.FLUID_PIPE.get(), FluidPipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.CRATE.get(), CrateBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.TANK.get(), TankBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.REDSTONE_ENGINE.get(), ctx -> new EngineBERenderer(ctx, ResourceLocation.fromNamespaceAndPath(BuildcraftLegacy.MODID, "entity/wooden_engine_piston")));
