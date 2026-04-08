@@ -22,21 +22,11 @@ eclipse
 run
 runs
 run-data
-CLAUDE.md
-.venv-aider
-.aider.chat.history.md
-.aider.input.history
 .codex
-AGENTS.md
-GEMINI.md
-qwen-agent.sh
+
 WICHTIG für start
-SESSION_RESTORE.md
 plan/
 infos
-
-docs/
-
 
 repo
 .aider*
