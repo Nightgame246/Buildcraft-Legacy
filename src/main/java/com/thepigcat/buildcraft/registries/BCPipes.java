@@ -31,7 +31,7 @@ public final class BCPipes {
     public static final PipeHolder SANDSTONE = HELPER.registerPipe("sandstone", BCPipeTypes.DEFAULT, "Sandstone Pipe", 0.25f, List.of(
             BuildcraftLegacy.rl("block/sandstone_pipe")
     ), Either.right(ResourceLocation.parse("sandstone")), Ingredient.of(Blocks.SANDSTONE), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 3);
-    public static final PipeHolder GOLD = HELPER.registerPipe("gold", BCPipeTypes.DEFAULT, "Gold Pipe", 0.5f, List.of(
+    public static final PipeHolder GOLD = HELPER.registerPipe("gold", BCPipeTypes.GOLD, "Gold Pipe", 0.5f, List.of(
             BuildcraftLegacy.rl("block/gold_pipe")
     ), Either.right(ResourceLocation.parse("gold_block")), Ingredient.of(Tags.Items.INGOTS_GOLD), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 4);
     public static final PipeHolder QUARTZ = HELPER.registerPipe("quartz", BCPipeTypes.DEFAULT, "Quartz Pipe", 0.4f, List.of(

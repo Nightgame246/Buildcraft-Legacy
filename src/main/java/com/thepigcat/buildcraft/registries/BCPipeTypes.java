@@ -4,6 +4,7 @@ import com.thepigcat.buildcraft.BuildcraftLegacy;
 import com.thepigcat.buildcraft.api.pipes.PipeTypeHolder;
 import com.thepigcat.buildcraft.content.blocks.ClayItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.DaizuliItemPipeBlock;
+import com.thepigcat.buildcraft.content.blocks.GoldItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.DiamondItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.EmeraldItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.ExtractingFluidPipeBlock;
@@ -53,6 +54,10 @@ public final class BCPipeTypes {
             ModelUtils.DEFAULT_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE, ModelUtils.DEFAULT_ITEM_MODEL_FILE,
             "base", "connection");
     public static final PipeTypeHolder<DaizuliItemPipeBlock, ItemPipeBlockItem> DAIZULI = HELPER.registerPipeType("daizuli", DaizuliItemPipeBlock::new, ItemPipeBlockItem::new,
+            ModelUtils.DEFAULT_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE, ModelUtils.DEFAULT_ITEM_MODEL_FILE,
+            "base", "connection");
+
+    public static final PipeTypeHolder<GoldItemPipeBlock, ItemPipeBlockItem> GOLD = HELPER.registerPipeType("gold", GoldItemPipeBlock::new, ItemPipeBlockItem::new,
             ModelUtils.DEFAULT_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE, ModelUtils.DEFAULT_ITEM_MODEL_FILE,
             "base", "connection");
 

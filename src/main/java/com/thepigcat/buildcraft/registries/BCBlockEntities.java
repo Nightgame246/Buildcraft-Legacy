@@ -37,6 +37,8 @@ public final class BCBlockEntities {
             () -> BlockEntityType.Builder.of(LapisItemPipeBE::new, collectBlocks(LapisItemPipeBlock.class)).build(null));
     public static final Supplier<BlockEntityType<DaizuliItemPipeBE>> DAIZULI_ITEM_PIPE = BLOCK_ENTITIES.register("daizuli_item_pipe",
             () -> BlockEntityType.Builder.of(DaizuliItemPipeBE::new, collectBlocks(DaizuliItemPipeBlock.class)).build(null));
+    public static final Supplier<BlockEntityType<GoldItemPipeBE>> GOLD_ITEM_PIPE = BLOCK_ENTITIES.register("gold_item_pipe",
+            () -> BlockEntityType.Builder.of(GoldItemPipeBE::new, collectBlocks(GoldItemPipeBlock.class)).build(null));
 
     public static final Supplier<BlockEntityType<StripeItemPipeBE>> STRIPE_ITEM_PIPE = BLOCK_ENTITIES.register("stripe_item_pipe",
             () -> BlockEntityType.Builder.of(StripeItemPipeBE::new, collectBlocks(StripeItemPipeBlock.class)).build(null));

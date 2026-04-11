@@ -114,6 +114,7 @@ public final class BuildcraftLegacy {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.DIAMOND_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.LAPIS_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.DAIZULI_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.GOLD_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.STRIPE_ITEM_PIPE.get(), ItemPipeBE::getItemHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.CRATE.get(), CrateBE::getItemHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.STIRLING_ENGINE.get(), ContainerBlockEntity::getItemHandlerOnSide);

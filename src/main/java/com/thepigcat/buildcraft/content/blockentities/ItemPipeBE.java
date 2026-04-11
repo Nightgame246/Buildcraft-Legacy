@@ -109,10 +109,7 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
                 String pipeId = BuiltInRegistries.BLOCK.getKey(getBlockState().getBlock()).getPath();
                 
                 // Momentum & Friction Logic (values matched to original BuildCraft 1.12.2)
-                if (pipeId.equals("gold_pipe")) {
-                    // Active acceleration
-                    itemSpeed = Math.min(itemSpeed + 0.01f, 0.25f);
-                } else if (pipeId.equals("stone_pipe")) {
+                if (pipeId.equals("stone_pipe")) {
                     // Low friction: preserves speed well
                     itemSpeed = Math.max(itemSpeed - 0.008f, 0.01f);
                 } else if (pipeId.equals("cobblestone_pipe")) {
