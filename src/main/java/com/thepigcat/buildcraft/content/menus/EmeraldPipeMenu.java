@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.SlotItemHandler;
@@ -19,10 +20,30 @@ public class EmeraldPipeMenu extends AbstractContainerMenu {
     private static final int HOTBAR_END        = FILTER_SLOTS + 36;
 
     public final EmeraldItemPipeBE blockEntity;
+    private final ContainerData data;
 
     public EmeraldPipeMenu(int containerId, Inventory inv, EmeraldItemPipeBE blockEntity) {
         super(BCMenuTypes.EMERALD_PIPE.get(), containerId);
         this.blockEntity = blockEntity;
+
+        // Sync filterMode to client via ContainerData
+        this.data = new ContainerData() {
+            @Override
+            public int get(int index) {
+                return blockEntity.getFilterMode().ordinal();
+            }
+
+            @Override
+            public void set(int index, int value) {
+                blockEntity.setFilterMode(EmeraldItemPipeBE.FilterMode.values()[value]);
+            }
+
+            @Override
+            public int getCount() {
+                return 1;
+            }
+        };
+        addDataSlots(data);
 
         // 9 ghost filter slots in a 3x3 grid
         for (int row = 0; row < 3; row++) {
@@ -34,7 +55,7 @@ public class EmeraldPipeMenu extends AbstractContainerMenu {
             }
         }
 
-        // Player main inventory (3 × 9)
+        // Player main inventory (3 x 9)
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 addSlot(new Slot(inv, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
@@ -51,10 +72,10 @@ public class EmeraldPipeMenu extends AbstractContainerMenu {
         this(containerId, inv, (EmeraldItemPipeBE) inv.player.level().getBlockEntity(buf.readBlockPos()));
     }
 
-    /**
-     * Ghost slot behavior: clicking places a copy of the carried item into the filter
-     * without consuming it. Right-click or empty-handed click clears the slot.
-     */
+    public EmeraldItemPipeBE.FilterMode getFilterMode() {
+        return EmeraldItemPipeBE.FilterMode.values()[data.get(0)];
+    }
+
     @Override
     public void clicked(int slotId, int button, ClickType clickType, Player player) {
         if (slotId >= 0 && slotId < FILTER_SLOTS) {
@@ -65,15 +86,11 @@ public class EmeraldPipeMenu extends AbstractContainerMenu {
             } else {
                 slot.set(ItemStack.EMPTY);
             }
-            return; // don't propagate — ghost slots don't consume items
+            return;
         }
         super.clicked(slotId, button, clickType, player);
     }
 
-    /**
-     * Shift-click only moves items between player inventory and hotbar.
-     * Filter slots are excluded from all shift-click logic.
-     */
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
         if (index < FILTER_SLOTS) {

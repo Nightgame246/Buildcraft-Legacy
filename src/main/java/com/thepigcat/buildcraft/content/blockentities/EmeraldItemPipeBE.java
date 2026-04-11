@@ -19,12 +19,22 @@ import java.util.List;
 import java.util.Optional;
 
 public class EmeraldItemPipeBE extends ExtractItemPipeBE {
+    public enum FilterMode {
+        WHITELIST, BLACKLIST;
+
+        public FilterMode toggle() {
+            return this == WHITELIST ? BLACKLIST : WHITELIST;
+        }
+    }
+
     private final ItemStackHandler filterHandler = new ItemStackHandler(9) {
         @Override
         public int getSlotLimit(int slot) {
             return 1;
         }
     };
+
+    private FilterMode filterMode = FilterMode.WHITELIST;
 
     public EmeraldItemPipeBE(BlockPos pos, BlockState blockState) {
         super(BCBlockEntities.EMERALD_ITEM_PIPE.get(), pos, blockState);
@@ -49,10 +59,8 @@ public class EmeraldItemPipeBE extends ExtractItemPipeBE {
                 int extractedSlot = 0;
 
                 for (int i = 0; i < extractingHandler.getSlots(); i++) {
-                    // Simulate extraction first to preview the stack
                     ItemStack simulated = extractingHandler.extractItem(i, 64, true);
                     if (!simulated.isEmpty() && matchesFilter(simulated)) {
-                        // Filter passes, actually extract
                         ItemStack stack = extractingHandler.extractItem(i, 64, false);
                         if (!stack.isEmpty()) {
                             extractedStack = stack;
@@ -85,17 +93,48 @@ public class EmeraldItemPipeBE extends ExtractItemPipeBE {
 
     public boolean matchesFilter(ItemStack stack) {
         boolean anyNonEmpty = false;
+        boolean matchesAny = false;
+
         for (int i = 0; i < filterHandler.getSlots(); i++) {
             ItemStack filterStack = filterHandler.getStackInSlot(i);
             if (!filterStack.isEmpty()) {
                 anyNonEmpty = true;
                 if (ItemStack.isSameItem(stack, filterStack)) {
-                    return true;
+                    matchesAny = true;
+                    break;
                 }
             }
         }
-        // If all filter slots are empty, any item passes
-        return !anyNonEmpty;
+
+        if (!anyNonEmpty) {
+            // Empty filter: whitelist = everything passes, blacklist = nothing passes
+            return getFilterMode() == FilterMode.WHITELIST;
+        }
+
+        return switch (getFilterMode()) {
+            case WHITELIST -> matchesAny;
+            case BLACKLIST -> !matchesAny;
+        };
+    }
+
+    /**
+     * Gate hook: returns the active filter mode.
+     * Gates can override this in Phase E to set the mode dynamically.
+     */
+    public FilterMode getFilterMode() {
+        return filterMode;
+    }
+
+    public void setFilterMode(FilterMode mode) {
+        this.filterMode = mode;
+        setChanged();
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+
+    public void toggleFilterMode() {
+        setFilterMode(filterMode.toggle());
     }
 
     public ItemStackHandler getFilterHandler() {
@@ -108,11 +147,15 @@ public class EmeraldItemPipeBE extends ExtractItemPipeBE {
         if (tag.contains("filter")) {
             this.filterHandler.deserializeNBT(registries, tag.getCompound("filter"));
         }
+        if (tag.contains("filter_mode")) {
+            this.filterMode = FilterMode.values()[tag.getInt("filter_mode")];
+        }
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.put("filter", this.filterHandler.serializeNBT(registries));
+        tag.putInt("filter_mode", this.filterMode.ordinal());
     }
 }
