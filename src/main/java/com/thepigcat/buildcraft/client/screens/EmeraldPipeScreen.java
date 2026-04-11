@@ -20,7 +20,7 @@ public class EmeraldPipeScreen extends AbstractContainerScreen<EmeraldPipeMenu> 
     public EmeraldPipeScreen(EmeraldPipeMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageWidth = 176;
-        this.imageHeight = 143;
+        this.imageHeight = 166;
         this.inventoryLabelY = this.imageHeight - 94;
     }
 

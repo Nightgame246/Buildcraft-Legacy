@@ -1,6 +1,5 @@
 package com.thepigcat.buildcraft.content.blockentities;
 
-import com.thepigcat.buildcraft.api.blocks.PipeBlock;
 import com.thepigcat.buildcraft.registries.BCBlockEntities;
 import com.thepigcat.buildcraft.util.ItemUtils;
 import net.minecraft.core.BlockPos;
@@ -84,7 +83,6 @@ public class DaizuliItemPipeBE extends ItemPipeBE implements ColouredPipe {
 
     public void setTargetDirection(Direction targetDirection) {
         this.targetDirection = targetDirection;
-        updateBlockedDirections();
         notifyConfigChanged();
     }
 
@@ -99,7 +97,6 @@ public class DaizuliItemPipeBE extends ItemPipeBE implements ColouredPipe {
         if (targetDirection == null && !directions.isEmpty()) {
             targetDirection = directions.iterator().next();
         }
-        updateBlockedDirections();
     }
 
     @Override
@@ -107,36 +104,6 @@ public class DaizuliItemPipeBE extends ItemPipeBE implements ColouredPipe {
         super.setDirections(directions);
         if (targetDirection == null && !directions.isEmpty()) {
             targetDirection = directions.iterator().next();
-        }
-        updateBlockedDirections();
-    }
-
-    private void updateBlockedDirections() {
-        this.blocked.clear();
-        if (targetDirection != null) {
-            for (Direction dir : directions) {
-                if (dir != targetDirection) {
-                    this.blocked.add(dir);
-                }
-            }
-        }
-
-        if (level != null && !level.isClientSide()) {
-            BlockState state = getBlockState();
-            boolean changed = false;
-            for (Direction dir : Direction.values()) {
-                PipeBlock.PipeState currentPipeState = state.getValue(PipeBlock.CONNECTION[dir.get3DDataValue()]);
-                if (currentPipeState != PipeBlock.PipeState.NONE) {
-                    PipeBlock.PipeState target = (dir == targetDirection) ? PipeBlock.PipeState.BLOCKED : PipeBlock.PipeState.CONNECTED;
-                    if (currentPipeState != target) {
-                        state = state.setValue(PipeBlock.CONNECTION[dir.get3DDataValue()], target);
-                        changed = true;
-                    }
-                }
-            }
-            if (changed) {
-                level.setBlock(worldPosition, state, 3);
-            }
         }
     }
 
