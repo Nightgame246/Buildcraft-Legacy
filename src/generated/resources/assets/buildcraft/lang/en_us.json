@@ -61,6 +61,7 @@
   "item.buildcraft.wrench": "Wrench",
   "itemGroup.buildcraft.bc_tab": "Buildcraft",
   "menu.buildcraft.diamond_pipe": "Diamond Pipe",
+  "menu.buildcraft.emerald_pipe": "Emerald Pipe",
   "redstone_signal_type.buildcraft.high_signal": "High Signal",
   "redstone_signal_type.buildcraft.ignored": "Ignored",
   "redstone_signal_type.buildcraft.low_signal": "Low Signal"
