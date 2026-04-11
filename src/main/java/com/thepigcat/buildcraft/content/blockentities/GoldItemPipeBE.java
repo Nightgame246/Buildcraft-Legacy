@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class GoldItemPipeBE extends ItemPipeBE {
     private static final float SPEED_TARGET = 0.25f;
-    private static final float SPEED_DELTA = 0.01f;
+    private static final float SPEED_DELTA = 0.07f;
 
     public GoldItemPipeBE(BlockPos pos, BlockState blockState) {
         super(BCBlockEntities.GOLD_ITEM_PIPE.get(), pos, blockState);
