@@ -1,18 +1,7 @@
 # TODO Next Session
 
-## Phase B — Item Pipes Speziallogik (unabhängig)
-### Quick Fixes
-- [ ] Diamond Pipe — Aktuell fälschlicherweise als EXTRACTING registriert
-- [ ] Iron Pipe — Wrench-on-Face statt rotate (~66 Zeilen Original)
-- [ ] Gold Pipe — Redstone-gesteuerte Beschleunigung 2x-8x (~32 Zeilen Original)
-
-### Mittel
-- [ ] Lapis Pipe — Farb-System (16 Farben, Rechtsklick-Cycling, ~115 Zeilen Original)
-- [ ] Daizuli Pipe — Directional + Colour Routing, abhängig von Lapis (~133 Zeilen Original)
-- [ ] Emerald Pipe — Filter-GUI für Whitelist/Blacklist (~233 Zeilen Original)
-
-### Groß
-- [ ] Obsidian Pipe — Single-Open-Face, Entity-Pickup, Drop-Cooldown (~231 Zeilen Original)
+## Phase B — Item Pipes Speziallogik (ABGESCHLOSSEN)
+Alle Item Pipes haben funktionale Kernmechanik. Siehe Archiv unten.
 
 ## Phase C — Energy/Fluid Pipes
 - [ ] Kinesis Rendering originalgetreuer machen (pro Section eigener Power-Level + Flow-Offset statt globalem Blockstate)
@@ -42,6 +31,12 @@
 ## Phase E — Silicon (kommt später)
 - [ ] Emzuli Pipe — Gate-gesteuertes Emerald, braucht Gates/Triggers
 
+## Future — Pipe Erweiterungen
+- [ ] Diamond Pipe: Round-Robin / proportionaler Split (braucht Pipe-Base Multi-Output-Support)
+- [ ] Obsidian Pipe: Energy-Gating (Engine-Power bestimmt Suction-Range, analog Original MJ-System)
+- [ ] Daizuli Pipe: Dedizierte Blocked-Textur fuer Target-Direction
+- [ ] Gate-Integration fuer Lapis/Daizuli (getActiveColor()), Emerald (getFilterMode())
+
 ## Aufräumen
 - [ ] 8 unbenutzte `pipe_energy_*.json` in `src/main/resources/assets/buildcraft/models/block/` löschen
 
@@ -69,3 +64,10 @@
 - [x] Iron Pipe Rendering-Fix (Output-Ring)
 - [x] Diamond Pipe Sortier-Logik + GUI
 - [x] Kinesis Pipe Rendering ingame getestet (funktional OK, originalgetreues Rendering noch offen in Phase C)
+- [x] Gold Pipe: Eigene BE-Klasse mit originalgetreuer Beschleunigung (SPEED_TARGET=0.25, SPEED_DELTA=0.07)
+- [x] Obsidian Pipe: Single-Face Suction Enforcement (getOpenFace())
+- [x] Daizuli Pipe: Directional Color Routing mit Wrench-on-Face + Gate-Hook (getActiveColor())
+- [x] Emerald Pipe: Whitelist/Blacklist Toggle-GUI + ToggleFilterModePayload
+- [x] Diamond Pipe: Registrierung korrekt (nicht EXTRACTING), Split als Future-TODO
+- [x] Iron Pipe: Wrench-Rotation + Output-Blocking (bereits fertig)
+- [x] Lapis Pipe: Farb-System funktional (Gate-Integration Phase E)
