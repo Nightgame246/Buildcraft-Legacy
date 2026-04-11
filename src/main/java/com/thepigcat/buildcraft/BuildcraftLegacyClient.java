@@ -84,6 +84,7 @@ public final class BuildcraftLegacyClient {
     private void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(BCBlockEntities.ITEM_PIPE.get(), PipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.EXTRACTING_ITEM_PIPE.get(), PipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.GOLD_ITEM_PIPE.get(), PipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.IRON_ITEM_PIPE.get(), PipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.OBSIDIAN_ITEM_PIPE.get(), PipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.CLAY_ITEM_PIPE.get(), PipeBERenderer::new);
