@@ -6,25 +6,56 @@ import com.thepigcat.buildcraft.content.blockentities.DaizuliItemPipeBE;
 import com.thepigcat.buildcraft.registries.BCBlockEntities;
 import com.thepigcat.buildcraft.registries.BCItems;
 import com.thepigcat.buildcraft.util.BlockUtils;
+import com.thepigcat.buildcraft.util.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 public class DaizuliItemPipeBlock extends ItemPipeBlock {
     private static final double CENTER_THRESHOLD = 0.1875D;
 
     public DaizuliItemPipeBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public PipeState getConnectionType(LevelAccessor level, BlockPos pipePos, BlockState pipeState, Direction connectionDirection, BlockPos connectPos) {
+        // First check if we should connect at all (using parent logic)
+        PipeState baseState = super.getConnectionType(level, pipePos, pipeState, connectionDirection, connectPos);
+        if (baseState == PipeState.NONE) {
+            return PipeState.NONE;
+        }
+
+        // Daizuli: target direction shows as BLOCKED (like Iron pipe)
+        DaizuliItemPipeBE be = BlockUtils.getBE(DaizuliItemPipeBE.class, level, pipePos);
+        if (be != null && be.getTargetDirection() != null) {
+            if (connectionDirection == be.getTargetDirection()) {
+                return PipeState.BLOCKED;
+            }
+        } else {
+            // Preserve existing BLOCKED state on client before BE data arrives
+            PipeState existing = pipeState.getValue(CONNECTION[connectionDirection.get3DDataValue()]);
+            if (existing == PipeState.BLOCKED) {
+                return PipeState.BLOCKED;
+            }
+        }
+        return PipeState.CONNECTED;
     }
 
     @Override

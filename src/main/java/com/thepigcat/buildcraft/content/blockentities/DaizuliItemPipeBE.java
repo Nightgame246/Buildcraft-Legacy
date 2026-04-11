@@ -1,5 +1,6 @@
 package com.thepigcat.buildcraft.content.blockentities;
 
+import com.thepigcat.buildcraft.api.blocks.PipeBlock;
 import com.thepigcat.buildcraft.registries.BCBlockEntities;
 import com.thepigcat.buildcraft.util.ItemUtils;
 import net.minecraft.core.BlockPos;
@@ -11,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class DaizuliItemPipeBE extends ItemPipeBE implements ColouredPipe {
@@ -21,6 +23,11 @@ public class DaizuliItemPipeBE extends ItemPipeBE implements ColouredPipe {
         super(BCBlockEntities.DAIZULI_ITEM_PIPE.get(), pos, blockState);
     }
 
+    /**
+     * Original BC routing: PipeBehaviourDaizuli.sideCheck()
+     * - If item color matches pipe color -> ONLY route to targetDirection
+     * - If item color does NOT match (or has no color) -> EXCLUDE targetDirection, allow all others
+     */
     @Override
     protected Direction chooseDirection(Set<Direction> availableDirections) {
         if (availableDirections.isEmpty()) {
@@ -28,16 +35,38 @@ public class DaizuliItemPipeBE extends ItemPipeBE implements ColouredPipe {
         }
 
         ItemStack carried = itemHandler.getStackInSlot(0);
-        if (targetDirection != null && availableDirections.contains(targetDirection) && ItemUtils.hasItemColor(carried, pipeColor)) {
-            return targetDirection;
+        DyeColor activeColor = getActiveColor();
+
+        if (activeColor != null && targetDirection != null) {
+            DyeColor itemColor = ItemUtils.getItemColor(carried);
+
+            if (activeColor.equals(itemColor)) {
+                // Color matches -> route to target direction only
+                if (availableDirections.contains(targetDirection)) {
+                    return targetDirection;
+                }
+                // Target not available, fall back to from (bounce back)
+                return from;
+            } else {
+                // Color doesn't match (or no color) -> exclude target, route to any other
+                List<Direction> candidates = new ArrayList<>(availableDirections);
+                candidates.remove(targetDirection);
+                if (!candidates.isEmpty()) {
+                    return candidates.get(level.random.nextInt(candidates.size()));
+                }
+                // All directions are the target -> fall through to default
+            }
         }
 
-        ArrayList<Direction> candidates = new ArrayList<>(availableDirections);
-        candidates.remove(targetDirection);
-        if (candidates.isEmpty()) {
-            return super.chooseDirection(availableDirections);
-        }
-        return candidates.get(level.random.nextInt(candidates.size()));
+        return super.chooseDirection(availableDirections);
+    }
+
+    /**
+     * Gate hook: returns the active color for routing decisions.
+     * Gates can override this in Phase E to set the color dynamically.
+     */
+    public DyeColor getActiveColor() {
+        return pipeColor;
     }
 
     public void cyclePipeColor() {
@@ -55,12 +84,60 @@ public class DaizuliItemPipeBE extends ItemPipeBE implements ColouredPipe {
 
     public void setTargetDirection(Direction targetDirection) {
         this.targetDirection = targetDirection;
+        updateBlockedDirections();
         notifyConfigChanged();
     }
 
     @Override
     public DyeColor getPipeColor() {
         return pipeColor;
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        if (targetDirection == null && !directions.isEmpty()) {
+            targetDirection = directions.iterator().next();
+        }
+        updateBlockedDirections();
+    }
+
+    @Override
+    public void setDirections(Set<Direction> directions) {
+        super.setDirections(directions);
+        if (targetDirection == null && !directions.isEmpty()) {
+            targetDirection = directions.iterator().next();
+        }
+        updateBlockedDirections();
+    }
+
+    private void updateBlockedDirections() {
+        this.blocked.clear();
+        if (targetDirection != null) {
+            for (Direction dir : directions) {
+                if (dir != targetDirection) {
+                    this.blocked.add(dir);
+                }
+            }
+        }
+
+        if (level != null && !level.isClientSide()) {
+            BlockState state = getBlockState();
+            boolean changed = false;
+            for (Direction dir : Direction.values()) {
+                PipeBlock.PipeState currentPipeState = state.getValue(PipeBlock.CONNECTION[dir.get3DDataValue()]);
+                if (currentPipeState != PipeBlock.PipeState.NONE) {
+                    PipeBlock.PipeState target = (dir == targetDirection) ? PipeBlock.PipeState.BLOCKED : PipeBlock.PipeState.CONNECTED;
+                    if (currentPipeState != target) {
+                        state = state.setValue(PipeBlock.CONNECTION[dir.get3DDataValue()], target);
+                        changed = true;
+                    }
+                }
+            }
+            if (changed) {
+                level.setBlock(worldPosition, state, 3);
+            }
+        }
     }
 
     private void notifyConfigChanged() {
