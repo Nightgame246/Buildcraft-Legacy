@@ -313,4 +313,53 @@ public class TankBlock extends ContainerBlock {
         return super.getDrops(state, params);
     }
 
+    /**
+     * Reform a multi-block tank stack starting from {@code anchor}. Walks down to find
+     * the bottom (where BOTTOM_JOINED is false), up to find the top (where
+     * TOP_JOINED is false), then updates {@code bottomTankPos} on every tank in range,
+     * calls {@code initTank(size)} on the bottom master, and forces a client sync.
+     *
+     * <p>Precondition: {@code anchor} must be the position of an existing TankBE.
+     * This is the ONLY place that mutates {@code bottomTankPos} or calls {@code initTank}.
+     */
+    private static void reformStack(LevelAccessor level, BlockPos anchor) {
+        if (!(level.getBlockEntity(anchor) instanceof TankBE)) return;
+
+        // 1. Walk down to find the bottom
+        BlockPos bottomPos = anchor;
+        while (level.getBlockState(bottomPos).getValue(BOTTOM_JOINED)) {
+            bottomPos = bottomPos.below();
+        }
+
+        // 2. Walk up from bottom to find the top
+        BlockPos topPos = bottomPos;
+        while (level.getBlockState(topPos).getValue(TOP_JOINED)) {
+            topPos = topPos.above();
+        }
+
+        int size = topPos.getY() - bottomPos.getY() + 1;
+
+        // 3. Point every tank in range at the new bottom
+        for (int y = bottomPos.getY(); y <= topPos.getY(); y++) {
+            BlockPos p = new BlockPos(bottomPos.getX(), y, bottomPos.getZ());
+            TankBE be = BlockUtils.getBE(TankBE.class, level, p);
+            if (be != null) {
+                be.setBottomTankPos(bottomPos);
+            }
+        }
+
+        // 4. Initialize the master's capacity (applies pending initialFluid)
+        TankBE bottomBe = BlockUtils.getBE(TankBE.class, level, bottomPos);
+        if (bottomBe != null) {
+            bottomBe.initTank(size);
+        }
+
+        // 5. Force explicit client sync on the bottom so non-master BEs see
+        //    a consistent master before they query delegated capabilities
+        if (level instanceof Level l) {
+            BlockState bottomState = l.getBlockState(bottomPos);
+            l.sendBlockUpdated(bottomPos, bottomState, bottomState, 3);
+        }
+    }
+
 }

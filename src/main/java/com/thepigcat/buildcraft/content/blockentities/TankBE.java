@@ -99,7 +99,9 @@ public class TankBE extends ContainerBlockEntity {
     @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
         super.loadData(tag, provider);
-        this.bottomTankPos = BlockPos.of(tag.getLong("bottomTankPos"));
+        if (tag.contains("bottomTankPos")) {
+            this.bottomTankPos = BlockPos.of(tag.getLong("bottomTankPos"));
+        }
     }
 
     @Override
