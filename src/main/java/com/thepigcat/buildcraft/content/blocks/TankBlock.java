@@ -184,64 +184,66 @@ public class TankBlock extends ContainerBlock {
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
 
-        int aboveFluidAmount = 0;
-        if (state.getValue(TOP_JOINED)) {
-            TankBE aboveTank = BlockUtils.getBE(TankBE.class, level, pos.above());
-            aboveFluidAmount = aboveTank.getFluidHandler().getFluidInTank(0).getAmount();
-        }
-
         TankBE tankBE = BlockUtils.getBE(TankBE.class, level, pos);
+        if (tankBE == null) return;
+
         FluidStack baseFluidCopy = tankBE.getFluidTank().getFluid().copy();
-        int baseFluidAmount = tankBE.getFluidTank().getFluid().getAmount();
-        tankBE.setTopJoined(state.getValue(TOP_JOINED));
-        tankBE.setBottomJoined(state.getValue(BOTTOM_JOINED));
-        if (!state.getValue(BOTTOM_JOINED) && !state.getValue(TOP_JOINED)) {
-            tankBE.setBottomTankPos(pos);
-            tankBE.initTank(1);
+        int baseFluidAmount = baseFluidCopy.getAmount();
+
+        boolean topJoined = state.getValue(TOP_JOINED);
+        boolean bottomJoined = state.getValue(BOTTOM_JOINED);
+
+        // Find bottomPos without mutating state; reformStack will walk again.
+        BlockPos bottomPos = pos;
+        while (level.getBlockState(bottomPos).getValue(BOTTOM_JOINED)) {
+            bottomPos = bottomPos.below();
+        }
+        TankBE bottomTankBe = BlockUtils.getBE(TankBE.class, level, bottomPos);
+        if (bottomTankBe == null) return;
+
+        // Case A: standalone placement — no merge. reformStack with size=1 preserves
+        // the placed tank's fluid via the DynamicFluidTank that already holds it.
+        if (!topJoined && !bottomJoined) {
+            reformStack(level, pos);
             return;
         }
 
-        BlockPos bottomPos = pos;
-        if (state.getValue(BOTTOM_JOINED)) {
-            while (level.getBlockState(bottomPos).getValue(BOTTOM_JOINED)) {
-                bottomPos = bottomPos.below();
+        int aboveFluidAmount = 0;
+        if (topJoined) {
+            TankBE aboveTank = BlockUtils.getBE(TankBE.class, level, pos.above());
+            if (aboveTank != null) {
+                aboveFluidAmount = aboveTank.getFluidHandler().getFluidInTank(0).getAmount();
             }
         }
 
-        BlockPos curPos = bottomPos;
-        while (level.getBlockState(curPos).getValue(TOP_JOINED)) {
-            BlockUtils.getBE(TankBE.class, level, curPos).setBottomTankPos(bottomPos);
-            curPos = curPos.above();
-        }
-        BlockUtils.getBE(TankBE.class, level, curPos).setBottomTankPos(bottomPos);
-        BlockPos topPos = curPos;
-        int yDiff = topPos.getY() - bottomPos.getY();
-
-        TankBE bottomTankBe = BlockUtils.getBE(TankBE.class, level, bottomPos);
-        if (!state.is(oldState.getBlock()) && state.getValue(TOP_JOINED) && state.getValue(BOTTOM_JOINED)) {
-            FluidStack fluidInTank = bottomTankBe.getFluidHandler().getFluidInTank(0);
-            int amount = fluidInTank.getAmount();
-            if (fluidInTank.isEmpty()) {
-                fluidInTank = baseFluidCopy;
+        // Pick the fluid identity: prefer existing master's fluid; fall back to
+        // the placed tank's fluid; last resort the above tank's fluid.
+        FluidStack existing = bottomTankBe.getFluidHandler().getFluidInTank(0);
+        FluidStack fluidIdentity = !existing.isEmpty() ? existing : baseFluidCopy;
+        if (fluidIdentity.isEmpty() && aboveFluidAmount > 0) {
+            TankBE aboveTank = BlockUtils.getBE(TankBE.class, level, pos.above());
+            if (aboveTank != null) {
+                fluidIdentity = aboveTank.getFluidHandler().getFluidInTank(0);
             }
-            bottomTankBe.initialFluid = fluidInTank.copyWithAmount(amount + aboveFluidAmount + baseFluidAmount);
-        } else if (!state.is(oldState.getBlock()) && state.getValue(TOP_JOINED) && !state.getValue(BOTTOM_JOINED)) {
-            FluidStack fluidInTank = BlockUtils.getBE(TankBE.class, level, pos.above()).getFluidTank().getFluidInTank(0);
-            int amount = fluidInTank.getAmount();
-            if (fluidInTank.isEmpty()) {
-                fluidInTank = baseFluidCopy;
-            }
-            bottomTankBe.initialFluid = fluidInTank.copyWithAmount(amount + baseFluidAmount);
-        } else if (!state.is(oldState.getBlock()) && !state.getValue(TOP_JOINED) && state.getValue(BOTTOM_JOINED)) {
-            FluidStack fluidInTank = bottomTankBe.getFluidTank().getFluidInTank(0);
-            int amount = fluidInTank.getAmount();
-            if (fluidInTank.isEmpty()) {
-                fluidInTank = baseFluidCopy;
-            }
-            bottomTankBe.initialFluid = fluidInTank.copyWithAmount(amount + baseFluidAmount);
         }
 
-        bottomTankBe.initTank(yDiff + 1);
+        int totalAmount;
+        if (topJoined && bottomJoined) {
+            // Bridging: master's current total + placed + above's total
+            totalAmount = existing.getAmount() + baseFluidAmount + aboveFluidAmount;
+        } else if (topJoined) {
+            // Placed is new bottom (no bottomJoined); above stack stacks on top
+            totalAmount = aboveFluidAmount + baseFluidAmount;
+        } else {
+            // bottomJoined only: placed sits on top of existing stack
+            totalAmount = existing.getAmount() + baseFluidAmount;
+        }
+
+        if (!fluidIdentity.isEmpty()) {
+            bottomTankBe.initialFluid = fluidIdentity.copyWithAmount(totalAmount);
+        }
+
+        reformStack(level, pos);
     }
 
     @Override
