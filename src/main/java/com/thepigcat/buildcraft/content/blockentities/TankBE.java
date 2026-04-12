@@ -41,8 +41,6 @@ import java.util.Map;
 
 public class TankBE extends ContainerBlockEntity {
     private BlockPos bottomTankPos;
-    private boolean topJoined;
-    private boolean bottomJoined;
     public FluidStack initialFluid;
 
     public TankBE(BlockPos pos, BlockState blockState) {
@@ -117,22 +115,6 @@ public class TankBE extends ContainerBlockEntity {
         super.saveToItem(stack, registries);
 
         stack.set(BCDataComponents.TANK_CONTENT.get(), SimpleFluidContent.copyOf(this.getFluidTank().getFluid()));
-    }
-
-    public void setTopJoined(boolean topJoined) {
-        this.topJoined = topJoined;
-    }
-
-    public void setBottomJoined(boolean bottomJoined) {
-        this.bottomJoined = bottomJoined;
-    }
-
-    public boolean isTopJoined() {
-        return topJoined;
-    }
-
-    public boolean isBottomJoined() {
-        return bottomJoined;
     }
 
 }

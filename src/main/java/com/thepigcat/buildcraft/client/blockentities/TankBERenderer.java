@@ -34,7 +34,9 @@ public class TankBERenderer implements BlockEntityRenderer<TankBE> {
             int prevFluidAmount = tank * BCConfig.tankCapacity;
             int fluidAmount = Math.min(fluidStack.getAmount() - prevFluidAmount, BCConfig.tankCapacity);
             int nextFluidAmount = Math.min(fluidStack.getAmount() - (prevFluidAmount + BCConfig.tankCapacity), BCConfig.tankCapacity);
-            renderTankContents(fluidStack, fluidAmount, BCConfig.tankCapacity, poseStack, bufferSource, combinedLight, entity.isBottomJoined(), entity.isTopJoined()
+            boolean bottomJoined = entity.getBlockState().getValue(TankBlock.BOTTOM_JOINED);
+            boolean topJoined = entity.getBlockState().getValue(TankBlock.TOP_JOINED);
+            renderTankContents(fluidStack, fluidAmount, BCConfig.tankCapacity, poseStack, bufferSource, combinedLight, bottomJoined, topJoined
                     && fluidAmount == BCConfig.tankCapacity
                     && nextFluidAmount > 0);
 

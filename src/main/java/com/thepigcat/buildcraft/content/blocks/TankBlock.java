@@ -167,14 +167,12 @@ public class TankBlock extends ContainerBlock {
                 FluidStack fluidInTank1 = BlockUtils.getBE(TankBE.class, level, pos.above()).getFluidHandler().getFluidInTank(0);
                 value = fluidInTank1.is(fluidInTank.getFluid()) || fluidInTank.isEmpty() || fluidInTank1.isEmpty();
             }
-            tankBE.setTopJoined(value);
             return state.setValue(TOP_JOINED, value);
         } else if (direction == Direction.DOWN) {
             if (value) {
                 FluidStack fluidInTank1 = BlockUtils.getBE(TankBE.class, level, pos.below()).getFluidHandler().getFluidInTank(0);
                 value = fluidInTank1.is(fluidInTank.getFluid()) || fluidInTank.isEmpty() || fluidInTank1.isEmpty();
             }
-            tankBE.setBottomJoined(value);
             return state.setValue(BOTTOM_JOINED, value);
         }
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
