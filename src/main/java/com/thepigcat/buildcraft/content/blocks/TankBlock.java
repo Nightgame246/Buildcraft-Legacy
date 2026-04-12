@@ -320,7 +320,8 @@ public class TankBlock extends ContainerBlock {
      * calls {@code initTank(size)} on the bottom master, and forces a client sync.
      *
      * <p>Precondition: {@code anchor} must be the position of an existing TankBE.
-     * This is the ONLY place that mutates {@code bottomTankPos} or calls {@code initTank}.
+     * After Task 2/3 wiring this will be the single source of truth for
+     * {@code bottomTankPos} mutations and {@code initTank} calls.
      */
     private static void reformStack(LevelAccessor level, BlockPos anchor) {
         if (!(level.getBlockEntity(anchor) instanceof TankBE)) return;
@@ -339,17 +340,18 @@ public class TankBlock extends ContainerBlock {
 
         int size = topPos.getY() - bottomPos.getY() + 1;
 
-        // 3. Point every tank in range at the new bottom
+        // 3. Point every tank in range at the new bottom, capture the master
+        TankBE bottomBe = null;
         for (int y = bottomPos.getY(); y <= topPos.getY(); y++) {
             BlockPos p = new BlockPos(bottomPos.getX(), y, bottomPos.getZ());
             TankBE be = BlockUtils.getBE(TankBE.class, level, p);
             if (be != null) {
                 be.setBottomTankPos(bottomPos);
+                if (y == bottomPos.getY()) bottomBe = be;
             }
         }
 
         // 4. Initialize the master's capacity (applies pending initialFluid)
-        TankBE bottomBe = BlockUtils.getBE(TankBE.class, level, bottomPos);
         if (bottomBe != null) {
             bottomBe.initTank(size);
         }
