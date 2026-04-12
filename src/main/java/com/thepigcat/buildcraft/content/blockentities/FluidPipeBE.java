@@ -16,6 +16,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -28,6 +29,7 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
 
     // Section indices: 0-5 = Direction.ordinal(), 6 = CENTER
     private static final int CENTER = 6;
+    private static final double FLOW_MULTIPLIER = 0.016;
 
     protected int transferPerTick = 10;
     protected int delay = 10;
@@ -46,6 +48,8 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
     private int[] clientTarget = new int[7];
     private int[] clientDirection = new int[7];
     private FluidStack clientFluid = FluidStack.EMPTY;
+    private final Vec3[] offsetLast = new Vec3[7];
+    private final Vec3[] offsetThis = new Vec3[7];
 
     public FluidPipeBE(BlockPos pos, BlockState blockState) {
         this(BCBlockEntities.FLUID_PIPE.get(), pos, blockState);
@@ -55,6 +59,8 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
         super(type, pos, blockState);
         for (int i = 0; i < 7; i++) {
             sections[i] = new Section(i);
+            offsetLast[i] = Vec3.ZERO;
+            offsetThis[i] = Vec3.ZERO;
         }
     }
 
@@ -363,6 +369,12 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
     public double getAmountForRender(int sectionIndex, float partialTick) {
         return clientAmountLast[sectionIndex]
                 + (clientAmountThis[sectionIndex] - clientAmountLast[sectionIndex]) * partialTick;
+    }
+
+    public Vec3 getOffsetForRender(int sectionIndex, float partialTick) {
+        Vec3 last = offsetLast[sectionIndex];
+        Vec3 now = offsetThis[sectionIndex];
+        return last.scale(1f - partialTick).add(now.scale(partialTick));
     }
 
     public int getDirectionForRender(int sectionIndex) {
