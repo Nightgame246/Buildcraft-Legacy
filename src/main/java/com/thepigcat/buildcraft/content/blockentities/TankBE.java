@@ -34,6 +34,7 @@ import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -108,6 +109,19 @@ public class TankBE extends ContainerBlockEntity {
         if (this.bottomTankPos != null) {
             tag.putLong("bottomTankPos", this.bottomTankPos.asLong());
         }
+    }
+
+    /**
+     * PDL's {@code ContainerBlock.onRemove} unconditionally calls
+     * {@code dropItems(getItemHandler())}; TankBE registers no item handler so
+     * the argument is null and PDL then NPEs on {@code handler.getSlots()}.
+     * The exception propagates out of {@code LevelChunk.setBlockState},
+     * {@code markAndNotifyBlock} never runs, and the client's predictive break
+     * gets reverted — hence the "block comes back" flicker on tank break.
+     */
+    @Override
+    public void dropItems(IItemHandler handler) {
+        if (handler != null) super.dropItems(handler);
     }
 
     @Override

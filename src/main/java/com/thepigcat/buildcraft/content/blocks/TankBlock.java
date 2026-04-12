@@ -321,11 +321,12 @@ public class TankBlock extends ContainerBlock {
         if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof TankBE be && BCConfig.tankRetainFluids) {
             ItemStack stack = new ItemStack(this);
             FluidStack fluidStack = be.getFluidHandler().getFluidInTank(0);
-            int tank = be.getBlockPos().getY() - be.getBottomTankPos().getY();
+            BlockPos bottomPos = be.getBottomTankPos();
+            int tank = bottomPos != null ? be.getBlockPos().getY() - bottomPos.getY() : 0;
             int prevFluidAmount = tank * BCConfig.tankCapacity;
             int fluidAmount = Math.min(fluidStack.getAmount() - prevFluidAmount, BCConfig.tankCapacity);
-            if (fluidAmount >= 0) {
-                stack.set(BCDataComponents.TANK_CONTENT, SimpleFluidContent.copyOf(be.getFluidHandler().getFluidInTank(0).copyWithAmount(fluidAmount)));
+            if (fluidAmount > 0) {
+                stack.set(BCDataComponents.TANK_CONTENT, SimpleFluidContent.copyOf(fluidStack.copyWithAmount(fluidAmount)));
             }
             return List.of(stack);
         }
