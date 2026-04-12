@@ -163,6 +163,57 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
                 }
             }
         }
+
+        // Offset advancement (post amount update)
+        for (int i = 0; i < 7; i++) {
+            offsetLast[i] = offsetThis[i];
+
+            // Leere Section: Offset sofort zurücksetzen
+            if (clientAmountThis[i] == 0 && clientAmountLast[i] == 0) {
+                offsetThis[i] = Vec3.ZERO;
+                continue;
+            }
+
+            double nx, ny, nz;
+            if (i == CENTER) {
+                // Flow-Richtung: vom vollsten Face zum leersten
+                double dx = 0, dy = 0, dz = 0;
+                for (Direction face : Direction.values()) {
+                    double weight = clientAmountThis[face.ordinal()] - clientAmountThis[CENTER];
+                    dx += face.getStepX() * weight;
+                    dy += face.getStepY() * weight;
+                    dz += face.getStepZ() * weight;
+                }
+                double sx = Math.signum(dx);
+                double sy = Math.signum(dy);
+                double sz = Math.signum(dz);
+                nx = offsetLast[i].x + sx * -FLOW_MULTIPLIER;
+                ny = offsetLast[i].y + sy * -FLOW_MULTIPLIER;
+                nz = offsetLast[i].z + sz * -FLOW_MULTIPLIER;
+            } else {
+                // Face-Section: Offset entlang Face-Achse
+                Direction face = Direction.values()[i];
+                double sign = Math.signum(clientDirection[i]);
+                double delta = -FLOW_MULTIPLIER * sign;
+                nx = offsetLast[i].x + face.getStepX() * delta;
+                ny = offsetLast[i].y + face.getStepY() * delta;
+                nz = offsetLast[i].z + face.getStepZ() * delta;
+            }
+
+            // Wrap an ±0.5 (offsetLast muss mit!)
+            double lx = offsetLast[i].x;
+            double ly = offsetLast[i].y;
+            double lz = offsetLast[i].z;
+            if (nx > 0.5) { nx -= 1; lx -= 1; }
+            else if (nx < -0.5) { nx += 1; lx += 1; }
+            if (ny > 0.5) { ny -= 1; ly -= 1; }
+            else if (ny < -0.5) { ny += 1; ly += 1; }
+            if (nz > 0.5) { nz -= 1; lz -= 1; }
+            else if (nz < -0.5) { nz += 1; lz += 1; }
+
+            offsetThis[i] = new Vec3(nx, ny, nz);
+            offsetLast[i] = new Vec3(lx, ly, lz);
+        }
     }
 
     // ── Fluid Movement (3 phases, like original BC) ──────────────────────
