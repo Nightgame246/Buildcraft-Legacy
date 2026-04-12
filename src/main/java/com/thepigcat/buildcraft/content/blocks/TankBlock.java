@@ -208,23 +208,19 @@ public class TankBlock extends ContainerBlock {
             return;
         }
 
-        int aboveFluidAmount = 0;
-        if (topJoined) {
-            TankBE aboveTank = BlockUtils.getBE(TankBE.class, level, pos.above());
-            if (aboveTank != null) {
-                aboveFluidAmount = aboveTank.getFluidHandler().getFluidInTank(0).getAmount();
-            }
-        }
+        // getFluidHandler() delegates to the above-stack's master, giving us
+        // the entire above-stack's fluid total — exactly what we need to sum.
+        TankBE aboveTank = topJoined ? BlockUtils.getBE(TankBE.class, level, pos.above()) : null;
+        int aboveFluidAmount = (aboveTank != null)
+                ? aboveTank.getFluidHandler().getFluidInTank(0).getAmount()
+                : 0;
 
         // Pick the fluid identity: prefer existing master's fluid; fall back to
         // the placed tank's fluid; last resort the above tank's fluid.
         FluidStack existing = bottomTankBe.getFluidHandler().getFluidInTank(0);
         FluidStack fluidIdentity = !existing.isEmpty() ? existing : baseFluidCopy;
-        if (fluidIdentity.isEmpty() && aboveFluidAmount > 0) {
-            TankBE aboveTank = BlockUtils.getBE(TankBE.class, level, pos.above());
-            if (aboveTank != null) {
-                fluidIdentity = aboveTank.getFluidHandler().getFluidInTank(0);
-            }
+        if (fluidIdentity.isEmpty() && aboveTank != null && aboveFluidAmount > 0) {
+            fluidIdentity = aboveTank.getFluidHandler().getFluidInTank(0);
         }
 
         int totalAmount;
@@ -322,8 +318,8 @@ public class TankBlock extends ContainerBlock {
      * calls {@code initTank(size)} on the bottom master, and forces a client sync.
      *
      * <p>Precondition: {@code anchor} must be the position of an existing TankBE.
-     * After Task 2/3 wiring this will be the single source of truth for
-     * {@code bottomTankPos} mutations and {@code initTank} calls.
+     * This is the single source of truth for {@code bottomTankPos} mutations
+     * and {@code initTank} calls (onPlace wired; onRemove wiring pending).
      */
     private static void reformStack(LevelAccessor level, BlockPos anchor) {
         if (!(level.getBlockEntity(anchor) instanceof TankBE)) return;
