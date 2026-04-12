@@ -604,40 +604,40 @@ Visuelle Tests gegen Spec Section „Tests".
 
 **Files:** keine Code-Änderungen — reines Testing. Bugs ggf. in neuen Follow-up-Tasks fixen.
 
-- [ ] **Step 1: Start client**
+- [x] **Step 1: Start client**
 
 Run: `sh ./gradlew runClient` (im Hintergrund, Client-Start ~1-3 Min).
 
-- [ ] **Step 2: Test Scenario 1 — statischer Flow**
+- [x] **Step 2: Test Scenario 1 — statischer Flow**
 
 Baue: Water-Tank → Wooden Fluid Pipe (wrench auf Tank-Seite für Extraction) → 3× Cobblestone Fluid Pipe → Gold Fluid Pipe → Leer-Tank.
 Erwartung: Sichtbarer Wasser-Scroll durch alle Pipes vom Quell-Tank Richtung Ziel-Tank.
 
-- [ ] **Step 3: Test Scenario 2 — stopp-Verhalten**
+- [x] **Step 3: Test Scenario 2 — stopp-Verhalten**
 
 Fülle den Ziel-Tank komplett → beobachte. Erwartung: Flow stoppt innerhalb weniger Sekunden, Textur steht still, Fluid-Füllung bleibt sichtbar.
 
-- [ ] **Step 4: Test Scenario 3 — Richtungswechsel**
+- [x] **Step 4: Test Scenario 3 — Richtungswechsel**
 
 Leere Ziel-Tank. Wrench auf Wooden Pipe → Extraction-Seite ändern. Erwartung: Nach Direction-Cooldown (~3 Sek) kehrt Flow-Richtung optisch um.
 
-- [ ] **Step 5: Test Scenario 4 — vertikale Pipes**
+- [ ] **Step 5: Test Scenario 4 — vertikale Pipes** — DEFERRED (erfordert Pumps/Engines, noch nicht implementiert)
 
 Tank oben → 3× Fluid Pipe vertikal → Tank unten. Erwartung: Fluid scrollt sichtbar nach unten in der Säule.
 
-- [ ] **Step 6: Test Scenario 5 — T-Junction horizontal + vertikal**
+- [x] **Step 6: Test Scenario 5 — T-Junction horizontal + vertikal**
 
 Zentrale Fluid Pipe mit Connections zu NORTH, SOUTH und DOWN. Fluid läuft durch. Erwartung: Center zeigt horizontale Box + vertikale Säule ohne sichtbare Lücke oder Z-Fighting.
 
-- [ ] **Step 7: Test Scenario 6 — Frame-Rate**
+- [x] **Step 7: Test Scenario 6 — Frame-Rate**
 
 `/tick rate 20` (default) → beobachte Flow-Speed. Dann VSync aus/an → Flow-Speed sollte visuell identisch bleiben.
 
-- [ ] **Step 8: Performance-Sanity**
+- [x] **Step 8: Performance-Sanity**
 
 F3-Overlay: TPS stabil bei 20, FPS nicht eingebrochen bei ~10 aktiven Fluid-Pipes im Blick.
 
-- [ ] **Step 9: Report**
+- [x] **Step 9: Report**
 
 Wenn alle Szenarien OK: commit-Nachricht "test: verify fluid pipe flow rendering ingame" (leerer Commit akzeptabel mit `--allow-empty`) oder einfach direkt das Feature als abgeschlossen melden.
 
