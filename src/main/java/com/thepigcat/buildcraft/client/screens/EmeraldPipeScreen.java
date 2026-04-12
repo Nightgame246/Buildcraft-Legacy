@@ -20,7 +20,7 @@ public class EmeraldPipeScreen extends AbstractContainerScreen<EmeraldPipeMenu> 
     public EmeraldPipeScreen(EmeraldPipeMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageWidth = 176;
-        this.imageHeight = 166;
+        this.imageHeight = 161;
         this.inventoryLabelY = this.imageHeight - 94;
     }
 
@@ -30,10 +30,10 @@ public class EmeraldPipeScreen extends AbstractContainerScreen<EmeraldPipeMenu> 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        // Toggle button: top-right area of the filter section
+        // Toggle button: in the gap between filter row and player inventory
         toggleButton = Button.builder(getFilterModeLabel(), btn -> {
             PacketDistributor.sendToServer(new ToggleFilterModePayload(menu.blockEntity.getBlockPos()));
-        }).bounds(x + 126, y + 21, 42, 14).build();
+        }).bounds(x + 62, y + 45, 52, 16).build();
         addRenderableWidget(toggleButton);
     }
 

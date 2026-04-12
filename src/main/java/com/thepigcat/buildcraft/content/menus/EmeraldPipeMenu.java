@@ -45,14 +45,10 @@ public class EmeraldPipeMenu extends AbstractContainerMenu {
         };
         addDataSlots(data);
 
-        // 9 ghost filter slots in a 3x3 grid
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                int slot = row * 3 + col;
-                addSlot(new SlotItemHandler(blockEntity.getFilterHandler(), slot,
-                        62 + col * 18,
-                        21 + row * 18));
-            }
+        // 9 ghost filter slots in a single row (matches texture layout)
+        for (int col = 0; col < 9; col++) {
+            addSlot(new SlotItemHandler(blockEntity.getFilterHandler(), col,
+                    8 + col * 18, 21));
         }
 
         // Player main inventory (3 x 9)
