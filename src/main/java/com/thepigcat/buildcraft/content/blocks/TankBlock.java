@@ -259,10 +259,10 @@ public class TankBlock extends ContainerBlock {
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
 
-        // After super.onRemove, the block is gone and updateShape has adjusted
-        // TOP_JOINED/BOTTOM_JOINED on the neighbors. Reform both resulting
-        // stack halves so bottomTankPos pointers and master capacity are
-        // consistent.
+        // Reform both resulting stack halves. updateShape on the neighbors
+        // hasn't run yet at this point, so reformStack must tolerate stale
+        // TOP_JOINED/BOTTOM_JOINED properties pointing at the now-removed
+        // center block — see the guarded walks in reformStack.
         if (blockGoingAway) {
             if (hadTop) {
                 BlockPos above = pos.above();
@@ -347,15 +347,20 @@ public class TankBlock extends ContainerBlock {
     private static void reformStack(LevelAccessor level, BlockPos anchor) {
         if (!(level.getBlockEntity(anchor) instanceof TankBE)) return;
 
-        // 1. Walk down to find the bottom
+        // 1. Walk down to find the bottom. getOptionalValue tolerates non-tank
+        //    blockstates (e.g., air left behind by a break before updateShape
+        //    has cleared BOTTOM_JOINED on the neighbor above). The instanceof
+        //    guard ensures we never step onto a non-tank position.
         BlockPos bottomPos = anchor;
-        while (level.getBlockState(bottomPos).getValue(BOTTOM_JOINED)) {
+        while (level.getBlockState(bottomPos).getOptionalValue(BOTTOM_JOINED).orElse(false)
+                && level.getBlockEntity(bottomPos.below()) instanceof TankBE) {
             bottomPos = bottomPos.below();
         }
 
-        // 2. Walk up from bottom to find the top
+        // 2. Walk up from bottom to find the top, same guarding rationale
         BlockPos topPos = bottomPos;
-        while (level.getBlockState(topPos).getValue(TOP_JOINED)) {
+        while (level.getBlockState(topPos).getOptionalValue(TOP_JOINED).orElse(false)
+                && level.getBlockEntity(topPos.above()) instanceof TankBE) {
             topPos = topPos.above();
         }
 
