@@ -18,16 +18,19 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 
 public class DaizuliItemPipeBlock extends ItemPipeBlock {
-    private static final double CENTER_THRESHOLD = 0.1875D;
 
     public DaizuliItemPipeBlock(Properties properties) {
         super(properties);
     }
 
-
+    /**
+     * Wrench interaction:
+     * - Click on the CURRENT target face → cycle pipe color
+     * - Click on any OTHER face → set that face as new target
+     * - Sneak + wrench → cycle pipe color (regardless of face)
+     */
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (stack.getItem() == BCItems.WRENCH.get()) {
@@ -35,9 +38,8 @@ public class DaizuliItemPipeBlock extends ItemPipeBlock {
                 DaizuliItemPipeBE be = BlockUtils.getBE(DaizuliItemPipeBE.class, level, pos);
                 if (be != null) {
                     Direction clickedSide = hitResult.getDirection();
-                    boolean centerHit = isCenterFaceHit(hitResult, pos, clickedSide);
 
-                    if (centerHit || clickedSide == be.getTargetDirection()) {
+                    if (player.isShiftKeyDown() || clickedSide == be.getTargetDirection()) {
                         be.cyclePipeColor();
                         player.displayClientMessage(Component.literal("Daizuli Pipe color: " + be.getPipeColor().getName()), true);
                     } else {
@@ -49,15 +51,6 @@ public class DaizuliItemPipeBlock extends ItemPipeBlock {
             return ItemInteractionResult.sidedSuccess(level.isClientSide());
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
-    }
-
-    private static boolean isCenterFaceHit(BlockHitResult hitResult, BlockPos pos, Direction face) {
-        Vec3 local = hitResult.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
-        return switch (face) {
-            case DOWN, UP -> Math.abs(local.x - 0.5D) <= CENTER_THRESHOLD && Math.abs(local.z - 0.5D) <= CENTER_THRESHOLD;
-            case NORTH, SOUTH -> Math.abs(local.x - 0.5D) <= CENTER_THRESHOLD && Math.abs(local.y - 0.5D) <= CENTER_THRESHOLD;
-            case WEST, EAST -> Math.abs(local.y - 0.5D) <= CENTER_THRESHOLD && Math.abs(local.z - 0.5D) <= CENTER_THRESHOLD;
-        };
     }
 
     @Override
