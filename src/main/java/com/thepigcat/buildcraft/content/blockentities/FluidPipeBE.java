@@ -28,7 +28,7 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
     private static final int COOLDOWN_OUTPUT = DIRECTION_COOLDOWN;
 
     // Section indices: 0-5 = Direction.ordinal(), 6 = CENTER
-    private static final int CENTER = 6;
+    public static final int CENTER = 6;
     private static final double FLOW_MULTIPLIER = 0.016;
 
     protected int transferPerTick = 10;

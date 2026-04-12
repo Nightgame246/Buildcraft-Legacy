@@ -90,16 +90,12 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
 
         BlockState state = be.getBlockState();
 
-        // Render center section (index 6)
-        double centerAmount = be.getAmountForRender(6, partialTick);
+        // Render center section
+        double centerAmount = be.getAmountForRender(FluidPipeBE.CENTER, partialTick);
         if (centerAmount > 0) {
             float fill = (float) Math.min(1.0, centerAmount / capacity);
-            float halfSize = 0.24f * fill;
-            float min = 0.5f - halfSize;
-            float max = 0.5f + halfSize;
-            // Render fill as height for center
             float height = 0.26f + (0.74f - 0.26f) * fill;
-            Vec3 centerOffset = be.getOffsetForRender(6, partialTick);
+            Vec3 centerOffset = be.getOffsetForRender(FluidPipeBE.CENTER, partialTick);
             renderBox(pose, vc, sprite, 0.26f, 0.74f, 0.26f, height, 0.26f, 0.74f,
                     centerOffset, r, g, b, a, packedLight, packedOverlay);
         }
