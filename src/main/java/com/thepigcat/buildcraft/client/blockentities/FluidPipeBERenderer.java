@@ -90,14 +90,42 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
 
         BlockState state = be.getBlockState();
 
-        // Render center section
+        // Render center section — horizontal box, vertical column, or both
         double centerAmount = be.getAmountForRender(FluidPipeBE.CENTER, partialTick);
         if (centerAmount > 0) {
-            float fill = (float) Math.min(1.0, centerAmount / capacity);
-            float height = 0.26f + (0.74f - 0.26f) * fill;
+            float fill = (float) Math.min(1.0, centerAmount / (double) capacity);
             Vec3 centerOffset = be.getOffsetForRender(FluidPipeBE.CENTER, partialTick);
-            renderBox(pose, vc, sprite, 0.26f, 0.74f, 0.26f, height, 0.26f, 0.74f,
-                    centerOffset, r, g, b, a, packedLight, packedOverlay);
+
+            boolean horizontal = false;
+            for (Direction d : new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST}) {
+                if (state.getValue(PipeBlock.CONNECTION[d.get3DDataValue()]) != PipeBlock.PipeState.NONE) {
+                    horizontal = true;
+                    break;
+                }
+            }
+            boolean vertical = state.getValue(PipeBlock.CONNECTION[Direction.UP.get3DDataValue()]) != PipeBlock.PipeState.NONE
+                    || state.getValue(PipeBlock.CONNECTION[Direction.DOWN.get3DDataValue()]) != PipeBlock.PipeState.NONE;
+
+            // Fallback: no connections at all → horizontal box for visual continuity
+            if (!horizontal && !vertical) horizontal = true;
+
+            float horizTop = 0.26f;  // where the horizontal fill ends (for mixed case)
+            if (horizontal) {
+                float height = 0.26f + (0.74f - 0.26f) * fill;
+                horizTop = height;
+                renderBox(pose, vc, sprite, 0.26f, 0.74f, 0.26f, height, 0.26f, 0.74f,
+                        centerOffset, r, g, b, a, packedLight, packedOverlay);
+            }
+
+            if (vertical && horizTop < 0.74f) {
+                float radius = 0.24f * (float) Math.sqrt(fill);
+                float minXZ = 0.5f - radius;
+                float maxXZ = 0.5f + radius;
+                float yMin = horizontal ? horizTop : 0.26f;
+                float yMax = 0.74f;
+                renderBox(pose, vc, sprite, minXZ, maxXZ, yMin, yMax, minXZ, maxXZ,
+                        centerOffset, r, g, b, a, packedLight, packedOverlay);
+            }
         }
 
         // Render face sections (index 0-5)
