@@ -244,16 +244,39 @@ public class TankBlock extends ContainerBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (!state.is(newState.getBlock())) {
-            if (state.getValue(TOP_JOINED) && state.getValue(BOTTOM_JOINED)) {
+        boolean blockGoingAway = !state.is(newState.getBlock());
+        boolean hadTop = state.getValue(TOP_JOINED);
+        boolean hadBottom = state.getValue(BOTTOM_JOINED);
+
+        if (blockGoingAway) {
+            if (hadTop && hadBottom) {
                 splitTank(level, pos);
-            } else if (state.getValue(TOP_JOINED) && !state.getValue(BOTTOM_JOINED)) {
+            } else if (hadTop) {
                 moveFluidsAbove(level, pos);
-            } else if (!state.getValue(TOP_JOINED) && state.getValue(BOTTOM_JOINED)) {
+            } else if (hadBottom) {
                 removeFluidFromBottomTank(level, pos);
             }
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
+
+        // After super.onRemove, the block is gone and updateShape has adjusted
+        // TOP_JOINED/BOTTOM_JOINED on the neighbors. Reform both resulting
+        // stack halves so bottomTankPos pointers and master capacity are
+        // consistent.
+        if (blockGoingAway) {
+            if (hadTop) {
+                BlockPos above = pos.above();
+                if (level.getBlockEntity(above) instanceof TankBE) {
+                    reformStack(level, above);
+                }
+            }
+            if (hadBottom) {
+                BlockPos below = pos.below();
+                if (level.getBlockEntity(below) instanceof TankBE) {
+                    reformStack(level, below);
+                }
+            }
+        }
     }
 
     private static void removeFluidFromBottomTank(Level level, BlockPos pos) {
