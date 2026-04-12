@@ -99,8 +99,9 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
             float max = 0.5f + halfSize;
             // Render fill as height for center
             float height = 0.26f + (0.74f - 0.26f) * fill;
+            Vec3 centerOffset = be.getOffsetForRender(6, partialTick);
             renderBox(pose, vc, sprite, 0.26f, 0.74f, 0.26f, height, 0.26f, 0.74f,
-                    r, g, b, a, packedLight, packedOverlay);
+                    centerOffset, r, g, b, a, packedLight, packedOverlay);
         }
 
         // Render face sections (index 0-5)
@@ -112,16 +113,15 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
             if (amount <= 0) continue;
 
             float fill = (float) Math.min(1.0, amount / capacity);
-            renderConnectionFluid(pose, vc, sprite, dir, fill, r, g, b, a, packedLight, packedOverlay);
+            Vec3 faceOffset = be.getOffsetForRender(dir.ordinal(), partialTick);
+            renderConnectionFluid(pose, vc, sprite, dir, fill, faceOffset, r, g, b, a, packedLight, packedOverlay);
         }
     }
 
     private void renderConnectionFluid(Matrix4f pose, VertexConsumer vc, TextureAtlasSprite sprite,
-                                        Direction dir, float fill,
+                                        Direction dir, float fill, Vec3 offset,
                                         float r, float g, float b, float a,
                                         int light, int overlay) {
-        // For horizontal pipes: fluid height is proportional to fill
-        // For vertical pipes: fluid radius scales with sqrt(fill) like original BC
         float pipeInner = 0.24f;
 
         switch (dir.getAxis()) {
@@ -132,9 +132,9 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
                 float zMin = 0.5f - pipeInner;
                 float zMax = 0.5f + pipeInner;
                 if (dir == Direction.WEST) {
-                    renderBox(pose, vc, sprite, 0f, 0.26f, yMin, yMax, zMin, zMax, r, g, b, a, light, overlay);
+                    renderBox(pose, vc, sprite, 0f, 0.26f, yMin, yMax, zMin, zMax, offset, r, g, b, a, light, overlay);
                 } else {
-                    renderBox(pose, vc, sprite, 0.74f, 1f, yMin, yMax, zMin, zMax, r, g, b, a, light, overlay);
+                    renderBox(pose, vc, sprite, 0.74f, 1f, yMin, yMax, zMin, zMax, offset, r, g, b, a, light, overlay);
                 }
             }
             case Z -> {
@@ -144,9 +144,9 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
                 float xMin = 0.5f - pipeInner;
                 float xMax = 0.5f + pipeInner;
                 if (dir == Direction.NORTH) {
-                    renderBox(pose, vc, sprite, xMin, xMax, yMin, yMax, 0f, 0.26f, r, g, b, a, light, overlay);
+                    renderBox(pose, vc, sprite, xMin, xMax, yMin, yMax, 0f, 0.26f, offset, r, g, b, a, light, overlay);
                 } else {
-                    renderBox(pose, vc, sprite, xMin, xMax, yMin, yMax, 0.74f, 1f, r, g, b, a, light, overlay);
+                    renderBox(pose, vc, sprite, xMin, xMax, yMin, yMax, 0.74f, 1f, offset, r, g, b, a, light, overlay);
                 }
             }
             case Y -> {
@@ -156,9 +156,9 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
                 float zMin = 0.5f - radius;
                 float zMax = 0.5f + radius;
                 if (dir == Direction.DOWN) {
-                    renderBox(pose, vc, sprite, xMin, xMax, 0f, 0.26f, zMin, zMax, r, g, b, a, light, overlay);
+                    renderBox(pose, vc, sprite, xMin, xMax, 0f, 0.26f, zMin, zMax, offset, r, g, b, a, light, overlay);
                 } else {
-                    renderBox(pose, vc, sprite, xMin, xMax, 0.74f, 1f, zMin, zMax, r, g, b, a, light, overlay);
+                    renderBox(pose, vc, sprite, xMin, xMax, 0.74f, 1f, zMin, zMax, offset, r, g, b, a, light, overlay);
                 }
             }
         }
@@ -166,47 +166,43 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
 
     private void renderBox(Matrix4f pose, VertexConsumer vc, TextureAtlasSprite sprite,
                            float x0, float x1, float y0, float y1, float z0, float z1,
+                           Vec3 offset,
                            float r, float g, float b, float a,
                            int light, int overlay) {
-        float u0 = sprite.getU0();
-        float u1 = sprite.getU1();
-        float v0 = sprite.getV0();
-        float v1 = sprite.getV1();
+        // Down face (y = y0), normal 0,-1,0
+        writeVertex(vc, pose, x0, y0, z0, offset, sprite, Direction.Axis.Y, r, g, b, a, light, overlay, 0, -1, 0);
+        writeVertex(vc, pose, x1, y0, z0, offset, sprite, Direction.Axis.Y, r, g, b, a, light, overlay, 0, -1, 0);
+        writeVertex(vc, pose, x1, y0, z1, offset, sprite, Direction.Axis.Y, r, g, b, a, light, overlay, 0, -1, 0);
+        writeVertex(vc, pose, x0, y0, z1, offset, sprite, Direction.Axis.Y, r, g, b, a, light, overlay, 0, -1, 0);
 
-        // Down face (y = y0)
-        vc.addVertex(pose, x0, y0, z0).setColor(r, g, b, a).setUv(u0, v0).setOverlay(overlay).setLight(light).setNormal(0, -1, 0);
-        vc.addVertex(pose, x1, y0, z0).setColor(r, g, b, a).setUv(u1, v0).setOverlay(overlay).setLight(light).setNormal(0, -1, 0);
-        vc.addVertex(pose, x1, y0, z1).setColor(r, g, b, a).setUv(u1, v1).setOverlay(overlay).setLight(light).setNormal(0, -1, 0);
-        vc.addVertex(pose, x0, y0, z1).setColor(r, g, b, a).setUv(u0, v1).setOverlay(overlay).setLight(light).setNormal(0, -1, 0);
+        // Up face (y = y1), normal 0,+1,0
+        writeVertex(vc, pose, x0, y1, z1, offset, sprite, Direction.Axis.Y, r, g, b, a, light, overlay, 0, 1, 0);
+        writeVertex(vc, pose, x1, y1, z1, offset, sprite, Direction.Axis.Y, r, g, b, a, light, overlay, 0, 1, 0);
+        writeVertex(vc, pose, x1, y1, z0, offset, sprite, Direction.Axis.Y, r, g, b, a, light, overlay, 0, 1, 0);
+        writeVertex(vc, pose, x0, y1, z0, offset, sprite, Direction.Axis.Y, r, g, b, a, light, overlay, 0, 1, 0);
 
-        // Up face (y = y1)
-        vc.addVertex(pose, x0, y1, z1).setColor(r, g, b, a).setUv(u0, v1).setOverlay(overlay).setLight(light).setNormal(0, 1, 0);
-        vc.addVertex(pose, x1, y1, z1).setColor(r, g, b, a).setUv(u1, v1).setOverlay(overlay).setLight(light).setNormal(0, 1, 0);
-        vc.addVertex(pose, x1, y1, z0).setColor(r, g, b, a).setUv(u1, v0).setOverlay(overlay).setLight(light).setNormal(0, 1, 0);
-        vc.addVertex(pose, x0, y1, z0).setColor(r, g, b, a).setUv(u0, v0).setOverlay(overlay).setLight(light).setNormal(0, 1, 0);
+        // North face (z = z0), normal 0,0,-1
+        writeVertex(vc, pose, x0, y0, z0, offset, sprite, Direction.Axis.Z, r, g, b, a, light, overlay, 0, 0, -1);
+        writeVertex(vc, pose, x0, y1, z0, offset, sprite, Direction.Axis.Z, r, g, b, a, light, overlay, 0, 0, -1);
+        writeVertex(vc, pose, x1, y1, z0, offset, sprite, Direction.Axis.Z, r, g, b, a, light, overlay, 0, 0, -1);
+        writeVertex(vc, pose, x1, y0, z0, offset, sprite, Direction.Axis.Z, r, g, b, a, light, overlay, 0, 0, -1);
 
-        // North face (z = z0)
-        vc.addVertex(pose, x0, y0, z0).setColor(r, g, b, a).setUv(u0, v1).setOverlay(overlay).setLight(light).setNormal(0, 0, -1);
-        vc.addVertex(pose, x0, y1, z0).setColor(r, g, b, a).setUv(u0, v0).setOverlay(overlay).setLight(light).setNormal(0, 0, -1);
-        vc.addVertex(pose, x1, y1, z0).setColor(r, g, b, a).setUv(u1, v0).setOverlay(overlay).setLight(light).setNormal(0, 0, -1);
-        vc.addVertex(pose, x1, y0, z0).setColor(r, g, b, a).setUv(u1, v1).setOverlay(overlay).setLight(light).setNormal(0, 0, -1);
+        // South face (z = z1), normal 0,0,+1
+        writeVertex(vc, pose, x1, y0, z1, offset, sprite, Direction.Axis.Z, r, g, b, a, light, overlay, 0, 0, 1);
+        writeVertex(vc, pose, x1, y1, z1, offset, sprite, Direction.Axis.Z, r, g, b, a, light, overlay, 0, 0, 1);
+        writeVertex(vc, pose, x0, y1, z1, offset, sprite, Direction.Axis.Z, r, g, b, a, light, overlay, 0, 0, 1);
+        writeVertex(vc, pose, x0, y0, z1, offset, sprite, Direction.Axis.Z, r, g, b, a, light, overlay, 0, 0, 1);
 
-        // South face (z = z1)
-        vc.addVertex(pose, x1, y0, z1).setColor(r, g, b, a).setUv(u1, v1).setOverlay(overlay).setLight(light).setNormal(0, 0, 1);
-        vc.addVertex(pose, x1, y1, z1).setColor(r, g, b, a).setUv(u1, v0).setOverlay(overlay).setLight(light).setNormal(0, 0, 1);
-        vc.addVertex(pose, x0, y1, z1).setColor(r, g, b, a).setUv(u0, v0).setOverlay(overlay).setLight(light).setNormal(0, 0, 1);
-        vc.addVertex(pose, x0, y0, z1).setColor(r, g, b, a).setUv(u0, v1).setOverlay(overlay).setLight(light).setNormal(0, 0, 1);
+        // West face (x = x0), normal -1,0,0
+        writeVertex(vc, pose, x0, y0, z1, offset, sprite, Direction.Axis.X, r, g, b, a, light, overlay, -1, 0, 0);
+        writeVertex(vc, pose, x0, y1, z1, offset, sprite, Direction.Axis.X, r, g, b, a, light, overlay, -1, 0, 0);
+        writeVertex(vc, pose, x0, y1, z0, offset, sprite, Direction.Axis.X, r, g, b, a, light, overlay, -1, 0, 0);
+        writeVertex(vc, pose, x0, y0, z0, offset, sprite, Direction.Axis.X, r, g, b, a, light, overlay, -1, 0, 0);
 
-        // West face (x = x0)
-        vc.addVertex(pose, x0, y0, z1).setColor(r, g, b, a).setUv(u0, v1).setOverlay(overlay).setLight(light).setNormal(-1, 0, 0);
-        vc.addVertex(pose, x0, y1, z1).setColor(r, g, b, a).setUv(u0, v0).setOverlay(overlay).setLight(light).setNormal(-1, 0, 0);
-        vc.addVertex(pose, x0, y1, z0).setColor(r, g, b, a).setUv(u1, v0).setOverlay(overlay).setLight(light).setNormal(-1, 0, 0);
-        vc.addVertex(pose, x0, y0, z0).setColor(r, g, b, a).setUv(u1, v1).setOverlay(overlay).setLight(light).setNormal(-1, 0, 0);
-
-        // East face (x = x1)
-        vc.addVertex(pose, x1, y0, z0).setColor(r, g, b, a).setUv(u0, v1).setOverlay(overlay).setLight(light).setNormal(1, 0, 0);
-        vc.addVertex(pose, x1, y1, z0).setColor(r, g, b, a).setUv(u0, v0).setOverlay(overlay).setLight(light).setNormal(1, 0, 0);
-        vc.addVertex(pose, x1, y1, z1).setColor(r, g, b, a).setUv(u1, v0).setOverlay(overlay).setLight(light).setNormal(1, 0, 0);
-        vc.addVertex(pose, x1, y0, z1).setColor(r, g, b, a).setUv(u1, v1).setOverlay(overlay).setLight(light).setNormal(1, 0, 0);
+        // East face (x = x1), normal +1,0,0
+        writeVertex(vc, pose, x1, y0, z0, offset, sprite, Direction.Axis.X, r, g, b, a, light, overlay, 1, 0, 0);
+        writeVertex(vc, pose, x1, y1, z0, offset, sprite, Direction.Axis.X, r, g, b, a, light, overlay, 1, 0, 0);
+        writeVertex(vc, pose, x1, y1, z1, offset, sprite, Direction.Axis.X, r, g, b, a, light, overlay, 1, 0, 0);
+        writeVertex(vc, pose, x1, y0, z1, offset, sprite, Direction.Axis.X, r, g, b, a, light, overlay, 1, 0, 0);
     }
 }
