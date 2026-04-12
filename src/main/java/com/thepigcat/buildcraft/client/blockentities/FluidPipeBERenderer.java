@@ -14,6 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Matrix4f;
@@ -25,6 +26,39 @@ import org.joml.Matrix4f;
 public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
 
     public FluidPipeBERenderer(BlockEntityRendererProvider.Context context) {
+    }
+
+    /**
+     * Compute UV coordinates for a vertex at local position `(lx, ly, lz)`
+     * using the 2 axes tangent to the given face normal. Offset shifts the
+     * sampled position so the texture scrolls while geometry stays still.
+     */
+    private static void writeVertex(VertexConsumer vc, Matrix4f pose,
+                                     float lx, float ly, float lz,
+                                     Vec3 offset, TextureAtlasSprite sprite,
+                                     Direction.Axis normalAxis,
+                                     float r, float g, float b, float a,
+                                     int light, int overlay,
+                                     float nx, float ny, float nz) {
+        double ax, ay;
+        // Pick the two tangent axes (u-axis, v-axis) based on face normal
+        switch (normalAxis) {
+            case Y -> { ax = lx + offset.x; ay = lz + offset.z; }
+            case X -> { ax = lz + offset.z; ay = ly + offset.y; }
+            case Z -> { ax = lx + offset.x; ay = ly + offset.y; }
+            default -> throw new IllegalStateException();
+        }
+        // frac handles negatives correctly: x - floor(x)
+        double fu = ax - Math.floor(ax);
+        double fv = ay - Math.floor(ay);
+        float u = sprite.getU0() + (float) fu * (sprite.getU1() - sprite.getU0());
+        float v = sprite.getV0() + (float) fv * (sprite.getV1() - sprite.getV0());
+        vc.addVertex(pose, lx, ly, lz)
+                .setColor(r, g, b, a)
+                .setUv(u, v)
+                .setOverlay(overlay)
+                .setLight(light)
+                .setNormal(nx, ny, nz);
     }
 
     @Override
