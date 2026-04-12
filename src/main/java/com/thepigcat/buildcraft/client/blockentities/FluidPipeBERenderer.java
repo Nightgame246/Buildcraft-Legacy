@@ -46,7 +46,7 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
             case Y -> { ax = lx + offset.x; ay = lz + offset.z; }
             case X -> { ax = lz + offset.z; ay = ly + offset.y; }
             case Z -> { ax = lx + offset.x; ay = ly + offset.y; }
-            default -> throw new IllegalStateException();
+            default -> throw new IllegalStateException("Unexpected axis: " + normalAxis);
         }
         // frac handles negatives correctly: x - floor(x)
         double fu = ax - Math.floor(ax);
