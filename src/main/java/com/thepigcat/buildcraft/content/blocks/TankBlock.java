@@ -17,6 +17,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -84,6 +85,11 @@ public class TankBlock extends ContainerBlock {
 
     @Override
     protected @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        // BlockItems (including other tanks) should fall through to placement logic
+        if (stack.getItem() instanceof BlockItem) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
         TankBE be = BlockUtils.getBE(TankBE.class, level, pos);
         IFluidHandler itemFluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
         IFluidHandler tankFluidHandler = be.getFluidHandler();

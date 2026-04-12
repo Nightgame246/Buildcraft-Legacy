@@ -98,6 +98,8 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
         double centerAmount = be.getAmountForRender(FluidPipeBE.CENTER, partialTick);
         if (centerAmount > 0) {
             float fill = (float) Math.min(1.0, centerAmount / (double) capacity);
+            // Minimum visible fill so small amounts still render as a stream
+            float visibleFill = Math.max(0.12f, fill);
             Vec3 centerOffset = be.getOffsetForRender(FluidPipeBE.CENTER, partialTick);
 
             boolean horizontal = false;
@@ -115,14 +117,14 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
 
             float horizTop = 0.26f;  // where the horizontal fill ends (for mixed case)
             if (horizontal) {
-                float height = 0.26f + (0.74f - 0.26f) * fill;
+                float height = 0.26f + (0.74f - 0.26f) * visibleFill;
                 horizTop = height;
                 renderBox(pose, vc, sprite, 0.26f, 0.74f, 0.26f, height, 0.26f, 0.74f,
                         centerOffset, r, g, b, a, packedLight, packedOverlay);
             }
 
             if (vertical && horizTop < 0.74f) {
-                float radius = 0.24f * (float) Math.sqrt(fill);
+                float radius = 0.24f * (float) Math.sqrt(visibleFill);
                 float minXZ = 0.5f - radius;
                 float maxXZ = 0.5f + radius;
                 float yMin = horizTop;
@@ -151,12 +153,14 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
                                         float r, float g, float b, float a,
                                         int light, int overlay) {
         float pipeInner = 0.24f;
+        // Minimum visible fill so small amounts still render as a stream
+        float visibleFill = Math.max(0.12f, fill);
 
         switch (dir.getAxis()) {
             case X -> {
-                float halfH = pipeInner * fill;
-                float yMin = 0.5f - halfH;
-                float yMax = 0.5f + halfH;
+                // Horizontal flow: fluid sits at bottom of pipe interior (gravity-like)
+                float yMin = 0.5f - pipeInner;
+                float yMax = yMin + 2f * pipeInner * visibleFill;
                 float zMin = 0.5f - pipeInner;
                 float zMax = 0.5f + pipeInner;
                 if (dir == Direction.WEST) {
@@ -166,9 +170,9 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
                 }
             }
             case Z -> {
-                float halfH = pipeInner * fill;
-                float yMin = 0.5f - halfH;
-                float yMax = 0.5f + halfH;
+                // Horizontal flow: fluid sits at bottom of pipe interior (gravity-like)
+                float yMin = 0.5f - pipeInner;
+                float yMax = yMin + 2f * pipeInner * visibleFill;
                 float xMin = 0.5f - pipeInner;
                 float xMax = 0.5f + pipeInner;
                 if (dir == Direction.NORTH) {
@@ -178,7 +182,8 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
                 }
             }
             case Y -> {
-                float radius = pipeInner * (float) Math.sqrt(fill);
+                // Vertical flow: fluid fills pipe cross-section proportionally
+                float radius = pipeInner * (float) Math.sqrt(visibleFill);
                 float xMin = 0.5f - radius;
                 float xMax = 0.5f + radius;
                 float zMin = 0.5f - radius;
