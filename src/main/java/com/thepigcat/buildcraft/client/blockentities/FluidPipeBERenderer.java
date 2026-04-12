@@ -25,6 +25,10 @@ import org.joml.Matrix4f;
  */
 public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
 
+    private static final Direction[] HORIZONTAL_DIRS = {
+            Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST
+    };
+
     public FluidPipeBERenderer(BlockEntityRendererProvider.Context context) {
     }
 
@@ -97,7 +101,7 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
             Vec3 centerOffset = be.getOffsetForRender(FluidPipeBE.CENTER, partialTick);
 
             boolean horizontal = false;
-            for (Direction d : new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST}) {
+            for (Direction d : HORIZONTAL_DIRS) {
                 if (state.getValue(PipeBlock.CONNECTION[d.get3DDataValue()]) != PipeBlock.PipeState.NONE) {
                     horizontal = true;
                     break;
@@ -121,7 +125,7 @@ public class FluidPipeBERenderer implements BlockEntityRenderer<FluidPipeBE> {
                 float radius = 0.24f * (float) Math.sqrt(fill);
                 float minXZ = 0.5f - radius;
                 float maxXZ = 0.5f + radius;
-                float yMin = horizontal ? horizTop : 0.26f;
+                float yMin = horizTop;
                 float yMax = 0.74f;
                 renderBox(pose, vc, sprite, minXZ, maxXZ, yMin, yMax, minXZ, maxXZ,
                         centerOffset, r, g, b, a, packedLight, packedOverlay);
