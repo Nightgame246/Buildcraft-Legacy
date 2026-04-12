@@ -334,32 +334,45 @@ public class TankBlock extends ContainerBlock {
     }
 
     /**
-     * Reform a multi-block tank stack starting from {@code anchor}. Walks down to find
-     * the bottom (where BOTTOM_JOINED is false), up to find the top (where
-     * TOP_JOINED is false), then updates {@code bottomTankPos} on every tank in range,
-     * calls {@code initTank(size)} on the bottom master, and forces a client sync.
+     * Reform a multi-block tank stack starting from {@code anchor}. Walks down
+     * through adjacent TankBEs (stopping at an incompatible fluid boundary) to
+     * find the bottom, then walks up the same way to find the top. Updates
+     * {@code bottomTankPos} on every tank in range, calls {@code initTank(size)}
+     * on the bottom master, and forces a client sync.
      *
      * <p>Precondition: {@code anchor} must be the position of an existing TankBE.
      * This is the single source of truth for {@code bottomTankPos} mutations
-     * and {@code initTank} calls (onPlace wired; onRemove wiring pending).
+     * and {@code initTank} calls.
+     *
+     * <p>The walk uses TankBE presence plus a running fluid-compatibility check
+     * rather than the {@code TOP_JOINED}/{@code BOTTOM_JOINED} blockstate flags,
+     * because those flags are set by {@code updateShape} on neighbors — which
+     * runs <em>after</em> {@code onPlace}/{@code onRemove} on the triggering
+     * block. In a bridge placement (gap between two standalone tanks) the
+     * neighbors still read as unjoined when we first reform the stack, so any
+     * flag-based walk would stop short and size the stack incorrectly.
      */
     private static void reformStack(LevelAccessor level, BlockPos anchor) {
-        if (!(level.getBlockEntity(anchor) instanceof TankBE)) return;
+        if (!(level.getBlockEntity(anchor) instanceof TankBE anchorBe)) return;
 
-        // 1. Walk down to find the bottom. getOptionalValue tolerates non-tank
-        //    blockstates (e.g., air left behind by a break before updateShape
-        //    has cleared BOTTOM_JOINED on the neighbor above). The instanceof
-        //    guard ensures we never step onto a non-tank position.
+        // Track the fluid identity across both walks so that a partially-empty
+        // stack still detects an incompatible-fluid boundary (e.g. water +
+        // empty + lava stops at the lava).
+        FluidStack stackFluid = anchorBe.getFluidTank().getFluid();
+
         BlockPos bottomPos = anchor;
-        while (level.getBlockState(bottomPos).getOptionalValue(BOTTOM_JOINED).orElse(false)
-                && level.getBlockEntity(bottomPos.below()) instanceof TankBE) {
+        while (level.getBlockEntity(bottomPos.below()) instanceof TankBE below) {
+            FluidStack local = below.getFluidTank().getFluid();
+            if (!joinable(stackFluid, local)) break;
+            if (stackFluid.isEmpty() && !local.isEmpty()) stackFluid = local;
             bottomPos = bottomPos.below();
         }
 
-        // 2. Walk up from bottom to find the top, same guarding rationale
         BlockPos topPos = bottomPos;
-        while (level.getBlockState(topPos).getOptionalValue(TOP_JOINED).orElse(false)
-                && level.getBlockEntity(topPos.above()) instanceof TankBE) {
+        while (level.getBlockEntity(topPos.above()) instanceof TankBE above) {
+            FluidStack local = above.getFluidTank().getFluid();
+            if (!joinable(stackFluid, local)) break;
+            if (stackFluid.isEmpty() && !local.isEmpty()) stackFluid = local;
             topPos = topPos.above();
         }
 
@@ -387,6 +400,10 @@ public class TankBlock extends ContainerBlock {
             BlockState bottomState = l.getBlockState(bottomPos);
             l.sendBlockUpdated(bottomPos, bottomState, bottomState, 3);
         }
+    }
+
+    private static boolean joinable(FluidStack a, FluidStack b) {
+        return a.isEmpty() || b.isEmpty() || a.is(b.getFluid());
     }
 
 }
