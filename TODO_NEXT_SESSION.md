@@ -31,6 +31,11 @@ Alle Item Pipes haben funktionale Kernmechanik. Siehe Archiv unten.
 ## Phase E — Silicon (kommt später)
 - [ ] Emzuli Pipe — Gate-gesteuertes Emerald, braucht Gates/Triggers
 
+## Polish — Bekannte GUI/Interaktionsprobleme
+- [ ] Daizuli Pipe: Wrench-Interaktion funktioniert nicht (Target setzen/Farbe wechseln) — Code ist korrekt, useItemOn wird vermutlich nicht aufgerufen, Root Cause unklar
+- [ ] Emerald Pipe: GUI-Textur ist 161px hoch, Standard-MC braucht 166px — Textur erweitern oder Layout anpassen
+- [ ] Emerald Pipe: Toggle-Button Style (aktuell MC-Button, könnte originalgetreuere Textur-Sprites nutzen)
+
 ## Future — Pipe Erweiterungen
 - [ ] Diamond Pipe: Round-Robin / proportionaler Split (braucht Pipe-Base Multi-Output-Support)
 - [ ] Obsidian Pipe: Energy-Gating (Engine-Power bestimmt Suction-Range, analog Original MJ-System)
