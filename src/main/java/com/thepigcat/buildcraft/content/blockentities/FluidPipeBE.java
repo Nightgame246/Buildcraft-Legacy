@@ -176,13 +176,24 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
 
             double nx, ny, nz;
             if (i == CENTER) {
-                // Flow-Richtung: vom vollsten Face zum leersten
+                // Flow-Richtung (wie Original BC): zuerst alle OUTGOING Faces summieren.
+                // Wenn keine outgoing, alle INCOMING Faces negiert summieren.
                 double dx = 0, dy = 0, dz = 0;
                 for (Direction face : Direction.values()) {
-                    double weight = clientAmountThis[face.ordinal()] - clientAmountThis[CENTER];
-                    dx += face.getStepX() * weight;
-                    dy += face.getStepY() * weight;
-                    dz += face.getStepZ() * weight;
+                    if (clientDirection[face.ordinal()] > 0) {
+                        dx += face.getStepX();
+                        dy += face.getStepY();
+                        dz += face.getStepZ();
+                    }
+                }
+                if (dx == 0 && dy == 0 && dz == 0) {
+                    for (Direction face : Direction.values()) {
+                        if (clientDirection[face.ordinal()] < 0) {
+                            dx -= face.getStepX();
+                            dy -= face.getStepY();
+                            dz -= face.getStepZ();
+                        }
+                    }
                 }
                 double sx = Math.signum(dx);
                 double sy = Math.signum(dy);
