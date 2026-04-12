@@ -1,7 +1,6 @@
 package com.thepigcat.buildcraft.content.blockentities;
 
 import com.mojang.authlib.GameProfile;
-import com.thepigcat.buildcraft.BuildcraftLegacy;
 import com.thepigcat.buildcraft.api.blocks.PipeBlock;
 import com.thepigcat.buildcraft.networking.SyncPipeDirectionPayload;
 import com.thepigcat.buildcraft.networking.SyncPipeMovementPayload;
@@ -124,7 +123,6 @@ public class StripeItemPipeBE extends ItemPipeBE {
     private void dropItem(ItemStack stack, Direction outputDir, BlockPos targetPos) {
         if (!level.isClientSide()) {
             net.minecraft.world.level.block.Block.popResource(level, targetPos, stack.copy());
-            BuildcraftLegacy.LOGGER.debug("Stripe pipe dropped item at {} because interaction failed", targetPos);
         }
     }
 
@@ -158,12 +156,9 @@ public class StripeItemPipeBE extends ItemPipeBE {
         // 1. Try placing the item as a block (covers BlockItems like stone, redstone, etc.)
         UseOnContext useOnContext = new UseOnContext(fakePlayer, InteractionHand.MAIN_HAND, hitResult);
         InteractionResult placeResult = singleItem.useOn(useOnContext);
-        BuildcraftLegacy.LOGGER.debug("Stripe pipe useOn result: {} for item {} at {} (hitFace={}, hitLocation={})",
-                placeResult, singleItem, targetPos, hitFace, hitLocation);
         if (placeResult.consumesAction()) {
             stack.shrink(1);
             playInteractionFeedback(serverLevel, targetPos);
-            BuildcraftLegacy.LOGGER.debug("Stripe pipe placed block at {}", targetPos);
             return true;
         }
 
@@ -180,7 +175,6 @@ public class StripeItemPipeBE extends ItemPipeBE {
                     stack.shrink(1);
                 }
                 playInteractionFeedback(serverLevel, targetPos);
-                BuildcraftLegacy.LOGGER.debug("Stripe pipe interacted with entity {} at {}", entity, targetPos);
                 return true;
             }
         }
@@ -194,7 +188,6 @@ public class StripeItemPipeBE extends ItemPipeBE {
                 stack.shrink(1);
             }
             playInteractionFeedback(serverLevel, targetPos);
-            BuildcraftLegacy.LOGGER.debug("Stripe pipe used item at {}", targetPos);
             return true;
         }
 

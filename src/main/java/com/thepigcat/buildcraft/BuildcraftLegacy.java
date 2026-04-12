@@ -165,7 +165,6 @@ public final class BuildcraftLegacy {
                 if (!event.getRegistry().containsKey(id)) {
                     Either<BlockBehaviour.Properties, ResourceLocation> properties = entry.getValue().properties();
                     ResourceLocation block = properties.right().orElse(ResourceLocation.parse("cobblestone"));
-                    BuildcraftLegacy.LOGGER.debug("Properties: {}", properties);
                     event.register(Registries.BLOCK, id, () -> type.blockConstructor().apply(properties.left().isPresent()
                             ? properties.left().get()
                             : BlockBehaviour.Properties.ofFullCopy(BuiltInRegistries.BLOCK.get(block))

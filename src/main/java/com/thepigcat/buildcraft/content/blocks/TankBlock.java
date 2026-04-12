@@ -13,7 +13,6 @@ import com.thepigcat.buildcraft.util.BlockUtils;
 import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -127,9 +126,6 @@ public class TankBlock extends ContainerBlock {
                 }
                 return ItemInteractionResult.SUCCESS;
             }
-        }
-        if (!level.isClientSide()) {
-            player.sendSystemMessage(Component.literal("Bottom pos: " + BlockUtils.getBE(TankBE.class, level, pos).getBottomTankPos()));
         }
         return ItemInteractionResult.SUCCESS;
     }

@@ -3,7 +3,6 @@ package com.thepigcat.buildcraft.api.blockentities;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import com.portingdeadmods.portingdeadlibs.utils.capabilities.HandlerUtils;
-import com.thepigcat.buildcraft.BuildcraftLegacy;
 import com.thepigcat.buildcraft.api.blocks.EngineBlock;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
@@ -109,8 +108,6 @@ public abstract class EngineBlockEntity extends ContainerBlockEntity implements 
                     int received = receiver.receiveEnergy(toExport, false);
                     if (received > 0) {
                         getEnergyStorage().extractEnergy(received, false);
-                        BuildcraftLegacy.LOGGER.debug("Engine @{} exported {} FE (stored: {})",
-                                worldPosition, received, getEnergyStorage().getEnergyStored());
                     }
                 }
             }

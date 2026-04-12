@@ -1,6 +1,5 @@
 package com.thepigcat.buildcraft.content.blockentities;
 
-import com.thepigcat.buildcraft.BuildcraftLegacy;
 import com.thepigcat.buildcraft.PipesRegistry;
 import com.thepigcat.buildcraft.api.blockentities.PipeBlockEntity;
 import com.thepigcat.buildcraft.api.pipes.Pipe;
@@ -81,7 +80,6 @@ public class ItemPipeBE extends PipeBlockEntity<IItemHandler> {
 
                     if (pipeContent.isEmpty()) {
                         ItemStack remainder = insertItems(insertingHandler);
-                        BuildcraftLegacy.LOGGER.debug("remainder: {}", remainder);
                         this.itemHandler.insertItem(0, remainder, false);
 
                         ItemPipeBE blockEntity = BlockUtils.getBE(ItemPipeBE.class, level, worldPosition.relative(this.to));
