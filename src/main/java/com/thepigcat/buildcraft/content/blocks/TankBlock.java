@@ -148,10 +148,16 @@ public class TankBlock extends ContainerBlock {
         if (topJoined && bottomJoined) {
             TankBE aboveTank = BlockUtils.getBE(TankBE.class, level, clickedPos.above());
             TankBE belowTank = BlockUtils.getBE(TankBE.class, level, clickedPos.below());
-            if (!aboveTank.getFluid().is(belowTank.getFluid().getFluid()) || !aboveTank.getFluid().is(itemTankFluid.getFluid())) {
+            FluidStack above = aboveTank.getFluid();
+            FluidStack below = belowTank.getFluid();
+            // All three fluids must be pairwise compatible to bridge. Empty
+            // slots are compatible with anything — the previous check used
+            // FluidStack.is(Fluid) which treats EMPTY as a distinct fluid and
+            // would reject an empty placed item between two water tanks, even
+            // though the bridge is physically fine.
+            if (!joinable(above, below) || !joinable(above, itemTankFluid) || !joinable(below, itemTankFluid)) {
                 topJoined = false;
             }
-
         }
 
         return state != null ? state.setValue(TOP_JOINED, topJoined).setValue(BOTTOM_JOINED, bottomJoined) : null;
@@ -314,6 +320,17 @@ public class TankBlock extends ContainerBlock {
     @Override
     protected @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
+    }
+
+    /**
+     * Creative pick-block returns a fresh empty tank item. The default
+     * implementation snapshots the BE state into the stack (both the
+     * BLOCK_ENTITY_DATA component and TANK_CONTENT) which then restores a
+     * filled tank on placement — original BC gave an empty item on pick.
+     */
+    @Override
+    public @NotNull ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+        return new ItemStack(this);
     }
 
     @Override

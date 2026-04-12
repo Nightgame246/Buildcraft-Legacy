@@ -124,11 +124,4 @@ public class TankBE extends ContainerBlockEntity {
         if (handler != null) super.dropItems(handler);
     }
 
-    @Override
-    public void saveToItem(ItemStack stack, HolderLookup.Provider registries) {
-        super.saveToItem(stack, registries);
-
-        stack.set(BCDataComponents.TANK_CONTENT.get(), SimpleFluidContent.copyOf(this.getFluidTank().getFluid()));
-    }
-
 }
