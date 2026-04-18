@@ -12,6 +12,7 @@ import com.thepigcat.buildcraft.content.blockentities.CrateBE;
 import com.thepigcat.buildcraft.content.blockentities.ExtractItemPipeBE;
 import com.thepigcat.buildcraft.content.blockentities.ExtractingFluidPipeBE;
 import com.thepigcat.buildcraft.content.blockentities.FluidPipeBE;
+import com.thepigcat.buildcraft.content.blockentities.IronFluidPipeBE;
 import com.thepigcat.buildcraft.content.blockentities.ItemPipeBE;
 import com.thepigcat.buildcraft.content.blockentities.KinesisPipeBE;
 import com.thepigcat.buildcraft.content.blockentities.QuarryBE;
@@ -124,6 +125,10 @@ public final class BuildcraftLegacy {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, BCBlockEntities.TANK.get(), ContainerBlockEntity::getFluidHandlerOnSide);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, BCBlockEntities.FLUID_PIPE.get(), FluidPipeBE::getFluidHandler);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, BCBlockEntities.EXTRACTING_FLUID_PIPE.get(), FluidPipeBE::getFluidHandler);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+                BCBlockEntities.VOID_FLUID_PIPE.get(), FluidPipeBE::getFluidHandler);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+                BCBlockEntities.IRON_FLUID_PIPE.get(), IronFluidPipeBE::getFluidHandler);
         // ENERGY
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.REDSTONE_ENGINE.get(), ContainerBlockEntity::getEnergyStorageOnSide);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.STIRLING_ENGINE.get(), ContainerBlockEntity::getEnergyStorageOnSide);

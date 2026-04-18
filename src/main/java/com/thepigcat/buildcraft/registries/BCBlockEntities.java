@@ -2,7 +2,11 @@ package com.thepigcat.buildcraft.registries;
 
 import com.thepigcat.buildcraft.BuildcraftLegacy;
 import com.thepigcat.buildcraft.content.blockentities.*;
+import com.thepigcat.buildcraft.content.blockentities.IronFluidPipeBE;
+import com.thepigcat.buildcraft.content.blockentities.VoidFluidPipeBE;
 import com.thepigcat.buildcraft.content.blocks.*;
+import com.thepigcat.buildcraft.content.blocks.IronFluidPipeBlock;
+import com.thepigcat.buildcraft.content.blocks.VoidFluidPipeBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -62,13 +66,27 @@ public final class BCBlockEntities {
             () -> BlockEntityType.Builder.of(KinesisPipeBE::new, collectBlocks(KinesisPipeBlock.class, ExtractingKinesisPipeBlock.class)).build(null));
 
     public static final Supplier<BlockEntityType<FluidPipeBE>> FLUID_PIPE = BLOCK_ENTITIES.register("fluid_pipe",
-            () -> BlockEntityType.Builder.of(FluidPipeBE::new, collectBlocks(FluidPipeBlock.class)).build(null));
+            () -> BlockEntityType.Builder.of(FluidPipeBE::new, collectBlocksExact(FluidPipeBlock.class)).build(null));
 
     public static final Supplier<BlockEntityType<ExtractingFluidPipeBE>> EXTRACTING_FLUID_PIPE = BLOCK_ENTITIES.register("extracting_fluid_pipe",
             () -> BlockEntityType.Builder.of(ExtractingFluidPipeBE::new, collectBlocks(ExtractingFluidPipeBlock.class)).build(null));
 
+    public static final Supplier<BlockEntityType<VoidFluidPipeBE>> VOID_FLUID_PIPE = BLOCK_ENTITIES.register("void_fluid_pipe",
+            () -> BlockEntityType.Builder.of(VoidFluidPipeBE::new, collectBlocks(VoidFluidPipeBlock.class)).build(null));
+
+    public static final Supplier<BlockEntityType<IronFluidPipeBE>> IRON_FLUID_PIPE = BLOCK_ENTITIES.register("iron_fluid_pipe",
+            () -> BlockEntityType.Builder.of(IronFluidPipeBE::new, collectBlocks(IronFluidPipeBlock.class)).build(null));
+
     private static Block[] collectBlocks(Class<? extends Block> clazz) {
         return BuiltInRegistries.BLOCK.stream().filter(clazz::isInstance).toList().toArray(Block[]::new);
+    }
+
+    /** Matches only the exact class, not subclasses. Used to prevent FLUID_PIPE from
+     *  capturing VoidFluidPipeBlock/IronFluidPipeBlock instances. */
+    private static Block[] collectBlocksExact(Class<? extends Block> clazz) {
+        return BuiltInRegistries.BLOCK.stream()
+                .filter(b -> b.getClass() == clazz)
+                .toList().toArray(Block[]::new);
     }
 
     @SafeVarargs

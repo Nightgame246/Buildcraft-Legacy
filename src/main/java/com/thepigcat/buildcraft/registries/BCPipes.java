@@ -123,4 +123,29 @@ public final class BCPipes {
     public static final PipeHolder GOLD_FLUID = HELPER.registerPipe("gold_fluid", BCPipeTypes.FLUID_DEFAULT, "Gold Fluid Pipe", 0f, List.of(
             BuildcraftLegacy.rl("block/gold_fluid_pipe")
     ), Either.right(ResourceLocation.parse("gold_block")), Ingredient.of(Tags.Items.INGOTS_GOLD), List.of(BlockTags.MINEABLE_WITH_PICKAXE), 33);
+
+    public static final PipeHolder SANDSTONE_FLUID = HELPER.registerPipe("sandstone_fluid", BCPipeTypes.FLUID_DEFAULT,
+        "Sandstone Fluid Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/sandstone_fluid_pipe")
+        ), Either.right(ResourceLocation.parse("sandstone")), Ingredient.of(Blocks.SANDSTONE),
+        List.of(BlockTags.MINEABLE_WITH_PICKAXE), 34);
+
+    public static final PipeHolder QUARTZ_FLUID = HELPER.registerPipe("quartz_fluid", BCPipeTypes.FLUID_DEFAULT,
+        "Quartz Fluid Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/quartz_fluid_pipe")
+        ), Either.right(ResourceLocation.parse("quartz_block")), Ingredient.of(Tags.Items.GEMS_QUARTZ),
+        List.of(BlockTags.MINEABLE_WITH_PICKAXE), 35);
+
+    public static final PipeHolder VOID_FLUID = HELPER.registerPipe("void_fluid", BCPipeTypes.FLUID_VOID,
+        "Void Fluid Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/void_fluid_pipe")
+        ), Either.right(ResourceLocation.parse("obsidian")), Ingredient.of(Tags.Items.OBSIDIANS),
+        List.of(BlockTags.MINEABLE_WITH_PICKAXE), 36);
+
+    public static final PipeHolder IRON_FLUID = HELPER.registerPipe("iron_fluid", BCPipeTypes.FLUID_IRON,
+        "Iron Fluid Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/iron_fluid_pipe"),
+            BuildcraftLegacy.rl("block/iron_fluid_pipe_blocked")
+        ), Either.right(ResourceLocation.parse("iron_block")), Ingredient.of(Tags.Items.INGOTS_IRON),
+        List.of(BlockTags.MINEABLE_WITH_PICKAXE), 37);
 }
