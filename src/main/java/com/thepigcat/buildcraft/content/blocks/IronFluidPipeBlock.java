@@ -23,8 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -41,33 +39,23 @@ public class IronFluidPipeBlock extends FluidPipeBlock {
     @Override
     public PipeState getConnectionType(LevelAccessor level, BlockPos pipePos, BlockState pipeState,
                                         Direction connectionDirection, BlockPos connectPos) {
-        BlockState otherState = level.getBlockState(connectPos);
-        Block otherBlock = otherState.getBlock();
-        BlockEntity be = level.getBlockEntity(connectPos);
+        // Parent handles: fluid pipe connections, non-fluid pipe exclusion,
+        // sandstone machine exclusion, stone/cobblestone/quartz mutual exclusion,
+        // and IFluidHandler capability check.
+        PipeState base = super.getConnectionType(level, pipePos, pipeState, connectionDirection, connectPos);
+        if (base == PipeState.NONE) return PipeState.NONE;
 
-        boolean isConnected = false;
-        if (isFluidPipe(otherBlock)) {
-            isConnected = true;
-        } else if (otherBlock instanceof PipeBlock) {
-            return PipeState.NONE;
-        } else if (be != null && CapabilityUtils.fluidHandlerCapability(be, connectionDirection.getOpposite()) != null) {
-            isConnected = true;
+        // Iron pipe: apply locked-direction logic on top of parent connection check.
+        IronFluidPipeBE ironBE = BlockUtils.getBE(IronFluidPipeBE.class, level, pipePos);
+        if (ironBE != null && ironBE.getLockedDirection() != null) {
+            return connectionDirection == ironBE.getLockedDirection()
+                    ? PipeState.BLOCKED : PipeState.CONNECTED;
+        } else {
+            // Before BE data arrives on client, preserve existing BLOCKED state.
+            PipeState existing = pipeState.getValue(CONNECTION[connectionDirection.get3DDataValue()]);
+            if (existing == PipeState.BLOCKED) return PipeState.BLOCKED;
         }
-
-        if (isConnected) {
-            IronFluidPipeBE ironBE = BlockUtils.getBE(IronFluidPipeBE.class, level, pipePos);
-            if (ironBE != null && ironBE.getLockedDirection() != null) {
-                return connectionDirection == ironBE.getLockedDirection()
-                        ? PipeState.BLOCKED : PipeState.CONNECTED;
-            } else {
-                // Before BE data arrives on client, preserve existing BLOCKED state
-                PipeState existing = pipeState.getValue(CONNECTION[connectionDirection.get3DDataValue()]);
-                if (existing == PipeState.BLOCKED) return PipeState.BLOCKED;
-            }
-            return PipeState.CONNECTED;
-        }
-
-        return PipeState.NONE;
+        return base;
     }
 
     @Override

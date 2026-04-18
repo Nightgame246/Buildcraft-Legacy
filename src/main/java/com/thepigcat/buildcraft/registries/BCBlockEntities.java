@@ -2,11 +2,7 @@ package com.thepigcat.buildcraft.registries;
 
 import com.thepigcat.buildcraft.BuildcraftLegacy;
 import com.thepigcat.buildcraft.content.blockentities.*;
-import com.thepigcat.buildcraft.content.blockentities.IronFluidPipeBE;
-import com.thepigcat.buildcraft.content.blockentities.VoidFluidPipeBE;
 import com.thepigcat.buildcraft.content.blocks.*;
-import com.thepigcat.buildcraft.content.blocks.IronFluidPipeBlock;
-import com.thepigcat.buildcraft.content.blocks.VoidFluidPipeBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;

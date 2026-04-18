@@ -25,6 +25,8 @@ public class IronFluidPipeBE extends FluidPipeBE {
 
     @Override
     protected boolean isInputBlocked(int sectionIdx) {
+        // lockedDirection is the *output* face; block external fill on it
+        // to prevent back-pressure from downstream re-entering the pipe.
         return lockedDirection != null && Direction.values()[sectionIdx] == lockedDirection;
     }
 
