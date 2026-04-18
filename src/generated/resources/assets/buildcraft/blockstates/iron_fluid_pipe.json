@@ -10,11 +10,28 @@
     },
     {
       "apply": {
+        "model": "buildcraft:block/iron_fluid_pipe_connection_blocked"
+      },
+      "when": {
+        "down": "blocked"
+      }
+    },
+    {
+      "apply": {
         "model": "buildcraft:block/iron_fluid_pipe_connection",
         "x": 180
       },
       "when": {
         "up": "connected"
+      }
+    },
+    {
+      "apply": {
+        "model": "buildcraft:block/iron_fluid_pipe_connection_blocked",
+        "x": 180
+      },
+      "when": {
+        "up": "blocked"
       }
     },
     {
@@ -29,6 +46,16 @@
     },
     {
       "apply": {
+        "model": "buildcraft:block/iron_fluid_pipe_connection_blocked",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "north": "blocked"
+      }
+    },
+    {
+      "apply": {
         "model": "buildcraft:block/iron_fluid_pipe_connection",
         "x": 90,
         "y": 270
@@ -39,11 +66,30 @@
     },
     {
       "apply": {
+        "model": "buildcraft:block/iron_fluid_pipe_connection_blocked",
+        "x": 90,
+        "y": 270
+      },
+      "when": {
+        "east": "blocked"
+      }
+    },
+    {
+      "apply": {
         "model": "buildcraft:block/iron_fluid_pipe_connection",
         "x": 90
       },
       "when": {
         "south": "connected"
+      }
+    },
+    {
+      "apply": {
+        "model": "buildcraft:block/iron_fluid_pipe_connection_blocked",
+        "x": 90
+      },
+      "when": {
+        "south": "blocked"
       }
     },
     {
@@ -58,7 +104,17 @@
     },
     {
       "apply": {
-        "model": "buildcraft:block/iron_fluid_pipe_base"
+        "model": "buildcraft:block/iron_fluid_pipe_connection_blocked",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "west": "blocked"
+      }
+    },
+    {
+      "apply": {
+        "model": "buildcraft:block/iron_fluid_pipe_base_blocked"
       }
     }
   ]

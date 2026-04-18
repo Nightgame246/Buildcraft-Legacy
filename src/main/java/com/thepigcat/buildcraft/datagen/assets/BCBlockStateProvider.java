@@ -6,6 +6,7 @@ import com.thepigcat.buildcraft.api.blocks.ExtractingPipeBlock;
 import com.thepigcat.buildcraft.api.blocks.PipeBlock;
 import com.thepigcat.buildcraft.content.blocks.DiamondItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.ExtractingKinesisPipeBlock;
+import com.thepigcat.buildcraft.content.blocks.IronFluidPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.KinesisPipeBlock;
 import com.thepigcat.buildcraft.api.pipes.Pipe;
 import com.thepigcat.buildcraft.content.blocks.CrateBlock;
@@ -46,6 +47,8 @@ public class BCBlockStateProvider extends BlockStateProvider {
                 kinesisPipeBlock(block);
             } else if (block instanceof ExtractingPipeBlock) {
                 extractingPipeBlock(block);
+            } else if (block instanceof IronFluidPipeBlock) {
+                ironItemPipeBlock(block);
             } else if (block instanceof PipeBlock) {
                 pipeBlock(block);
             }
