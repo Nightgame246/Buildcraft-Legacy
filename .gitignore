@@ -28,9 +28,11 @@ runs
 run-data
 .codex
 
-WICHTIG für start
+WICHTIG
 plan/
 infos
 
 repo
 .aider*
+.claude/
+.superpowers/

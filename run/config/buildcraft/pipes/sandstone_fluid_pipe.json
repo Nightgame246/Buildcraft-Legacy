@@ -1,0 +1,19 @@
+{
+  "ingredient": {
+    "item": "minecraft:sandstone"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 34,
+  "transfer_speed": 0.0,
+  "textures": [
+    "buildcraft:block/sandstone_fluid_pipe"
+  ],
+  "properties": {
+    "copy_of": "minecraft:sandstone"
+  },
+  "drop_item": "buildcraft:sandstone_fluid_pipe",
+  "type": "buildcraft:fluid_default",
+  "name": "Sandstone Fluid Pipe"
+}

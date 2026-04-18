@@ -1,0 +1,19 @@
+{
+  "ingredient": {
+    "tag": "c:obsidians"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 36,
+  "transfer_speed": 0.0,
+  "textures": [
+    "buildcraft:block/void_fluid_pipe"
+  ],
+  "properties": {
+    "copy_of": "minecraft:obsidian"
+  },
+  "drop_item": "buildcraft:void_fluid_pipe",
+  "type": "buildcraft:fluid_void",
+  "name": "Void Fluid Pipe"
+}
