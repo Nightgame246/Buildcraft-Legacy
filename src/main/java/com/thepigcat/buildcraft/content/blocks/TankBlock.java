@@ -191,6 +191,14 @@ public class TankBlock extends ContainerBlock {
         TankBE tankBE = BlockUtils.getBE(TankBE.class, level, pos);
         if (tankBE == null) return;
 
+        // If the block type didn't change (only TOP_JOINED/BOTTOM_JOINED updated on a neighbor
+        // due to bridge placement), just re-form without recalculating fluids. Recalculating
+        // here would double-count fluids already merged into the column master.
+        if (oldState.is(this)) {
+            reformStack(level, pos);
+            return;
+        }
+
         FluidStack baseFluidCopy = tankBE.getFluidTank().getFluid().copy();
         int baseFluidAmount = baseFluidCopy.getAmount();
 
@@ -288,7 +296,7 @@ public class TankBlock extends ContainerBlock {
         FluidStack fluidStack = removedTank.getFluidHandler().getFluidInTank(0);
         int tank = removedTank.getBlockPos().getY() - removedTank.getBottomTankPos().getY();
         int prevFluidAmount = tank * BCConfig.tankCapacity;
-        int fluidAmount = Math.min(fluidStack.getAmount() - prevFluidAmount, BCConfig.tankCapacity);
+        int fluidAmount = Math.max(0, Math.min(fluidStack.getAmount() - prevFluidAmount, BCConfig.tankCapacity));
         removedTank.getFluidHandler().drain(fluidAmount, IFluidHandler.FluidAction.EXECUTE);
     }
 
@@ -310,7 +318,7 @@ public class TankBlock extends ContainerBlock {
         topTank.initialFluid = fluidStack.copyWithAmount(topFluidAmount);
 
         int prevFluidAmount = tank * BCConfig.tankCapacity;
-        int fluidAmount = Math.min(fluidStack.getAmount() - prevFluidAmount, BCConfig.tankCapacity);
+        int fluidAmount = Math.max(0, Math.min(fluidStack.getAmount() - prevFluidAmount, BCConfig.tankCapacity));
         BlockPos bottomTankPos = removedTank.getBottomTankPos();
 
         TankBE bottomTank = BlockUtils.getBE(TankBE.class, level, bottomTankPos);
