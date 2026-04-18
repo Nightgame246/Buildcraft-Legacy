@@ -104,7 +104,8 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
     /** Override to return true for void pipes: fluid entering the pipe is destroyed. */
     protected boolean isVoidPipe() { return false; }
 
-    /** Override to restrict which center-to-face directions are allowed. Iron pipe returns dir == lockedDirection. */
+    /** Override to restrict center-to-face output. Return {@code false} to suppress output in the given direction.
+     *  Base implementation returns {@code true} for all directions. */
     protected boolean isOutputAllowed(Direction dir) { return true; }
 
     /**
