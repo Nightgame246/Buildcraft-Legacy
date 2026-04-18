@@ -49,7 +49,7 @@ public class IronFluidPipeBlock extends FluidPipeBlock {
         IronFluidPipeBE ironBE = BlockUtils.getBE(IronFluidPipeBE.class, level, pipePos);
         if (ironBE != null && ironBE.getLockedDirection() != null) {
             return connectionDirection == ironBE.getLockedDirection()
-                    ? PipeState.BLOCKED : PipeState.CONNECTED;
+                    ? PipeState.CONNECTED : PipeState.BLOCKED;
         } else {
             // Before BE data arrives on client, preserve existing BLOCKED state.
             PipeState existing = pipeState.getValue(CONNECTION[connectionDirection.get3DDataValue()]);

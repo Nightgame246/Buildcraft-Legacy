@@ -71,9 +71,9 @@ public class IronItemPipeBlock extends PipeBlock {
             // Iron Pipe logic: check if this direction is blocked
             IronItemPipeBE ironBE = BlockUtils.getBE(IronItemPipeBE.class, level, pipePos);
             if (ironBE != null && ironBE.getLockedDirection() != null) {
-                if (connectionDirection == ironBE.getLockedDirection()) {
-                    return PipeState.BLOCKED;
-                }
+                // Output face is open (CONNECTED), all other connected faces are blocked.
+                return connectionDirection == ironBE.getLockedDirection()
+                        ? PipeState.CONNECTED : PipeState.BLOCKED;
             } else {
                 // BE not available or lockedDirection not synced yet (e.g. client-side before
                 // BE data packet arrives). Preserve any existing BLOCKED state from the blockstate
