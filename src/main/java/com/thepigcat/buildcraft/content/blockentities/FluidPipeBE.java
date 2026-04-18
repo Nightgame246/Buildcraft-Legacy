@@ -101,6 +101,18 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
         }
     }
 
+    /** Override to return true for void pipes: fluid entering the pipe is destroyed. */
+    protected boolean isVoidPipe() { return false; }
+
+    /** Override to restrict which center-to-face directions are allowed. Iron pipe returns dir == lockedDirection. */
+    protected boolean isOutputAllowed(Direction dir) { return true; }
+
+    /**
+     * Override to block a face section from accepting external fills (IFluidHandler.fill).
+     * Iron pipe returns true for the lockedDirection face to prevent back-fill from the output side.
+     */
+    protected boolean isInputBlocked(int sectionIdx) { return false; }
+
     // ── Tick ──────────────────────────────────────────────────────────────
 
     @Override
@@ -230,6 +242,7 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
     // ── Fluid Movement (3 phases, like original BC) ──────────────────────
 
     private void moveFromPipe() {
+        if (isVoidPipe()) return;
         for (Direction face : Direction.values()) {
             Section section = sections[face.ordinal()];
             if (!section.getCurrentDirection().canOutput()) continue;
@@ -261,6 +274,7 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
         for (Direction dir : Direction.values()) {
             Section section = sections[dir.ordinal()];
             if (!section.getCurrentDirection().canOutput()) continue;
+            if (!isOutputAllowed(dir)) continue;
             if (section.getMaxFilled() > 0 && capabilityCaches.containsKey(dir)) {
                 BlockCapabilityCache<IFluidHandler, Direction> cache = capabilityCaches.get(dir);
                 if (cache != null && cache.getCapability() != null) {
@@ -330,7 +344,9 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
                 if (amountToPush > 0) {
                     int actuallyDrained = section.drainInternal(amountToPush, true);
                     if (actuallyDrained > 0) {
-                        center.fill(actuallyDrained, true);
+                        if (!isVoidPipe()) {
+                            center.fill(actuallyDrained, true);
+                        }
                         section.ticksInDirection = COOLDOWN_INPUT;
                         left -= actuallyDrained;
                     }
@@ -610,6 +626,8 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
                 Direction face = Direction.values()[index];
                 if (!directions.contains(face)) return 0;
             }
+            // Block external fill on iron pipe output face
+            if (index < 6 && isInputBlocked(index)) return 0;
 
             if (!currentFluid.isEmpty() && !FluidStack.isSameFluidSameComponents(currentFluid, resource)) {
                 return 0;
