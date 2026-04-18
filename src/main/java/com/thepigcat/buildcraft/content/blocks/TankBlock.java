@@ -91,6 +91,7 @@ public class TankBlock extends ContainerBlock {
         }
 
         TankBE be = BlockUtils.getBE(TankBE.class, level, pos);
+        if (be == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         IFluidHandler itemFluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
         IFluidHandler tankFluidHandler = be.getFluidHandler();
 
@@ -132,6 +133,10 @@ public class TankBlock extends ContainerBlock {
                 }
                 return ItemInteractionResult.SUCCESS;
             }
+            // Tank can't accept/provide a full bucket — return FAIL so BucketItem.useOn()
+            // doesn't run and place fluid in the air above the tank (which is what happens
+            // when clicking the top face and PASS_TO_DEFAULT_BLOCK_INTERACTION is returned).
+            return ItemInteractionResult.FAIL;
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
