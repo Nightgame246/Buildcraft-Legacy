@@ -3,16 +3,19 @@ package com.thepigcat.buildcraft.api.blocks;
 import com.portingdeadmods.portingdeadlibs.api.blocks.ContainerBlock;
 import com.thepigcat.buildcraft.api.blockentities.EngineBlockEntity;
 import com.thepigcat.buildcraft.util.BlockUtils;
+import com.thepigcat.buildcraft.util.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -52,7 +55,32 @@ public abstract class EngineBlock extends ContainerBlock {
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState state = super.getStateForPlacement(context);
-        return state != null ? state.setValue(FACING, context.getClickedFace()) : null;
+        if (state == null) return null;
+        // Auto-orient toward adjacent energy receiver (kinesis pipe).
+        // Iterate in a stable order so placement is deterministic.
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        for (Direction dir : Direction.values()) {
+            BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
+            if (neighbor != null) {
+                IEnergyStorage cap = CapabilityUtils.energyStorageCapability(neighbor, dir.getOpposite());
+                if (cap != null && cap.canReceive()) {
+                    return state.setValue(FACING, dir);
+                }
+            }
+        }
+        return state.setValue(FACING, Direction.UP);
+    }
+
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if (!level.isClientSide()) {
+            EngineBlockEntity be = BlockUtils.getBE(EngineBlockEntity.class, level, pos);
+            if (be != null) {
+                be.setRedstoneSignalStrength(level.getBestNeighborSignal(pos));
+            }
+        }
     }
 
     @Override
@@ -78,8 +106,30 @@ public abstract class EngineBlock extends ContainerBlock {
     @Override
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+        if (level.isClientSide()) return;
 
-        int signal = level.getBestNeighborSignal(pos);
-        BlockUtils.getBE(EngineBlockEntity.class, level, pos).setRedstoneSignalStrength(signal);
+        EngineBlockEntity be = BlockUtils.getBE(EngineBlockEntity.class, level, pos);
+        if (be == null) return;
+
+        be.setRedstoneSignalStrength(level.getBestNeighborSignal(pos));
+
+        // Re-orient toward a newly adjacent pipe if currently not facing a receiver.
+        Direction currentFacing = state.getValue(FACING);
+        if (!hasEnergyReceiver(level, pos, currentFacing)) {
+            for (Direction dir : Direction.values()) {
+                if (hasEnergyReceiver(level, pos, dir)) {
+                    level.setBlock(pos, state.setValue(FACING, dir), Block.UPDATE_ALL);
+                    be.initCaches(dir);
+                    return;
+                }
+            }
+        }
+    }
+
+    private boolean hasEnergyReceiver(Level level, BlockPos pos, Direction dir) {
+        BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
+        if (neighbor == null) return false;
+        IEnergyStorage cap = CapabilityUtils.energyStorageCapability(neighbor, dir.getOpposite());
+        return cap != null && cap.canReceive();
     }
 }

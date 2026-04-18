@@ -125,7 +125,10 @@ public abstract class EngineBlockEntity extends ContainerBlockEntity implements 
     }
 
     public void setRedstoneSignalStrength(int redstoneSignalStrength) {
-        this.redstoneSignalStrength = redstoneSignalStrength;
+        if (this.redstoneSignalStrength != redstoneSignalStrength) {
+            this.redstoneSignalStrength = redstoneSignalStrength;
+            this.updateData();
+        }
     }
 
     public int getRedstoneSignalStrength() {
