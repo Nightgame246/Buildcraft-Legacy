@@ -56,7 +56,7 @@ public class IronFluidPipeBE extends FluidPipeBE {
         }
     }
 
-    /** Sets the blockstate CONNECTION properties: BLOCKED for lockedDirection, CONNECTED for others. */
+    /** Sets the blockstate CONNECTION properties: CONNECTED for lockedDirection (output), BLOCKED for others. */
     private void updateBlockedDirections() {
         if (level == null || level.isClientSide()) return;
         BlockState state = getBlockState();
@@ -65,8 +65,8 @@ public class IronFluidPipeBE extends FluidPipeBE {
             PipeBlock.PipeState current = state.getValue(PipeBlock.CONNECTION[dir.get3DDataValue()]);
             if (current != PipeBlock.PipeState.NONE) {
                 PipeBlock.PipeState target = (dir == lockedDirection)
-                        ? PipeBlock.PipeState.BLOCKED
-                        : PipeBlock.PipeState.CONNECTED;
+                        ? PipeBlock.PipeState.CONNECTED
+                        : PipeBlock.PipeState.BLOCKED;
                 if (current != target) {
                     state = state.setValue(PipeBlock.CONNECTION[dir.get3DDataValue()], target);
                     changed = true;

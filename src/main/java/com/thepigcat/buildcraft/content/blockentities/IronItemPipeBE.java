@@ -67,7 +67,7 @@ public class IronItemPipeBE extends ItemPipeBE {
             for (Direction dir : Direction.values()) {
                 PipeBlock.PipeState currentPipeState = state.getValue(PipeBlock.CONNECTION[dir.get3DDataValue()]);
                 if (currentPipeState != PipeBlock.PipeState.NONE) {
-                    PipeBlock.PipeState targetState = (dir == lockedDirection) ? PipeBlock.PipeState.BLOCKED : PipeBlock.PipeState.CONNECTED;
+                    PipeBlock.PipeState targetState = (dir == lockedDirection) ? PipeBlock.PipeState.CONNECTED : PipeBlock.PipeState.BLOCKED;
                     if (currentPipeState != targetState) {
                         state = state.setValue(PipeBlock.CONNECTION[dir.get3DDataValue()], targetState);
                         changed = true;
