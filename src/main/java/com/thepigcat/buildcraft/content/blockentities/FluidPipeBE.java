@@ -87,6 +87,12 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
         } else if (pipeId.contains("cobblestone")) {
             transferPerTick = 10;
             delay = 10;
+        } else if (pipeId.contains("quartz") && pipeId.contains("fluid")) {
+            transferPerTick = 40;
+            delay = 5;
+        } else if (pipeId.contains("sandstone") && pipeId.contains("fluid")) {
+            transferPerTick = 10;
+            delay = 10;
         } else {
             // Wooden and other defaults
             transferPerTick = 10;
