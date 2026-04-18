@@ -1,0 +1,19 @@
+{
+  "ingredient": {
+    "item": "minecraft:lapis_block"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 13,
+  "transfer_speed": 0.25,
+  "textures": [
+    "buildcraft:block/daizuli_pipe"
+  ],
+  "properties": {
+    "copy_of": "minecraft:lapis_block"
+  },
+  "drop_item": "buildcraft:daizuli_pipe",
+  "type": "buildcraft:daizuli",
+  "name": "Daizuli Pipe"
+}

@@ -1,0 +1,19 @@
+{
+  "ingredient": {
+    "tag": "c:ingots/gold"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 33,
+  "transfer_speed": 0.0,
+  "textures": [
+    "buildcraft:block/gold_fluid_pipe"
+  ],
+  "properties": {
+    "copy_of": "minecraft:gold_block"
+  },
+  "drop_item": "buildcraft:gold_fluid_pipe",
+  "type": "buildcraft:fluid_default",
+  "name": "Gold Fluid Pipe"
+}

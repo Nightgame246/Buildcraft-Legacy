@@ -1,0 +1,24 @@
+{
+  "disabled": false,
+  "type": "buildcraft:obsidian_suction",
+  "transfer_speed": 0.25,
+  "textures": [
+    "buildcraft:block/obsidian_pipe"
+  ],
+  "properties": {
+    "copy_of": "minecraft:obsidian"
+  },
+  "drop_item": "buildcraft:obsidian_pipe",
+  "ingredient": {
+    "tag": "c:obsidians"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 8,
+  "has_custom_block_model": false,
+  "has_custom_item_model": false,
+  "has_custom_recipe": false,
+  "has_custom_loottable": false,
+  "has_custom_tags": false
+}

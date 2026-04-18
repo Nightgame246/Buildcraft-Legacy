@@ -1,0 +1,19 @@
+{
+  "ingredient": {
+    "tag": "c:gems/quartz"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 24,
+  "transfer_speed": 0.0,
+  "textures": [
+    "buildcraft:block/quartz_kinesis_pipe"
+  ],
+  "properties": {
+    "copy_of": "minecraft:quartz_block"
+  },
+  "drop_item": "buildcraft:quartz_kinesis_pipe",
+  "type": "buildcraft:kinesis_default",
+  "name": "Quartz Kinesis Pipe"
+}

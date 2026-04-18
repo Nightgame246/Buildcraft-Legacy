@@ -19,7 +19,11 @@ build
 
 # other
 eclipse
-run
+run/*
+!run/config/
+run/config/*
+!run/config/buildcraft-common.toml
+!run/config/buildcraft/
 runs
 run-data
 .codex

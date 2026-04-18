@@ -1,0 +1,74 @@
+#Whether the Fluid Tank retains its contents after being broken
+tank_retain_fluids = true
+#Whether the Crate retains its contents after being broken
+crate_retain_items = true
+
+	[capacity.items]
+		#The maximum amount of items the crate can store
+		# Default: 4096
+		# Range: > 0
+		crate_item_capacity = 4096
+
+	[capacity.energy]
+		#
+		# Default: 50000
+		# Range: > 0
+		quarry_energy_capacity = 50000
+		#The maximum amount of energy a stirling engine can store
+		# Default: 5000
+		# Range: > 0
+		stirling_engine_energy_capacity = 5000
+		#The maximum amount of energy a combustion engine can store
+		# Default: 10000
+		# Range: > 0
+		combustion_engine_energy_capacity = 10000
+		#The maximum amount of energy a redstone engine can store
+		# Default: 1000
+		# Range: > 0
+		redstone_engine_energy_capacity = 1000
+		#Base energy buffer of kinesis (power) pipes
+		# Default: 1000
+		# Range: > 0
+		kinesis_pipe_energy_capacity = 1000
+		#Internal energy buffer of extraction pipes
+		# Default: 1000
+		# Range: > 0
+		extraction_pipe_energy_capacity = 1000
+
+	[capacity.fluid]
+		#The maximum amount of fluid a combustion engine can store
+		# Default: 2000
+		# Range: > 0
+		combustion_engine_fluid_capacity = 2000
+		#The maximum amount of fluid a tank can store
+		# Default: 8000
+		# Range: > 0
+		tank_capacity = 8000
+
+	[production.energy]
+		#The amount of energy a combustion engine produces per cycle
+		# Default: 40
+		# Range: > 0
+		combustion_engine_energy_production = 40
+		#The amount of energy a redstone engine produces
+		# Default: 5
+		# Range: > 0
+		redstone_engine_energy_production = 5
+		#The amount of energy a stirling engine produces per cycle
+		# Default: 20
+		# Range: > 0
+		stirling_engine_energy_production = 20
+		#FE consumed per block mined
+		# Default: 20
+		# Range: > 0
+		quarry_energy_per_block = 20
+		#FE consumed per item extraction by wooden/emerald pipes
+		# Default: 10
+		# Range: > 0
+		extraction_energy_cost = 10
+
+	[production.fluid]
+		#Millibuckets of fluid extracted per FE consumed by wooden fluid pipe (like original BC: engine power determines extraction speed)
+		# Default: 5
+		# Range: > 0
+		fluid_extraction_rate = 5

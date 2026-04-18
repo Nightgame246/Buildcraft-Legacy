@@ -1,0 +1,19 @@
+{
+  "ingredient": {
+    "item": "minecraft:stone"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 22,
+  "transfer_speed": 0.0,
+  "textures": [
+    "buildcraft:block/stone_kinesis_pipe"
+  ],
+  "properties": {
+    "copy_of": "minecraft:stone"
+  },
+  "drop_item": "buildcraft:stone_kinesis_pipe",
+  "type": "buildcraft:kinesis_default",
+  "name": "Stone Kinesis Pipe"
+}

@@ -1,6 +1,6 @@
 # Fluid Pipe Flow Rendering Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Fluid-Pipes zeigen sichtbaren Flow wie im Original BuildCraft 1.12 — Textur scrollt durch die Pipe in Transport-Richtung, ohne dass sich die Pipe-Geometrie in der Welt bewegt.
 
@@ -30,7 +30,7 @@ Vor-Commit: Extracting-Direction-Cycling läuft aktuell über `useWithoutItem` (
 **Files:**
 - Modify: `src/main/java/com/thepigcat/buildcraft/content/blocks/ExtractingFluidPipeBlock.java`
 
-- [ ] **Step 1: Add wrench check using `useItemOn`, remove `useWithoutItem`**
+- [x] **Step 1: Add wrench check using `useItemOn`, remove `useWithoutItem`**
 
 Ersetze die existierende `useWithoutItem(...)` Methode durch eine `useItemOn(...)` Override, die nur bei Wrench reagiert. Die Cycling-Logik bleibt identisch (Kopie der Schleife von Zeile 66-108, nur der Wrapper wechselt).
 
@@ -96,12 +96,12 @@ protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Lev
 }
 ```
 
-- [ ] **Step 2: Compile check**
+- [x] **Step 2: Compile check**
 
 Run: `sh ./gradlew compileJava`
 Expected: BUILD SUCCESSFUL.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blocks/ExtractingFluidPipeBlock.java
@@ -118,14 +118,14 @@ no longer cycles suction direction."
 **Files:**
 - Modify: `src/main/java/com/thepigcat/buildcraft/content/blockentities/FluidPipeBE.java`
 
-- [ ] **Step 1: Add import for `Vec3`**
+- [x] **Step 1: Add import for `Vec3`**
 
 Füge zum Import-Block hinzu (falls noch nicht vorhanden):
 ```java
 import net.minecraft.world.phys.Vec3;
 ```
 
-- [ ] **Step 2: Add constant and fields**
+- [x] **Step 2: Add constant and fields**
 
 Füge direkt unter dem existierenden `private static final int CENTER = 6;` (Zeile 30) ein:
 ```java
@@ -138,7 +138,7 @@ private final Vec3[] offsetLast = new Vec3[7];
 private final Vec3[] offsetThis = new Vec3[7];
 ```
 
-- [ ] **Step 3: Initialize offset arrays in constructor**
+- [x] **Step 3: Initialize offset arrays in constructor**
 
 Erweitere den existierenden `for`-Loop im Constructor (Zeile 56-58):
 ```java
@@ -149,7 +149,7 @@ for (int i = 0; i < 7; i++) {
 }
 ```
 
-- [ ] **Step 4: Add `getOffsetsForRender()` accessor**
+- [x] **Step 4: Add `getOffsetsForRender()` accessor**
 
 Füge direkt nach der existierenden `getAmountForRender(...)` Methode (nach Zeile 366) ein:
 ```java
@@ -160,12 +160,12 @@ public Vec3 getOffsetForRender(int sectionIndex, float partialTick) {
 }
 ```
 
-- [ ] **Step 5: Compile check**
+- [x] **Step 5: Compile check**
 
 Run: `sh ./gradlew compileJava`
 Expected: BUILD SUCCESSFUL.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blockentities/FluidPipeBE.java
@@ -181,7 +181,7 @@ Offset-Algorithmus pro Client-Tick nach dem Amount-Update.
 **Files:**
 - Modify: `src/main/java/com/thepigcat/buildcraft/content/blockentities/FluidPipeBE.java` (existing `clientTick()` method, ~Zeile 147-160)
 
-- [ ] **Step 1: Replace `clientTick()` body**
+- [x] **Step 1: Replace `clientTick()` body**
 
 Ersetze die existierende `clientTick()` Methode vollständig mit:
 ```java
@@ -252,12 +252,12 @@ private void clientTick() {
 }
 ```
 
-- [ ] **Step 2: Compile check**
+- [x] **Step 2: Compile check**
 
 Run: `sh ./gradlew compileJava`
 Expected: BUILD SUCCESSFUL.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blockentities/FluidPipeBE.java
@@ -277,14 +277,14 @@ Neue Helper-Methode die UV-Koords aus einer BE-lokalen Position + Offset berechn
 **Files:**
 - Modify: `src/main/java/com/thepigcat/buildcraft/client/blockentities/FluidPipeBERenderer.java`
 
-- [ ] **Step 1: Add import for `Vec3`**
+- [x] **Step 1: Add import for `Vec3`**
 
 Falls noch nicht vorhanden:
 ```java
 import net.minecraft.world.phys.Vec3;
 ```
 
-- [ ] **Step 2: Add helper method**
+- [x] **Step 2: Add helper method**
 
 Füge als private static Methode (oben in der Klasse, vor `render()`) ein:
 ```java
@@ -322,12 +322,12 @@ private static void writeVertex(VertexConsumer vc, Matrix4f pose,
 }
 ```
 
-- [ ] **Step 3: Compile check**
+- [x] **Step 3: Compile check**
 
 Run: `sh ./gradlew compileJava`
 Expected: BUILD SUCCESSFUL (helper is used in next task).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/client/blockentities/FluidPipeBERenderer.java
@@ -343,7 +343,7 @@ git commit -m "refactor(fluid-pipe-render): add world-space UV vertex helper"
 **Files:**
 - Modify: `src/main/java/com/thepigcat/buildcraft/client/blockentities/FluidPipeBERenderer.java` (existing `renderBox`, ~Zeile 133-177)
 
-- [ ] **Step 1: Replace `renderBox` method**
+- [x] **Step 1: Replace `renderBox` method**
 
 Ersetze die komplette bestehende `renderBox(...)` Methode mit:
 ```java
@@ -390,12 +390,12 @@ private void renderBox(Matrix4f pose, VertexConsumer vc, TextureAtlasSprite spri
 }
 ```
 
-- [ ] **Step 2: Compile check**
+- [x] **Step 2: Compile check**
 
 Run: `sh ./gradlew compileJava`
 Expected: BUILD FAILS — callers still pass old signature without `offset`. Das ist erwartet, wir fixen im nächsten Step.
 
-- [ ] **Step 3: Update caller in `render()` — center box**
+- [x] **Step 3: Update caller in `render()` — center box**
 
 Finde im `render()` die Zeile (ca. Zeile 68):
 ```java
@@ -409,7 +409,7 @@ renderBox(pose, vc, sprite, 0.26f, 0.74f, 0.26f, height, 0.26f, 0.74f,
         centerOffset, r, g, b, a, packedLight, packedOverlay);
 ```
 
-- [ ] **Step 4: Update caller in `renderConnectionFluid()` — face boxes**
+- [x] **Step 4: Update caller in `renderConnectionFluid()` — face boxes**
 
 Die `renderConnectionFluid` Methode ruft `renderBox` 6× auf (einmal pro Achsen-Fall). Jeder Call braucht den Section-Offset zusätzlich. Ersetze die komplette `renderConnectionFluid` Methode mit:
 
@@ -461,7 +461,7 @@ private void renderConnectionFluid(Matrix4f pose, VertexConsumer vc, TextureAtla
 }
 ```
 
-- [ ] **Step 5: Update call-site von `renderConnectionFluid`**
+- [x] **Step 5: Update call-site von `renderConnectionFluid`**
 
 Finde in `render()` die Face-Section-Schleife (ca. Zeile 73-82) und ersetze:
 ```java
@@ -491,12 +491,12 @@ for (Direction dir : Direction.values()) {
 }
 ```
 
-- [ ] **Step 6: Compile check**
+- [x] **Step 6: Compile check**
 
 Run: `sh ./gradlew compileJava`
 Expected: BUILD SUCCESSFUL.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/client/blockentities/FluidPipeBERenderer.java
@@ -515,7 +515,7 @@ Aktuell rendert das Center IMMER als horizontale Box (Höhe skaliert mit fill). 
 **Files:**
 - Modify: `src/main/java/com/thepigcat/buildcraft/client/blockentities/FluidPipeBERenderer.java` (center block in `render()`, ~Zeile 60-70)
 
-- [ ] **Step 1: Replace center rendering block**
+- [x] **Step 1: Replace center rendering block**
 
 Finde in `render()` den Center-Rendering-Block:
 ```java
@@ -576,16 +576,16 @@ if (centerAmount > 0) {
 }
 ```
 
-- [ ] **Step 2: Remove the redundant old `centerOffset` lookup**
+- [x] **Step 2: Remove the redundant old `centerOffset` lookup**
 
 In Task 5 Step 3 haben wir oben bereits `Vec3 centerOffset = be.getOffsetForRender(6, partialTick);` eingefügt. In Step 1 dieser Task wird die Variable innerhalb des neuen Blocks neu deklariert — dadurch gibt's einen Konflikt. Entferne die ältere Zeile (direkt über dem neuen Block), sodass nur noch die Version innerhalb des `if (centerAmount > 0)` Blocks existiert.
 
-- [ ] **Step 3: Compile check**
+- [x] **Step 3: Compile check**
 
 Run: `sh ./gradlew compileJava`
 Expected: BUILD SUCCESSFUL.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/client/blockentities/FluidPipeBERenderer.java

@@ -1,0 +1,19 @@
+{
+  "ingredient": {
+    "tag": "c:gems/diamond"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 25,
+  "transfer_speed": 0.0,
+  "textures": [
+    "buildcraft:block/diamond_kinesis_pipe"
+  ],
+  "properties": {
+    "copy_of": "minecraft:diamond_block"
+  },
+  "drop_item": "buildcraft:diamond_kinesis_pipe",
+  "type": "buildcraft:kinesis_default",
+  "name": "Diamond Kinesis Pipe"
+}

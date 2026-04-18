@@ -1,0 +1,18 @@
+{
+  "ingredient": {
+    "item": "minecraft:stone"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 2,
+  "transfer_speed": 0.25,
+  "textures": [
+    "buildcraft:block/stone_pipe"
+  ],
+  "properties": {
+    "copy_of": "minecraft:stone"
+  },
+  "drop_item": "buildcraft:stone_pipe",
+  "name": "Stone Pipe"
+}

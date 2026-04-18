@@ -1,0 +1,20 @@
+{
+  "ingredient": {
+    "tag": "minecraft:planks"
+  },
+  "mining_tools": [
+    "minecraft:mineable/axe"
+  ],
+  "tab_ordering_priority": 30,
+  "transfer_speed": 0.0,
+  "textures": [
+    "buildcraft:block/wooden_fluid_pipe",
+    "buildcraft:block/wooden_fluid_pipe_extracting"
+  ],
+  "properties": {
+    "copy_of": "minecraft:oak_planks"
+  },
+  "drop_item": "buildcraft:wooden_fluid_pipe",
+  "type": "buildcraft:fluid_extracting",
+  "name": "Wooden Fluid Pipe"
+}

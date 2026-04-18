@@ -1,0 +1,20 @@
+{
+  "ingredient": {
+    "tag": "minecraft:planks"
+  },
+  "mining_tools": [
+    "minecraft:mineable/axe"
+  ],
+  "tab_ordering_priority": 20,
+  "transfer_speed": 0.0,
+  "textures": [
+    "buildcraft:block/wooden_kinesis_pipe",
+    "buildcraft:block/wooden_kinesis_pipe_extracting"
+  ],
+  "properties": {
+    "copy_of": "minecraft:oak_planks"
+  },
+  "drop_item": "buildcraft:wooden_kinesis_pipe",
+  "type": "buildcraft:kinesis_extracting",
+  "name": "Wooden Kinesis Pipe"
+}

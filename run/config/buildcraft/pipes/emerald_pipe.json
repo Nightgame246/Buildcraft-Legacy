@@ -1,0 +1,25 @@
+{
+  "disabled": false,
+  "type": "buildcraft:emerald",
+  "transfer_speed": 0.25,
+  "textures": [
+    "buildcraft:block/emerald_pipe",
+    "buildcraft:block/emerald_pipe_extracting"
+  ],
+  "properties": {
+    "copy_of": "minecraft:emerald_block"
+  },
+  "drop_item": "buildcraft:emerald_pipe",
+  "ingredient": {
+    "tag": "c:gems/emerald"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 11,
+  "has_custom_block_model": false,
+  "has_custom_item_model": false,
+  "has_custom_recipe": false,
+  "has_custom_loottable": false,
+  "has_custom_tags": false
+}

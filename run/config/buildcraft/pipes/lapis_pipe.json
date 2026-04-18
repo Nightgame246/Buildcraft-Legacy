@@ -1,0 +1,18 @@
+{
+  "ingredient": {
+    "item": "minecraft:lapis_block"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 12,
+  "transfer_speed": 0.25,
+  "textures": [
+    "buildcraft:block/lapis_pipe"
+  ],
+  "properties": {
+    "copy_of": "minecraft:lapis_block"
+  },
+  "drop_item": "buildcraft:lapis_pipe",
+  "name": "Lapis Pipe"
+}

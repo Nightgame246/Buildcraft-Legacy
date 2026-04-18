@@ -1,0 +1,25 @@
+{
+  "disabled": false,
+  "type": "buildcraft:iron",
+  "transfer_speed": 0.25,
+  "textures": [
+    "buildcraft:block/iron_pipe",
+    "buildcraft:block/iron_pipe_blocked"
+  ],
+  "properties": {
+    "copy_of": "minecraft:iron_block"
+  },
+  "drop_item": "buildcraft:iron_pipe",
+  "ingredient": {
+    "tag": "c:ingots/iron"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 7,
+  "has_custom_block_model": false,
+  "has_custom_item_model": false,
+  "has_custom_recipe": false,
+  "has_custom_loottable": false,
+  "has_custom_tags": false
+}

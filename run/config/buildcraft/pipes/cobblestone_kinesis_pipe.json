@@ -1,0 +1,16 @@
+{
+  "ingredient": {
+    "item": "minecraft:cobblestone"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 21,
+  "transfer_speed": 0.0,
+  "textures": [
+    "buildcraft:block/cobblestone_kinesis_pipe"
+  ],
+  "drop_item": "buildcraft:cobblestone_kinesis_pipe",
+  "type": "buildcraft:kinesis_default",
+  "name": "Cobblestone Kinesis Pipe"
+}

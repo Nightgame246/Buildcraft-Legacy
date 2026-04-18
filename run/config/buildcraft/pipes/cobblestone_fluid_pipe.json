@@ -1,0 +1,16 @@
+{
+  "ingredient": {
+    "item": "minecraft:cobblestone"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 31,
+  "transfer_speed": 0.0,
+  "textures": [
+    "buildcraft:block/cobblestone_fluid_pipe"
+  ],
+  "drop_item": "buildcraft:cobblestone_fluid_pipe",
+  "type": "buildcraft:fluid_default",
+  "name": "Cobblestone Fluid Pipe"
+}

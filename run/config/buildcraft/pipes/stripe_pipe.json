@@ -1,0 +1,19 @@
+{
+  "ingredient": {
+    "tag": "c:ingots/gold"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 14,
+  "transfer_speed": 0.25,
+  "textures": [
+    "buildcraft:block/stripe_pipe"
+  ],
+  "properties": {
+    "copy_of": "minecraft:gold_block"
+  },
+  "drop_item": "buildcraft:stripe_pipe",
+  "type": "buildcraft:stripe",
+  "name": "Stripe Pipe"
+}

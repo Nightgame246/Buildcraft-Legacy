@@ -1,6 +1,6 @@
 # Tank Stack Fixes Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Fix Multi-Block-Tank Stack-Lifecycle Bugs (Destruction, Bridging, Client-Sync) durch zentralen `reformStack` Helper.
 
@@ -33,7 +33,7 @@ Beide Dateien existieren. Keine neuen Files.
 
 Ziel: Isoliert den Helper hinzufügen, noch NICHT von `onPlace`/`onRemove` aufrufen. Existing-Code bleibt intakt für dieses Commit. Danach `loadData` gegen fehlendes `bottomTankPos`-Tag absichern.
 
-- [ ] **Step 1: `reformStack` Methode in `TankBlock.java` einfügen**
+- [x] **Step 1: `reformStack` Methode in `TankBlock.java` einfügen**
 
 Füge am Ende der Klasse (vor dem schließenden `}`) folgende Methode ein:
 
@@ -88,12 +88,12 @@ Füge am Ende der Klasse (vor dem schließenden `}`) folgende Methode ein:
     }
 ```
 
-- [ ] **Step 2: Compile verifizieren**
+- [x] **Step 2: Compile verifizieren**
 
 Run: `./gradlew compileJava`
 Expected: BUILD SUCCESSFUL, keine Warnings für `TankBlock.java`.
 
-- [ ] **Step 3: `TankBE.loadData` Null-Safe machen**
+- [x] **Step 3: `TankBE.loadData` Null-Safe machen**
 
 In `src/main/java/com/thepigcat/buildcraft/content/blockentities/TankBE.java:100-103` ersetze:
 
@@ -119,12 +119,12 @@ durch:
 
 Warum: Ohne den `contains`-Check liefert `getLong` bei fehlendem Tag `0L` → falscher `BlockPos(0,0,0)`-Pointer bei frisch geladenen Tanks.
 
-- [ ] **Step 4: Compile verifizieren**
+- [x] **Step 4: Compile verifizieren**
 
 Run: `./gradlew compileJava`
 Expected: BUILD SUCCESSFUL.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blocks/TankBlock.java src/main/java/com/thepigcat/buildcraft/content/blockentities/TankBE.java
@@ -146,7 +146,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 Ziel: Duplicate Stack-Walk-Logik in `onPlace` ersetzen durch ein Call auf `reformStack`. Die `initialFluid`-Berechnung bleibt — nur die Pointer/initTank-Abwicklung übernimmt `reformStack`.
 
-- [ ] **Step 1: `onPlace` neu schreiben**
+- [x] **Step 1: `onPlace` neu schreiben**
 
 Ersetze die komplette aktuelle `onPlace`-Methode in `TankBlock.java:184-245` durch:
 
@@ -220,12 +220,12 @@ Ersetze die komplette aktuelle `onPlace`-Methode in `TankBlock.java:184-245` dur
     }
 ```
 
-- [ ] **Step 2: Compile verifizieren**
+- [x] **Step 2: Compile verifizieren**
 
 Run: `./gradlew compileJava`
 Expected: BUILD SUCCESSFUL. Keine Referenzen mehr auf `setTopJoined`/`setBottomJoined` aus `onPlace` (diese werden in Task 4 aus TankBE entfernt, sind aber aktuell noch vorhanden und wurden nur nicht mehr aufgerufen).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blocks/TankBlock.java
@@ -247,7 +247,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 Ziel: Nach Fluid-Redistribute ruft `onRemove` `reformStack` für die verbleibenden Stack-Hälften auf. Das fixt die Destruction-Bugs (Flicker, falsche Capacity, Geister-Pointer).
 
-- [ ] **Step 1: `onRemove` erweitern**
+- [x] **Step 1: `onRemove` erweitern**
 
 Ersetze die aktuelle `onRemove`-Methode in `TankBlock.java:247-259` durch:
 
@@ -292,12 +292,12 @@ Ersetze die aktuelle `onRemove`-Methode in `TankBlock.java:247-259` durch:
 
 Warum die Reihenfolge `super.onRemove` VOR `reformStack`: `updateShape` läuft erst nachdem der Block entfernt wurde und aktualisiert die `TOP_JOINED`/`BOTTOM_JOINED`-Properties der Nachbarn. `reformStack` verlässt sich auf diese Properties beim Walk.
 
-- [ ] **Step 2: Compile verifizieren**
+- [x] **Step 2: Compile verifizieren**
 
 Run: `./gradlew compileJava`
 Expected: BUILD SUCCESSFUL.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blocks/TankBlock.java
@@ -322,12 +322,12 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 Ziel: Die Instance-Fields `topJoined`/`bottomJoined` sind redundant — dieselbe Info steckt in der BlockState-Property. Entfernen, damit es keine zwei Sources-of-Truth gibt.
 
-- [ ] **Step 1: Prüfen ob die Felder noch von außen genutzt werden**
+- [x] **Step 1: Prüfen ob die Felder noch von außen genutzt werden**
 
 Run: `grep -rn "isTopJoined\|isBottomJoined\|setTopJoined\|setBottomJoined" src/main/java`
 Expected: Nur Treffer innerhalb `TankBE.java` und `TankBlock.java`. Wenn Treffer in anderen Dateien: Treffer auf `getBlockState().getValue(TankBlock.TOP_JOINED/BOTTOM_JOINED)` umstellen (dieser Plan ergänzen).
 
-- [ ] **Step 2: Felder und Zugriff aus `TankBE.java` entfernen**
+- [x] **Step 2: Felder und Zugriff aus `TankBE.java` entfernen**
 
 In `src/main/java/com/thepigcat/buildcraft/content/blockentities/TankBE.java`:
 
@@ -356,7 +356,7 @@ Entferne die Setter/Getter (Zeile 120-134):
     }
 ```
 
-- [ ] **Step 3: `TankBlock.updateShape` von `setTopJoined`/`setBottomJoined` säubern**
+- [x] **Step 3: `TankBlock.updateShape` von `setTopJoined`/`setBottomJoined` säubern**
 
 In `src/main/java/com/thepigcat/buildcraft/content/blocks/TankBlock.java:161-181` ersetze die `updateShape`-Methode durch:
 
@@ -392,12 +392,12 @@ In `src/main/java/com/thepigcat/buildcraft/content/blocks/TankBlock.java:161-181
 
 Änderungen: keine `setTopJoined`/`setBottomJoined`-Calls mehr, Null-Checks für BlockEntity-Lookups hinzugefügt.
 
-- [ ] **Step 4: Compile verifizieren**
+- [x] **Step 4: Compile verifizieren**
 
 Run: `./gradlew compileJava`
 Expected: BUILD SUCCESSFUL. Wenn Fehler zu unresolved `setTopJoined`/`setBottomJoined`/`isTopJoined`/`isBottomJoined` auftreten, diese Call-Sites mit `getBlockState().getValue(TankBlock.TOP_JOINED)` bzw. `...BOTTOM_JOINED` ersetzen.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blockentities/TankBE.java src/main/java/com/thepigcat/buildcraft/content/blocks/TankBlock.java
@@ -418,35 +418,35 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 Alle Tests mit Default-Config: `BCConfig.tankCapacity = 8000 mB`, Bucket = `1000 mB`. Creative-Modus, Wasser-Bucket.
 
-- [ ] **Step 1: Client starten**
+- [x] **Step 1: Client starten**
 
 Run: `sh ./gradlew runClient` (Hintergrund, ~1-3 Min bis Hauptmenü).
 
-- [ ] **Step 2: Test 1 — Flicker beim Break**
+- [x] **Step 2: Test 1 — Flicker beim Break**
 
 Aufbau: 3er-Tank-Stack, von oben mit einigen Buckets halb füllen.
 Aktion: Mittleren Tank mit Linksklick brechen.
 Erwartung: Der Block verschwindet einmalig und bleibt weg (kein Wiederauftauchen/Flicker). Der obere Tank zeigt sofort seinen proportionalen Fluid-Rest korrekt. Der untere Tank zeigt seinen Rest korrekt.
 
-- [ ] **Step 3: Test 2 — Capacity im Stack (Buckets)**
+- [x] **Step 3: Test 2 — Capacity im Stack (Buckets)**
 
 Aufbau: leerer 3er-Tank-Stack.
 Aktion: Mit gefülltem Wasserbucket in den Bottom-Tank rechtsklicken, 8× wiederholen.
 Erwartung: Nach 8 Buckets ist der Bottom-Block optisch komplett voll, Mittel und Top leer. Nach weiteren 8 Buckets (insgesamt 16) ist auch der Mittel-Block voll. Nach weiteren 8 (insgesamt 24) ist auch der Top voll. Debug-Check optional: `/data get block X Y Z` auf den Bottom-Tank → `DynamicFluidTank`-Capacity sollte `24000` anzeigen (kann versteckt sein in PDL-Tags).
 
-- [ ] **Step 4: Test 3 — Destroyed-but-invisible**
+- [x] **Step 4: Test 3 — Destroyed-but-invisible**
 
 Nach Test 1: Position des entfernten Mittel-Tanks prüfen.
 Run: `/data get block X Y Z` (mit den Koordinaten des gebrochenen Blocks).
 Expected: Antwort "No element of type BlockEntity..." oder Block ist Luft — KEIN TankBE-Tag mehr zurück.
 
-- [ ] **Step 5: Test 4 — Bridge-Case**
+- [x] **Step 5: Test 4 — Bridge-Case**
 
 Aufbau: 2 einzelne Tanks, je halb voll mit Wasser, mit 1 Block Luft-Lücke übereinander.
 Aktion: Tank (leer) in die Lücke platzieren.
 Erwartung: Alle drei Tanks mergen zu einem Stack. Fluid optisch = Summe beider ursprünglicher Mengen. Wenn beide halb voll (je 4000 mB) → 8000 mB total → Bottom-Block komplett voll.
 
-- [ ] **Step 6: Test 5 — Split via Break-Middle**
+- [x] **Step 6: Test 5 — Split via Break-Middle**
 
 Aufbau: 5er-Tank-Stack komplett leer, dann 20× Wasser-Bucket auf Bottom = 20000 mB = 2.5 Blöcke voll (Bottom und Mittel1 voll, Mittel2 halb, Top1/Top2 leer).
 Aktion: Mittel2 (Pos 2 von unten) brechen.
@@ -455,25 +455,25 @@ Erwartung:
 - Untere 2 Tanks (Pos 0 + 1) bleiben 2er-Stack, Master = Pos 0, Capacity `16000 mB`, Fluid `16000 mB` (voll).
 - Der gebrochene Block droppt als Item mit seinem Fluid-Anteil (im Default `BCConfig.tankRetainFluids = true`; Tank-Item zeigt Fluid-Content im Tooltip).
 
-- [ ] **Step 7: Test 6 — Break-Bottom**
+- [x] **Step 7: Test 6 — Break-Bottom**
 
 Aufbau: 3er-Tank-Stack, halb voll (12000 mB).
 Aktion: Bottom-Tank brechen.
 Erwartung: Obere 2 Tanks werden eigenständiger 2er-Stack. Master jetzt Pos 1 (alter Mittel-Tank, jetzt neuer Bottom). Der gebrochene (alte Master) droppt mit seinem Fluid-Anteil (`8000 mB`). Verbleibender Stack hält `4000 mB`, Bottom-Block halb voll optisch.
 
-- [ ] **Step 8: Test 7 — Break-Top**
+- [x] **Step 8: Test 7 — Break-Top**
 
 Aufbau: 3er-Tank-Stack voll (24000 mB).
 Aktion: Top-Tank brechen.
 Erwartung: Unterer 2er-Stack behält Master (Bottom-Position). Capacity schrumpft auf `16000 mB`. Überschüssiges Fluid `8000 mB` droppt mit dem gebrochenen Block. Verbleibender Stack optisch komplett voll.
 
-- [ ] **Step 9: Test 8 — Chunk-Reload**
+- [x] **Step 9: Test 8 — Chunk-Reload**
 
 Aufbau: 3er-Stack, mit 12000 mB gefüllt.
 Aktion: Welt verlassen, wieder reinjoinen.
 Erwartung: Alle drei Tanks zeigen beim Wiedereintritt korrekten Füllstand (Bottom voll, Mittel halb, Top leer). Rechtsklick mit leerem Bucket auf Bottom → 1 Bucket zieht Wasser raus, Füllstand reduziert sich korrekt (kein Null-Pointer / IndexOutOfBounds in Logs).
 
-- [ ] **Step 10: Report**
+- [x] **Step 10: Report**
 
 Wenn alle 8 Szenarien bestanden:
 
