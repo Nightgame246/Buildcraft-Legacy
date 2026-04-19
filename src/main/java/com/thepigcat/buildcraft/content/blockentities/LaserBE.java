@@ -25,6 +25,7 @@ public class LaserBE extends ContainerBlockEntity {
     @Nullable public BlockPos targetPos = null;
     private final List<BlockPos> candidates = new ArrayList<>();
     private int scanCooldown = 0;
+    private int syncCooldown = 0;
 
     public LaserBE(BlockPos pos, BlockState state) {
         super(BCBlockEntities.LASER.get(), pos, state);
@@ -62,6 +63,12 @@ public class LaserBE extends ContainerBlockEntity {
                     target.receiveLaserPower(toSend);
                 }
             }
+        }
+
+        // Periodic heartbeat so late-joining clients receive the beam target
+        if (be.targetPos != null && --be.syncCooldown <= 0) {
+            be.syncCooldown = 20;
+            level.sendBlockUpdated(pos, state, state, 3);
         }
 
         // Sync targetPos to clients when it changes
