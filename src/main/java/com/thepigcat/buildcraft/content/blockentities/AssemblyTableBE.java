@@ -149,6 +149,12 @@ public class AssemblyTableBE extends ContainerBlockEntity implements ILaserTarge
             case SAVED_ENOUGH -> EnumAssemblyRecipeState.SAVED_ENOUGH_ACTIVE;
             case SAVED_ENOUGH_ACTIVE -> EnumAssemblyRecipeState.SAVED_ENOUGH;
         };
+        // Ensure only one SAVED_ENOUGH_ACTIVE at a time
+        if (next == EnumAssemblyRecipeState.SAVED_ENOUGH_ACTIVE) {
+            recipeStates.replaceAll((id, s) ->
+                    s == EnumAssemblyRecipeState.SAVED_ENOUGH_ACTIVE && !id.equals(recipeId)
+                            ? EnumAssemblyRecipeState.SAVED_ENOUGH : s);
+        }
         recipeStates.put(recipeId, next);
         setChanged();
     }
