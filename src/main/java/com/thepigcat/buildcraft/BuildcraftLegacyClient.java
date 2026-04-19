@@ -11,6 +11,7 @@ import com.thepigcat.buildcraft.client.items.EngineItemRenderer;
 import com.thepigcat.buildcraft.client.items.TankItemRenderer;
 import com.thepigcat.buildcraft.client.models.EnginePistonModel;
 import com.thepigcat.buildcraft.client.screens.CombustionEngineScreen;
+import com.thepigcat.buildcraft.client.screens.DiamondFluidPipeScreen;
 import com.thepigcat.buildcraft.client.screens.DiamondPipeScreen;
 import com.thepigcat.buildcraft.client.screens.EmeraldPipeScreen;
 import com.thepigcat.buildcraft.client.screens.StirlingEngineScreen;
@@ -119,6 +120,7 @@ public final class BuildcraftLegacyClient {
         event.register(BCMenuTypes.STIRLING_ENGINE.get(), StirlingEngineScreen::new);
         event.register(BCMenuTypes.COMBUSTION_ENGINE.get(), CombustionEngineScreen::new);
         event.register(BCMenuTypes.DIAMOND_PIPE.get(), DiamondPipeScreen::new);
+        event.register(BCMenuTypes.DIAMOND_FLUID_PIPE.get(), DiamondFluidPipeScreen::new);
         event.register(BCMenuTypes.EMERALD_PIPE.get(), EmeraldPipeScreen::new);
     }
 }

@@ -129,6 +129,10 @@ public final class BuildcraftLegacy {
                 BCBlockEntities.VOID_FLUID_PIPE.get(), FluidPipeBE::getFluidHandler);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
                 BCBlockEntities.IRON_FLUID_PIPE.get(), IronFluidPipeBE::getFluidHandler);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+                BCBlockEntities.CLAY_FLUID_PIPE.get(), FluidPipeBE::getFluidHandler);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+                BCBlockEntities.DIAMOND_FLUID_PIPE.get(), FluidPipeBE::getFluidHandler);
         // ENERGY
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.REDSTONE_ENGINE.get(), ContainerBlockEntity::getEnergyStorageOnSide);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.STIRLING_ENGINE.get(), ContainerBlockEntity::getEnergyStorageOnSide);
