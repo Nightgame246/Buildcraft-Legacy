@@ -47,6 +47,8 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
     private final int[] incomingThisTick = new int[6];
     private final int[] outgoingThisTick = new int[6];
     private final float[] lastSentSectionPower = new float[7];
+    private final float[] currentSectionPower = new float[7];
+    private final boolean[] lastSentFlowsOut = new boolean[6];
     // Client-side targets populated by handleUpdateTag
     private final float[] targetSectionPower = new float[7];
     private final boolean[] targetFlowsOut = new boolean[6];
@@ -257,9 +259,9 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
     }
 
     private void syncSectionPowerIfNeeded() {
-        float[] current = new float[7];
+        java.util.Arrays.fill(currentSectionPower, 0);
         for (int d = 0; d < 6; d++) {
-            current[d] = maxTransfer > 0
+            currentSectionPower[d] = maxTransfer > 0
                 ? Math.min(1f, (float) Math.max(incomingThisTick[d], outgoingThisTick[d]) / maxTransfer)
                 : 0f;
         }
@@ -268,26 +270,29 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
             maxArmFlow = Math.max(maxArmFlow, Math.max(incomingThisTick[d], outgoingThisTick[d]));
         }
         if (maxArmFlow > 0 && maxTransfer > 0) {
-            current[6] = Math.min(1f, (float) maxArmFlow / maxTransfer);
+            currentSectionPower[6] = Math.min(1f, (float) maxArmFlow / maxTransfer);
         } else {
             int capacity = energyStorage.getMaxEnergyStored();
-            current[6] = capacity > 0 ? Math.min(1f, (float) energyStorage.getEnergyStored() / capacity) : 0f;
+            currentSectionPower[6] = capacity > 0 ? Math.min(1f, (float) energyStorage.getEnergyStored() / capacity) : 0f;
         }
 
         boolean changed = false;
         for (int s = 0; s < 7; s++) {
-            if (Math.abs(current[s] - lastSentSectionPower[s]) > 0.05f) { changed = true; break; }
+            if (Math.abs(currentSectionPower[s] - lastSentSectionPower[s]) > 0.05f) { changed = true; break; }
         }
         if (!changed) {
             boolean wasActive = false, nowActive = false;
             for (int s = 0; s < 7; s++) {
                 if (lastSentSectionPower[s] > 0.005f) wasActive = true;
-                if (current[s] > 0.005f) nowActive = true;
+                if (currentSectionPower[s] > 0.005f) nowActive = true;
             }
             if (wasActive && !nowActive) changed = true;
         }
         if (changed) {
-            System.arraycopy(current, 0, lastSentSectionPower, 0, 7);
+            System.arraycopy(currentSectionPower, 0, lastSentSectionPower, 0, 7);
+            for (int d = 0; d < 6; d++) {
+                lastSentFlowsOut[d] = outgoingThisTick[d] > 0;
+            }
             if (level != null) {
                 level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
             }
@@ -304,7 +309,7 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
         tag.put("section_power", powerList);
         byte flowsOutBits = 0;
         for (int d = 0; d < 6; d++) {
-            if (outgoingThisTick[d] > 0) flowsOutBits |= (byte) (1 << d);
+            if (lastSentFlowsOut[d]) flowsOutBits |= (byte) (1 << d);
         }
         tag.putByte("flows_out", flowsOutBits);
         return tag;
