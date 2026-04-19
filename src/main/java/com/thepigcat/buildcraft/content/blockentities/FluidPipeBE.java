@@ -75,7 +75,7 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
         applyMaterialProperties();
     }
 
-    private void applyMaterialProperties() {
+    protected void applyMaterialProperties() {
         String pipeId = BuiltInRegistries.BLOCK.getKey(getBlockState().getBlock()).getPath();
 
         if (pipeId.contains("gold")) {
@@ -105,6 +105,21 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
         for (Section section : sections) {
             section.resizeIncoming(delay);
         }
+    }
+
+    protected void setMaterialProperties(int transferPerTick, int delay) {
+        this.transferPerTick = transferPerTick;
+        this.delay = delay;
+        this.capacity = Math.max(1000, transferPerTick * 10);
+        for (Section s : sections) {
+            s.resizeIncoming(delay);
+        }
+    }
+
+    protected FluidStack getCurrentFluid() { return currentFluid; }
+
+    protected List<Direction> selectOutputDirections(List<Direction> candidates) {
+        return candidates;
     }
 
     /** Override to return true for void pipes: fluid entering the pipe is destroyed. */
@@ -290,6 +305,8 @@ public class FluidPipeBE extends PipeBlockEntity<IFluidHandler> {
             }
         }
 
+        if (outputDirs.isEmpty()) return;
+        outputDirs = selectOutputDirections(outputDirs);
         if (outputDirs.isEmpty()) return;
         Collections.shuffle(outputDirs);
 
