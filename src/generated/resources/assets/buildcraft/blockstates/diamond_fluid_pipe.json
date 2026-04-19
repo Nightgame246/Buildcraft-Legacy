@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "buildcraft:block/diamond_fluid_pipe_connection"
+        "model": "buildcraft:block/diamond_fluid_pipe_connection_down"
       },
       "when": {
         "down": "connected"
@@ -10,7 +10,7 @@
     },
     {
       "apply": {
-        "model": "buildcraft:block/diamond_fluid_pipe_connection",
+        "model": "buildcraft:block/diamond_fluid_pipe_connection_up",
         "x": 180
       },
       "when": {
@@ -19,7 +19,7 @@
     },
     {
       "apply": {
-        "model": "buildcraft:block/diamond_fluid_pipe_connection",
+        "model": "buildcraft:block/diamond_fluid_pipe_connection_north",
         "x": 90,
         "y": 180
       },
@@ -29,7 +29,7 @@
     },
     {
       "apply": {
-        "model": "buildcraft:block/diamond_fluid_pipe_connection",
+        "model": "buildcraft:block/diamond_fluid_pipe_connection_east",
         "x": 90,
         "y": 270
       },
@@ -39,7 +39,7 @@
     },
     {
       "apply": {
-        "model": "buildcraft:block/diamond_fluid_pipe_connection",
+        "model": "buildcraft:block/diamond_fluid_pipe_connection_south",
         "x": 90
       },
       "when": {
@@ -48,7 +48,7 @@
     },
     {
       "apply": {
-        "model": "buildcraft:block/diamond_fluid_pipe_connection",
+        "model": "buildcraft:block/diamond_fluid_pipe_connection_west",
         "x": 90,
         "y": 90
       },

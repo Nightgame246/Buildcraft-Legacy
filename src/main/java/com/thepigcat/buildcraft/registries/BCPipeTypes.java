@@ -104,8 +104,8 @@ public final class BCPipeTypes {
 
     public static final PipeTypeHolder<DiamondFluidPipeBlock, ItemPipeBlockItem> FLUID_DIAMOND =
         HELPER.registerPipeType("fluid_diamond", DiamondFluidPipeBlock::new, ItemPipeBlockItem::new,
-            ModelUtils.DEFAULT_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE,
-            ModelUtils.DEFAULT_ITEM_MODEL_FILE, "base", "connection");
+            ModelUtils.DIAMOND_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE,
+            ModelUtils.DEFAULT_ITEM_MODEL_FILE, "base", "connection_down", "connection_up", "connection_north", "connection_south", "connection_west", "connection_east");
 
     public static void init() {
     }

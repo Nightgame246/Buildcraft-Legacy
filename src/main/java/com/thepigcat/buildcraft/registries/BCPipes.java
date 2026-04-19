@@ -157,7 +157,13 @@ public final class BCPipes {
 
     public static final PipeHolder DIAMOND_FLUID = HELPER.registerPipe("diamond_fluid", BCPipeTypes.FLUID_DIAMOND,
         "Diamond Fluid Pipe", 0f, List.of(
-            BuildcraftLegacy.rl("block/diamond_fluid_pipe")
+            BuildcraftLegacy.rl("block/diamond_fluid_pipe"),        // 0 – base
+            BuildcraftLegacy.rl("block/diamond_fluid_pipe_down"),   // 1 – DOWN
+            BuildcraftLegacy.rl("block/diamond_fluid_pipe_up"),     // 2 – UP
+            BuildcraftLegacy.rl("block/diamond_fluid_pipe_north"),  // 3 – NORTH
+            BuildcraftLegacy.rl("block/diamond_fluid_pipe_south"),  // 4 – SOUTH
+            BuildcraftLegacy.rl("block/diamond_fluid_pipe_west"),   // 5 – WEST
+            BuildcraftLegacy.rl("block/diamond_fluid_pipe_east")    // 6 – EAST
         ), Either.right(ResourceLocation.parse("diamond_block")), Ingredient.of(Tags.Items.GEMS_DIAMOND),
         List.of(BlockTags.MINEABLE_WITH_PICKAXE), 39);
 }
