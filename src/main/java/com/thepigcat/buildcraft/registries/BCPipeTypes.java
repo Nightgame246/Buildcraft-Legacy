@@ -9,6 +9,8 @@ import com.thepigcat.buildcraft.content.blocks.DiamondItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.EmeraldItemPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.ExtractingFluidPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.ExtractingItemPipeBlock;
+import com.thepigcat.buildcraft.content.blocks.ClayFluidPipeBlock;
+import com.thepigcat.buildcraft.content.blocks.DiamondFluidPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.IronFluidPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.VoidFluidPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.ExtractingKinesisPipeBlock;
@@ -94,6 +96,16 @@ public final class BCPipeTypes {
         HELPER.registerPipeType("fluid_iron", IronFluidPipeBlock::new, ItemPipeBlockItem::new,
             ModelUtils.IRON_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE,
             ModelUtils.DEFAULT_ITEM_MODEL_FILE, "connection", "base_blocked", "connection_blocked");
+
+    public static final PipeTypeHolder<ClayFluidPipeBlock, ItemPipeBlockItem> FLUID_CLAY =
+        HELPER.registerPipeType("fluid_clay", ClayFluidPipeBlock::new, ItemPipeBlockItem::new,
+            ModelUtils.DEFAULT_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE,
+            ModelUtils.DEFAULT_ITEM_MODEL_FILE, "base", "connection");
+
+    public static final PipeTypeHolder<DiamondFluidPipeBlock, ItemPipeBlockItem> FLUID_DIAMOND =
+        HELPER.registerPipeType("fluid_diamond", DiamondFluidPipeBlock::new, ItemPipeBlockItem::new,
+            ModelUtils.DEFAULT_BLOCK_MODEL_DEFINITION, ModelUtils.DEFAULT_BLOCK_MODEL_FILE,
+            ModelUtils.DEFAULT_ITEM_MODEL_FILE, "base", "connection");
 
     public static void init() {
     }

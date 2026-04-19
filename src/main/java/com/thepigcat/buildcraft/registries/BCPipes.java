@@ -148,4 +148,16 @@ public final class BCPipes {
             BuildcraftLegacy.rl("block/iron_fluid_pipe_blocked")
         ), Either.right(ResourceLocation.parse("iron_block")), Ingredient.of(Tags.Items.INGOTS_IRON),
         List.of(BlockTags.MINEABLE_WITH_PICKAXE), 37);
+
+    public static final PipeHolder CLAY_FLUID = HELPER.registerPipe("clay_fluid", BCPipeTypes.FLUID_CLAY,
+        "Clay Fluid Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/clay_fluid_pipe")
+        ), Either.right(ResourceLocation.parse("clay")), Ingredient.of(Items.CLAY_BALL),
+        List.of(BlockTags.MINEABLE_WITH_PICKAXE), 38);
+
+    public static final PipeHolder DIAMOND_FLUID = HELPER.registerPipe("diamond_fluid", BCPipeTypes.FLUID_DIAMOND,
+        "Diamond Fluid Pipe", 0f, List.of(
+            BuildcraftLegacy.rl("block/diamond_fluid_pipe")
+        ), Either.right(ResourceLocation.parse("diamond_block")), Ingredient.of(Tags.Items.GEMS_DIAMOND),
+        List.of(BlockTags.MINEABLE_WITH_PICKAXE), 39);
 }
