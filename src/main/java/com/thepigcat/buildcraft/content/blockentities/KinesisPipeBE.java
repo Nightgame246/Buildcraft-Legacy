@@ -292,6 +292,12 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
             }
             if (wasActive && !nowActive) changed = true;
         }
+        if (!changed) {
+            // Also sync if flow direction flipped (magnitude may be constant)
+            for (int d = 0; d < 6; d++) {
+                if ((outgoingThisTick[d] > 0) != lastSentFlowsOut[d]) { changed = true; break; }
+            }
+        }
         if (changed) {
             System.arraycopy(currentSectionPower, 0, lastSentSectionPower, 0, 7);
             for (int d = 0; d < 6; d++) {

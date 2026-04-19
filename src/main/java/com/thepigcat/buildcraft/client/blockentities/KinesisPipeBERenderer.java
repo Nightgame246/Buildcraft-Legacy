@@ -65,7 +65,8 @@ public class KinesisPipeBERenderer implements BlockEntityRenderer<KinesisPipeBE>
             float armRadius = MAX_RADIUS * (float) Math.sqrt(armPower);
             // outgoing: scroll away from center; incoming: scroll toward center
             float flowSign = be.getSectionFlowsOut(d) ? -1f : 1f;
-            float uvOffset = (time * flowSign) % 1.0f;
+            float raw = (time * flowSign) % 1.0f;
+            float uvOffset = raw < 0 ? raw + 1.0f : raw;
             renderConnectionStrip(pose, vc, dir, armRadius, uvOffset, light, packedOverlay);
         }
     }
