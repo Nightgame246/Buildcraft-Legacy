@@ -127,7 +127,8 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
         }
     }
 
-    private int lastPowerLevel = -1;
+    // Forces a full sync on the first server tick after load/placement
+    private boolean needsInitialSync = true;
 
     // Client-side display smoothing — per section (0–5: arms by Direction ordinal, 6: center)
     private final float[] displaySectionPower = new float[7];
@@ -156,6 +157,10 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
             return;
         }
 
+        if (needsInitialSync) {
+            needsInitialSync = false;
+            java.util.Arrays.fill(lastSentSectionPower, -1f); // guarantee diff > threshold on first check
+        }
         distributeEnergy();
         syncSectionPowerIfNeeded();
         java.util.Arrays.fill(incomingThisTick, 0); // reset AFTER sync so incoming is visible this tick
@@ -262,7 +267,7 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
 
         boolean changed = false;
         for (int s = 0; s < 7; s++) {
-            if (Math.abs(currentSectionPower[s] - lastSentSectionPower[s]) > 0.05f) { changed = true; break; }
+            if (Math.abs(currentSectionPower[s] - lastSentSectionPower[s]) > 0.01f) { changed = true; break; }
         }
         if (!changed) {
             boolean wasActive = false, nowActive = false;
