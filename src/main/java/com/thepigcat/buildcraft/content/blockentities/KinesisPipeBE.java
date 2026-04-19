@@ -129,15 +129,26 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
 
     private int lastPowerLevel = -1;
 
-    // Client-side display smoothing for the renderer
-    private float displayPower = 0f;
-    private float lastDisplayPower = 0f;
+    // Client-side display smoothing — per section (0–5: arms by Direction ordinal, 6: center)
+    private final float[] displaySectionPower = new float[7];
+    private final float[] lastDisplaySectionPower = new float[7];
+    private final boolean[] displayFlowsOut = new boolean[6];
 
-    /**
-     * Smoothed power value (0–1) for the renderer, interpolated with partialTick.
-     */
+    /** Smoothed power (0–1) for section s, interpolated with partialTick. Section 6 = center. */
+    public float getSectionPower(int section, float partialTick) {
+        return lastDisplaySectionPower[section]
+               + (displaySectionPower[section] - lastDisplaySectionPower[section]) * partialTick;
+    }
+
+    /** True if energy flows outward on arm d (UV scrolls away from center). */
+    public boolean getSectionFlowsOut(int dir) {
+        return displayFlowsOut[dir];
+    }
+
+    /** @deprecated remove after Task 4 updates the renderer */
+    @Deprecated
     public float getDisplayPower(float partialTick) {
-        return lastDisplayPower + (displayPower - lastDisplayPower) * partialTick;
+        return getSectionPower(6, partialTick);
     }
 
     // ── Tick ──────────────────────────────────────────────────────────────
@@ -156,23 +167,22 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
         updatePowerLevel();
     }
 
-    /**
-     * Client-side: smoothly interpolate displayPower toward the blockstate POWER_LEVEL.
-     * Uses sqrt curve like original BC for visual emphasis at low energy.
-     */
     private void clientTick() {
-        lastDisplayPower = displayPower;
-        float target = 0f;
-        BlockState state = getBlockState();
-        if (state.hasProperty(KinesisPipeBlock.POWER_LEVEL)) {
-            target = state.getValue(KinesisPipeBlock.POWER_LEVEL) / 4.0f;
+        // Seed center from POWER_LEVEL blockstate until the first UpdateTag arrives
+        if (targetSectionPower[6] == 0f) {
+            BlockState state = getBlockState();
+            if (state.hasProperty(KinesisPipeBlock.POWER_LEVEL)) {
+                targetSectionPower[6] = state.getValue(KinesisPipeBlock.POWER_LEVEL) / 4.0f;
+            }
         }
-        // Smooth approach — settles in ~7 ticks
-        displayPower += (target - displayPower) * 0.15f;
-        // Snap to zero when negligible
-        if (displayPower < 0.005f && target == 0f) {
-            displayPower = 0f;
+        for (int s = 0; s < 7; s++) {
+            lastDisplaySectionPower[s] = displaySectionPower[s];
+            displaySectionPower[s] += (targetSectionPower[s] - displaySectionPower[s]) * 0.15f;
+            if (displaySectionPower[s] < 0.005f && targetSectionPower[s] == 0f) {
+                displaySectionPower[s] = 0f;
+            }
         }
+        System.arraycopy(targetFlowsOut, 0, displayFlowsOut, 0, 6);
     }
 
     private void updatePowerLevel() {
