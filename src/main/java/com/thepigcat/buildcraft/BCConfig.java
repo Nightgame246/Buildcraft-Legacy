@@ -53,4 +53,24 @@ public final class BCConfig {
 
     @ConfigValue(name = "Quarry Energy Per Block", comment = "FE consumed per block mined", category = "production.energy")
     public static int quarryEnergyPerBlock = 20;
+
+    // Assembly Table / Laser
+    @ConfigValue(name = "Laser Battery Capacity", comment = "FE capacity of the Laser block", category = "capacity.energy")
+    public static int laserBatteryCapacity = 4000;
+    @ConfigValue(name = "Laser Max Receive", comment = "Max FE/t the Laser accepts from kinesis pipes", category = "capacity.energy")
+    public static int laserMaxReceive = 200;
+    @ConfigValue(name = "Laser Max Output", comment = "Max FE/t the Laser pushes to Assembly Table per tick", category = "production.energy")
+    public static int laserMaxOutput = 40;
+
+    // Chipset FE costs
+    @ConfigValue(name = "Red Chipset FE Cost", comment = "FE required to craft a Red (Redstone) Chipset", category = "assembly")
+    public static int redChipsetFeCost = 10_000;
+    @ConfigValue(name = "Iron Chipset FE Cost", comment = "FE required to craft an Iron Chipset", category = "assembly")
+    public static int ironChipsetFeCost = 20_000;
+    @ConfigValue(name = "Gold Chipset FE Cost", comment = "FE required to craft a Gold Chipset", category = "assembly")
+    public static int goldChipsetFeCost = 40_000;
+    @ConfigValue(name = "Quartz Chipset FE Cost", comment = "FE required to craft a Quartz Chipset", category = "assembly")
+    public static int quartzChipsetFeCost = 60_000;
+    @ConfigValue(name = "Diamond Chipset FE Cost", comment = "FE required to craft a Diamond Chipset", category = "assembly")
+    public static int diamondChipsetFeCost = 80_000;
 }

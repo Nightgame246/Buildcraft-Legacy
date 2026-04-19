@@ -23,6 +23,13 @@ public final class BCItems {
     public static final DeferredItem<Item> GOLD_GEAR = registerItem("gold_gear", Item::new);
     public static final DeferredItem<Item> DIAMOND_GEAR = registerItem("diamond_gear", Item::new);
 
+    // Chipsets
+    public static final DeferredItem<Item> RED_CHIPSET     = registerItem("red_chipset",     Item::new);
+    public static final DeferredItem<Item> IRON_CHIPSET    = registerItem("iron_chipset",    Item::new);
+    public static final DeferredItem<Item> GOLD_CHIPSET    = registerItem("gold_chipset",    Item::new);
+    public static final DeferredItem<Item> QUARTZ_CHIPSET  = registerItem("quartz_chipset",  Item::new);
+    public static final DeferredItem<Item> DIAMOND_CHIPSET = registerItem("diamond_chipset", Item::new);
+
     private static <T extends Item> DeferredItem<T> registerItem(String name, Function<Item.Properties, T> itemConstructor) {
         DeferredItem<T> item = ITEMS.registerItem(name, itemConstructor, new Item.Properties());
         TAB_ITEMS.add(item);
