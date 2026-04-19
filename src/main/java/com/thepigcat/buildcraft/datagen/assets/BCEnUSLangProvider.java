@@ -56,6 +56,16 @@ public class BCEnUSLangProvider extends LanguageProvider {
         addBlock(BCBlocks.COMBUSTION_ENGINE, "Combustion Engine");
         addBlock(BCBlocks.QUARRY, "Quarry");
 
+        // Silicon
+        addBlock(BCBlocks.LASER, "Laser");
+        addBlock(BCBlocks.ASSEMBLY_TABLE, "Assembly Table");
+        addItem(BCItems.RED_CHIPSET, "Redstone Chipset");
+        addItem(BCItems.IRON_CHIPSET, "Iron Chipset");
+        addItem(BCItems.GOLD_CHIPSET, "Gold Chipset");
+        addItem(BCItems.QUARTZ_CHIPSET, "Quartz Chipset");
+        addItem(BCItems.DIAMOND_CHIPSET, "Diamond Chipset");
+        add("container.buildcraft.assembly_table", "Assembly Table");
+
         addFluidType(BCFluids.OIL.fluidType, "Oil");
 
         add("itemGroup.buildcraft.bc_tab", "Buildcraft");

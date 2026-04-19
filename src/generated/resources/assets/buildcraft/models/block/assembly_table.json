@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "buildcraft:block/assembly_table_top",
+    "side": "buildcraft:block/assembly_table_side",
+    "top": "buildcraft:block/assembly_table_top"
+  }
+}

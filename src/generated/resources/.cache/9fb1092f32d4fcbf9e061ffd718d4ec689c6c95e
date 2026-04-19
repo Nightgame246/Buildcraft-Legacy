@@ -1,6 +1,7 @@
-// 1.21.1	2026-04-19T15:41:24.509791689	Recipes
+// 1.21.1	2026-04-19T20:13:14.423023756	Recipes
 88cc2edfe29d3f0478fd055713bba10b3c2a8672 data/buildcraft/advancement/recipes/decorations/crate.json
 0f51aae86513bdbfee33c12878fa6076139a36e7 data/buildcraft/advancement/recipes/decorations/tank.json
+7519ecb7fcdff537a4b8acfa2e8acaa96421581c data/buildcraft/advancement/recipes/misc/assembly_table.json
 2516a6d7d33628fe8e8426dd8cb943fbc32cc8e0 data/buildcraft/advancement/recipes/misc/clay_fluid_pipe.json
 5f2342a1ce9f35c2a4fbe8f58fb15dbc37fa8eca data/buildcraft/advancement/recipes/misc/clay_pipe.json
 51f67af70703d807bfa455daa5892f1760262e9e data/buildcraft/advancement/recipes/misc/cobblestone_fluid_pipe.json
@@ -21,6 +22,7 @@ b42a392569e4808907df9eb4a2e24102c82c8f5c data/buildcraft/advancement/recipes/mis
 32c24ac921c3772be15a785d21077490a0109063 data/buildcraft/advancement/recipes/misc/iron_gear.json
 be081ad81aebce2439aba8712a8619280d068e06 data/buildcraft/advancement/recipes/misc/iron_pipe.json
 cf1d57ae391fd214576c2d327e8ffaec06d3f10f data/buildcraft/advancement/recipes/misc/lapis_pipe.json
+fc9855058dd709a04d26d0fe22575697235ee320 data/buildcraft/advancement/recipes/misc/laser.json
 b3a1ee9a3155152dc2b7e38ca6cab322ed06431c data/buildcraft/advancement/recipes/misc/obsidian_pipe.json
 9ef9dee828f57ea41b794371de93f395b985bde3 data/buildcraft/advancement/recipes/misc/quarry.json
 531a6ac1fc21b2b1a834610953a536c5c9b4682b data/buildcraft/advancement/recipes/misc/quartz_fluid_pipe.json
@@ -43,6 +45,7 @@ fa8b54c1bcbbf140b2bcd98ec97d6d404dcd7fd1 data/buildcraft/advancement/recipes/mis
 5fbabd7f714da57bc7e9dc1ce5aa2f9b52ef454b data/buildcraft/advancement/recipes/misc/wooden_kinesis_pipe.json
 f16fd069b748c69777710c726897afb8dea53bd4 data/buildcraft/advancement/recipes/misc/wooden_pipe.json
 ce088b172986441de4a99e61ccc71d1f4a7c1b43 data/buildcraft/advancement/recipes/tools/wrench.json
+e2ed381f0427e657b03ab802afd96673c396b7bc data/buildcraft/recipe/assembly_table.json
 1ac9073171c3d5b1ed35939525c6796a3ebb2433 data/buildcraft/recipe/clay_fluid_pipe.json
 74df1e0caafe7cac3d5b68ae131638177440a6e1 data/buildcraft/recipe/clay_pipe.json
 26c90436569f0cfdccf2e90ad72cae8a24b08be2 data/buildcraft/recipe/cobblestone_fluid_pipe.json
@@ -64,6 +67,7 @@ bdb1c0d420702619c0f9bfe4bdc80594f74da374 data/buildcraft/recipe/iron_fluid_pipe.
 b89f27c3d60eeaeedcb457756226e30dddb568f5 data/buildcraft/recipe/iron_gear.json
 1f260cdd2b7a0c439c0774c0dcaf04727a6d81d0 data/buildcraft/recipe/iron_pipe.json
 ec2711b016e57edb7b57de3a37bd39a1e335d968 data/buildcraft/recipe/lapis_pipe.json
+4593759133d09675d7f4630bec3b15d18625da4b data/buildcraft/recipe/laser.json
 9ad56126a3fd22ef05e025391667f8163b920a19 data/buildcraft/recipe/obsidian_pipe.json
 71d85ee032d211954ba3238e4ad041b883d5a74f data/buildcraft/recipe/quarry.json
 78ba0cf82f3970c1dbb59c52e1d7a5e69b9b6984 data/buildcraft/recipe/quartz_fluid_pipe.json

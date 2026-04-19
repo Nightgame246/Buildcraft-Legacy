@@ -1,4 +1,5 @@
-// 1.21.1	2026-04-19T16:08:07.897670505	Block States: buildcraft
+// 1.21.1	2026-04-19T20:13:14.420278266	Block States: buildcraft
+ca9d637985321401ecdb034c44cd3bef4e910bf5 assets/buildcraft/blockstates/assembly_table.json
 9493a9bec7d99c0799c66d58f9d48927a6925b02 assets/buildcraft/blockstates/clay_fluid_pipe.json
 66793c88ac718c9cb2a4aa7704cca611bf95b75f assets/buildcraft/blockstates/clay_pipe.json
 8952640b5264a6b0eac6da55403901584e5bd165 assets/buildcraft/blockstates/cobblestone_fluid_pipe.json
@@ -17,6 +18,7 @@ e198984ede49ba0e2a0124a6f05ac8a2cd00187e assets/buildcraft/blockstates/gold_kine
 0a86617e1d01c1df932f2e271148966b2505c65c assets/buildcraft/blockstates/iron_fluid_pipe.json
 4cc065f4e5e91acea373198fc82582b0cd4d287d assets/buildcraft/blockstates/iron_pipe.json
 aa748300efa5500990d1bd9641df387dd9869d63 assets/buildcraft/blockstates/lapis_pipe.json
+dd7f1f7667affcbd4e2cc94d6d131da754febc7a assets/buildcraft/blockstates/laser.json
 9b317ffc35f1ea00341d03b2ef1befe8b45b7832 assets/buildcraft/blockstates/obsidian_pipe.json
 5ea3730bfb0a1c7ea7d16e40c1425237458a2715 assets/buildcraft/blockstates/quarry.json
 58987d7848ae7258e1e01e98ebef74cf9ae6cc0c assets/buildcraft/blockstates/quartz_fluid_pipe.json
@@ -36,6 +38,7 @@ cef114988e30a308c6a30d527a0a9942b1c4178b assets/buildcraft/blockstates/stone_kin
 7fb9561177fda99d079e30e89f26e1ee592b3248 assets/buildcraft/blockstates/wooden_fluid_pipe.json
 61198ab4974ac8886740ecaa270804294285b0e0 assets/buildcraft/blockstates/wooden_kinesis_pipe.json
 f65d91e718bcc109d36ae60e9f90ae79551db632 assets/buildcraft/blockstates/wooden_pipe.json
+ff2ad9ae6d1d9cd634e695b1579efb5ee4839ff4 assets/buildcraft/models/block/assembly_table.json
 23b5b3604200aaf40cc4b9943271468569ea12eb assets/buildcraft/models/block/clay_fluid_pipe_base.json
 cf0fe604b7437acdf24683b31bda928ec232b7d1 assets/buildcraft/models/block/clay_fluid_pipe_connection.json
 d647321501cb34a1219ebb179b27ba951f43c671 assets/buildcraft/models/block/clay_pipe_base.json
@@ -83,6 +86,7 @@ b0c6fcddef9cb3799e7d08c72eb6c2e2e2822b31 assets/buildcraft/models/block/iron_pip
 be39ea891b468ec5ca1ad80f084172307281f57a assets/buildcraft/models/block/iron_pipe_connection_blocked.json
 56da2dbeda8c009865bcf7fda80bacebebc307c2 assets/buildcraft/models/block/lapis_pipe_base.json
 a30531f8b3f89b191c14e0f6b843e4d4e1c9dd4a assets/buildcraft/models/block/lapis_pipe_connection.json
+e6901f88f71e8ae80584410c5d1e417168309d86 assets/buildcraft/models/block/laser.json
 5741aa6189859adf70f4087e5e380ded2d8ff400 assets/buildcraft/models/block/obsidian_pipe_base.json
 386d6ad07b5ab2182f77e442d4d8f8a1a62c1549 assets/buildcraft/models/block/obsidian_pipe_connection.json
 2fc6abc7dca18e732df3a0e8b9bc610c2816dae3 assets/buildcraft/models/block/quarry.json

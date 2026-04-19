@@ -109,7 +109,6 @@ public final class BuildcraftLegacy {
         modEventBus.addListener(this::onCommonSetup);
         modEventBus.addListener(this::registerPayloads);
         modEventBus.addListener(this::onRegister);
-        registerAssemblyRecipes();
     }
 
     private static void registerAssemblyRecipes() {
@@ -142,6 +141,7 @@ public final class BuildcraftLegacy {
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
         PipesRegistry.writeDefaultPipeFiles();
+        registerAssemblyRecipes();
     }
 
     private void attachCaps(RegisterCapabilitiesEvent event) {

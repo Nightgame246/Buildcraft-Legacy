@@ -133,6 +133,30 @@ public class BCRecipeProvider extends net.minecraft.data.recipes.RecipeProvider 
                 .define('E', BCBlocks.COMBUSTION_ENGINE)
                 .unlockedBy("has_diamond_gear", has(BCTags.Items.DIAMOND_GEAR))
                 .save(recipeOutput);
+
+        // ── Silicon ────────────────────────────────────────────────────────
+        // Laser
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BCBlocks.LASER)
+                .pattern("IRI")
+                .pattern("IGI")
+                .pattern("IRI")
+                .define('I', Tags.Items.INGOTS_IRON)
+                .define('R', Items.REDSTONE)
+                .define('G', Tags.Items.INGOTS_GOLD)
+                .unlockedBy("has_redstone", has(Items.REDSTONE))
+                .save(recipeOutput);
+
+        // Assembly Table
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BCBlocks.ASSEMBLY_TABLE)
+                .pattern("IPI")
+                .pattern("RLR")
+                .pattern("IPI")
+                .define('I', Tags.Items.INGOTS_IRON)
+                .define('P', Blocks.PISTON)
+                .define('R', Items.REDSTONE)
+                .define('L', Items.LAPIS_LAZULI)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .save(recipeOutput);
     }
 
     public static Criterion<InventoryChangeTrigger.TriggerInstance> has(TagKey<Item> tag) {

@@ -1,9 +1,16 @@
-// 1.21.1	2026-03-07T19:41:37.590914199	Item Models: buildcraft
+// 1.21.1	2026-04-19T20:13:14.422322426	Item Models: buildcraft
+efd3bf6432cd66ca8f8f91950c9ae9cfaf2e737d assets/buildcraft/models/item/assembly_table.json
+ae646ac93eef2f6fe5cbb20a1f049f68d9234542 assets/buildcraft/models/item/diamond_chipset.json
 41335712397375917a9add5a1582bc85e7292b6b assets/buildcraft/models/item/diamond_gear.json
+1098112d627ff6da920926b2e898bc84054663c0 assets/buildcraft/models/item/gold_chipset.json
 959ff24934e8e9bc10192f39c19be7c91ce284a0 assets/buildcraft/models/item/gold_gear.json
+0453167c7d0e1d9ee1fafd4013298235817e0d55 assets/buildcraft/models/item/iron_chipset.json
 a099eb89cb96ee7dd93f7f3d32f1f9791ab1d771 assets/buildcraft/models/item/iron_gear.json
+acf6b2547edeb7207be27956b4015bb2d965648a assets/buildcraft/models/item/laser.json
 786d97249883d5290cd46c1b2867d2973351dd7d assets/buildcraft/models/item/oil_bucket.json
 3f1c28f177c24c6d1d1e75a7b47c5e057826f6ff assets/buildcraft/models/item/quarry.json
+e369133da0d1a59014ebc22ab6013b2c7c640096 assets/buildcraft/models/item/quartz_chipset.json
+f11ad9b96a244f96518ceff97d63b9d399800171 assets/buildcraft/models/item/red_chipset.json
 7864562555f2c5e98e07bb16156ada0b9634cdf5 assets/buildcraft/models/item/stone_gear.json
 fa7e40a6d328930579204a0b6ca6c47273735df4 assets/buildcraft/models/item/wooden_gear.json
 4ffbc96cc9782f59f85319416c337f58b13dd5bd assets/buildcraft/models/item/wrench.json

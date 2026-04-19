@@ -36,6 +36,10 @@ public class BCBlockStateProvider extends BlockStateProvider {
         engineBlock(BCBlocks.STIRLING_ENGINE.get());
         engineBlock(BCBlocks.COMBUSTION_ENGINE.get());
 
+        // Silicon machines
+        laserBlock(BCBlocks.LASER.get());
+        assemblyTableBlock(BCBlocks.ASSEMBLY_TABLE.get());
+
         for (Block block : BCBlocks.BLOCKS.getRegistry().get()) {
             String path = BuiltInRegistries.BLOCK.getKey(block).getPath();
             if (path.equals("iron_pipe")) {
@@ -342,5 +346,23 @@ public class BCBlockStateProvider extends BlockStateProvider {
     }
 
     // Energy stripe rendering is handled by KinesisPipeBERenderer (TESR), not baked models
+
+    // ── Silicon Machine Blockstate Generation ──────────────────────────────
+
+    private void laserBlock(Block block) {
+        BlockModelBuilder model = models().withExistingParent(name(block), mcLoc("block/orientable"))
+                .texture("top",   modLoc("block/laser_top"))
+                .texture("front", modLoc("block/laser_front"))
+                .texture("side",  modLoc("block/laser_side"));
+        facingBlock(block, model);
+    }
+
+    private void assemblyTableBlock(Block block) {
+        BlockModelBuilder tableModel = models().withExistingParent(name(block), mcLoc("block/cube_bottom_top"))
+                .texture("top",    modLoc("block/assembly_table_top"))
+                .texture("bottom", modLoc("block/assembly_table_top"))
+                .texture("side",   modLoc("block/assembly_table_side"));
+        simpleBlock(block, tableModel);
+    }
 
 }

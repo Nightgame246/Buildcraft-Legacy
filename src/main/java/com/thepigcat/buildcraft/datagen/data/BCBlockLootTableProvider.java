@@ -31,6 +31,10 @@ public class BCBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(BCBlocks.STIRLING_ENGINE.get());
         dropSelf(BCBlocks.COMBUSTION_ENGINE.get());
         dropSelf(BCBlocks.QUARRY.get());
+
+        // Silicon
+        dropSelf(BCBlocks.LASER.get());
+        dropSelf(BCBlocks.ASSEMBLY_TABLE.get());
     }
 
     @Override
