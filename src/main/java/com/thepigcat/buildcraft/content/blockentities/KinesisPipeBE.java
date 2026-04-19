@@ -158,7 +158,7 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
 
         distributeEnergy();
         syncSectionPowerIfNeeded();
-        updatePowerLevel();
+        java.util.Arrays.fill(incomingThisTick, 0); // reset AFTER sync so incoming is visible this tick
     }
 
     private void clientTick() {
@@ -179,30 +179,9 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
         System.arraycopy(targetFlowsOut, 0, displayFlowsOut, 0, 6);
     }
 
-    private void updatePowerLevel() {
-        int max = energyStorage.getMaxEnergyStored();
-        int stored = energyStorage.getEnergyStored();
-        int newLevel;
-        if (max <= 0 || stored <= 0) {
-            newLevel = 0;
-        } else {
-            float ratio = (float) stored / max;
-            if (ratio > 0.75f) newLevel = 4;
-            else if (ratio > 0.50f) newLevel = 3;
-            else if (ratio > 0.25f) newLevel = 2;
-            else newLevel = 1;
-        }
-
-        if (newLevel != lastPowerLevel) {
-            lastPowerLevel = newLevel;
-            BlockState state = getBlockState();
-            if (state.hasProperty(KinesisPipeBlock.POWER_LEVEL)
-                    && state.getValue(KinesisPipeBlock.POWER_LEVEL) != newLevel) {
-                // Flag 2 = send to client, no neighbor block update (avoids cascade)
-                level.setBlock(worldPosition, state.setValue(KinesisPipeBlock.POWER_LEVEL, newLevel), 2);
-            }
-        }
-    }
+    // POWER_LEVEL blockstate updates removed — they forced chunk re-renders every tick
+    // causing visual flicker. The TESR (getUpdateTag/handleUpdateTag) provides all
+    // client-side power data via sendBlockUpdated which only sends a data packet.
 
     /**
      * Push stored energy to connected neighbours (other kinesis pipes or consumers).
@@ -210,7 +189,8 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
      */
     private void distributeEnergy() {
         java.util.Arrays.fill(outgoingThisTick, 0);
-        java.util.Arrays.fill(incomingThisTick, 0);
+        // incomingThisTick is reset in tick() AFTER syncSectionPowerIfNeeded so the
+        // current-tick incoming flow is visible to the sync check.
         if (energyStorage.getEnergyStored() <= 0) return;
 
         // Collect receivers, skip the extracting side to avoid push/pull loops
