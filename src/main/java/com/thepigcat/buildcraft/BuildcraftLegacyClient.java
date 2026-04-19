@@ -96,6 +96,10 @@ public final class BuildcraftLegacyClient {
         event.registerBlockEntityRenderer(BCBlockEntities.KINESIS_PIPE.get(), KinesisPipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.FLUID_PIPE.get(), FluidPipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.EXTRACTING_FLUID_PIPE.get(), FluidPipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.VOID_FLUID_PIPE.get(), FluidPipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.IRON_FLUID_PIPE.get(), FluidPipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.CLAY_FLUID_PIPE.get(), FluidPipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.DIAMOND_FLUID_PIPE.get(), FluidPipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.CRATE.get(), CrateBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.TANK.get(), TankBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.REDSTONE_ENGINE.get(), ctx -> new EngineBERenderer(ctx, ResourceLocation.fromNamespaceAndPath(BuildcraftLegacy.MODID, "entity/wooden_engine_piston")));

@@ -22,7 +22,7 @@ public class ClayFluidPipeBE extends FluidPipeBE {
     protected List<Direction> selectOutputDirections(List<Direction> candidates) {
         List<Direction> nonPipe = candidates.stream()
                 .filter(dir -> !(level.getBlockState(worldPosition.relative(dir)).getBlock() instanceof PipeBlock))
-                .toList();
+                .collect(java.util.stream.Collectors.toList());
         return nonPipe.isEmpty() ? candidates : nonPipe;
     }
 }
