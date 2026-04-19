@@ -46,11 +46,11 @@ public class LaserBE extends ContainerBlockEntity {
             }
         }
 
+        BlockPos prevTarget = be.targetPos;  // capture BEFORE pickTarget
+
         if (be.targetPos == null) {
             be.pickTarget();
         }
-
-        BlockPos prevTarget = be.targetPos;
 
         if (be.targetPos != null && level.getBlockEntity(be.targetPos) instanceof AssemblyTableBE target) {
             IEnergyStorage battery = be.getEnergyStorage();
@@ -65,7 +65,7 @@ public class LaserBE extends ContainerBlockEntity {
         }
 
         // Sync targetPos to clients when it changes
-        if (prevTarget != be.targetPos) {
+        if (!java.util.Objects.equals(prevTarget, be.targetPos)) {
             level.sendBlockUpdated(pos, state, state, 3);
         }
     }
