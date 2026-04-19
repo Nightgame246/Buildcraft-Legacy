@@ -43,6 +43,12 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
     private int maxTransfer = 80;
     private float lossRate = 0.05f;
 
+    // Server-side per-tick energy flow tracking
+    private final int[] incomingThisTick = new int[6];
+    private final int[] outgoingThisTick = new int[6];
+    private final float[] lastSentSectionPower = new float[7];
+    private final IEnergyStorage[] directionWrappers = new IEnergyStorage[6];
+
     public KinesisPipeBE(BlockPos pos, BlockState blockState) {
         this(BCBlockEntities.KINESIS_PIPE.get(), pos, blockState);
     }
@@ -54,6 +60,21 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
                 BCConfig.kinesisPipeEnergyCapacity, // maxReceive — accept quickly
                 BCConfig.kinesisPipeEnergyCapacity  // maxExtract — internal use
         );
+        for (int d = 0; d < 6; d++) {
+            final int idx = d;
+            directionWrappers[d] = new IEnergyStorage() {
+                @Override public int receiveEnergy(int maxReceive, boolean simulate) {
+                    int accepted = energyStorage.receiveEnergy(maxReceive, simulate);
+                    if (!simulate && accepted > 0) incomingThisTick[idx] += accepted;
+                    return accepted;
+                }
+                @Override public int extractEnergy(int maxExtract, boolean simulate) { return 0; }
+                @Override public int getEnergyStored() { return energyStorage.getEnergyStored(); }
+                @Override public int getMaxEnergyStored() { return energyStorage.getMaxEnergyStored(); }
+                @Override public boolean canExtract() { return false; }
+                @Override public boolean canReceive() { return energyStorage.canReceive(); }
+            };
+        }
     }
 
     @Override
@@ -178,9 +199,11 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
      * Energy is split evenly. Loss is applied per transfer.
      */
     private void distributeEnergy() {
+        java.util.Arrays.fill(outgoingThisTick, 0);
         if (energyStorage.getEnergyStored() <= 0) return;
 
         // Collect receivers, skip the extracting side to avoid push/pull loops
+        List<Direction> receiverDirs = new ArrayList<>();
         List<IEnergyStorage> receivers = new ArrayList<>();
         for (Direction dir : directions) {
             if (dir == extracting) continue;
@@ -188,6 +211,7 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
             if (cache == null) continue;
             IEnergyStorage neighbor = cache.getCapability();
             if (neighbor != null && neighbor.canReceive()) {
+                receiverDirs.add(dir);
                 receivers.add(neighbor);
             }
         }
@@ -198,7 +222,9 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
         if (perReceiver <= 0) return;
 
         int totalConsumed = 0;
-        for (IEnergyStorage receiver : receivers) {
+        for (int i = 0; i < receivers.size(); i++) {
+            IEnergyStorage receiver = receivers.get(i);
+            Direction dir = receiverDirs.get(i);
             int offer = Math.min(perReceiver, energyStorage.getEnergyStored() - totalConsumed);
             if (offer <= 0) break;
 
@@ -212,6 +238,7 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
 
             int accepted = receiver.receiveEnergy(toDeliver, false);
             if (accepted > 0) {
+                outgoingThisTick[dir.get3DDataValue()] += accepted;
                 // We consume what was delivered + proportional loss
                 int proportionalLoss = (toDeliver > 0) ? (int) Math.ceil((double) loss * accepted / toDeliver) : 0;
                 totalConsumed += accepted + proportionalLoss;
@@ -227,7 +254,7 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
     // ── Capability getter ────────────────────────────────────────────────
 
     public IEnergyStorage getEnergyStorage(Direction direction) {
-        return energyStorage;
+        return direction != null ? directionWrappers[direction.get3DDataValue()] : energyStorage;
     }
 
     // ── NBT ──────────────────────────────────────────────────────────────
