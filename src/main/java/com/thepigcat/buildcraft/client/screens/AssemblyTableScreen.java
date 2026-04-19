@@ -91,7 +91,8 @@ public class AssemblyTableScreen extends PDLAbstractContainerScreen<AssemblyTabl
     public boolean mouseClicked(double mx, double my, int button) {
         int px = leftPos + RECIPE_PANEL_X;
         int py = topPos + RECIPE_PANEL_Y;
-        if (mx >= px && mx < px + RECIPE_PANEL_W) {
+        int panelH = VISIBLE_RECIPES * RECIPE_PANEL_ENTRY_H;
+        if (mx >= px && mx < px + RECIPE_PANEL_W && my >= py && my < py + panelH) {
             Map<ResourceLocation, EnumAssemblyRecipeState> states = menu.getRecipeStates();
             List<ResourceLocation> ids = new ArrayList<>(states.keySet());
             int relY = (int) my - py;
@@ -109,7 +110,8 @@ public class AssemblyTableScreen extends PDLAbstractContainerScreen<AssemblyTabl
         int px = leftPos + RECIPE_PANEL_X;
         int py = topPos + RECIPE_PANEL_Y;
         if (mx >= px && mx < px + RECIPE_PANEL_W && my >= py && my < py + VISIBLE_RECIPES * RECIPE_PANEL_ENTRY_H) {
-            recipeScrollOffset = Math.max(0, recipeScrollOffset - (int) Math.signum(scrollY));
+            int maxOffset = Math.max(0, menu.getRecipeStates().size() - VISIBLE_RECIPES);
+            recipeScrollOffset = Math.max(0, Math.min(maxOffset, recipeScrollOffset - (int) Math.signum(scrollY)));
             return true;
         }
         return super.mouseScrolled(mx, my, scrollX, scrollY);
