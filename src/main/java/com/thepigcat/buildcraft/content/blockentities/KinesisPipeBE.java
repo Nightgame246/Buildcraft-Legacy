@@ -200,6 +200,7 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
      */
     private void distributeEnergy() {
         java.util.Arrays.fill(outgoingThisTick, 0);
+        java.util.Arrays.fill(incomingThisTick, 0);
         if (energyStorage.getEnergyStored() <= 0) return;
 
         // Collect receivers, skip the extracting side to avoid push/pull loops
