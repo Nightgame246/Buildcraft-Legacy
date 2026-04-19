@@ -1,6 +1,9 @@
 # Assembly Table + Laser + Chipsets Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **STATUS: VOLLSTÄNDIG ABGESCHLOSSEN — 2026-04-19**
+> Post-impl Bugfixes: (1) `player.openMenu(be, pos)` — buf war null → Network Protocol Error; (2) GUI-Layout auf Original BC 1.12 korrigiert (Slots y=36, Display-Slots x=116, imageHeight=207, Player-Inv y=123/181, vertikaler Progress-Bar).
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Port the BC 1.12 Assembly Table, Laser, and Redstone Chipsets to NeoForge 1.21.1 as Phase E-1.
 
@@ -33,7 +36,7 @@
 - Create: `src/main/java/com/thepigcat/buildcraft/api/recipes/AssemblyRecipe.java`
 - Create: `src/main/java/com/thepigcat/buildcraft/api/recipes/AssemblyRecipeRegistry.java`
 
-- [ ] **Step 1: Create EnumAssemblyRecipeState**
+- [x] **Step 1: Create EnumAssemblyRecipeState**
 
 ```java
 // src/main/java/com/thepigcat/buildcraft/content/enums/EnumAssemblyRecipeState.java
@@ -47,7 +50,7 @@ public enum EnumAssemblyRecipeState {
 }
 ```
 
-- [ ] **Step 2: Create ILaserTarget**
+- [x] **Step 2: Create ILaserTarget**
 
 ```java
 // src/main/java/com/thepigcat/buildcraft/api/blockentities/ILaserTarget.java
@@ -61,7 +64,7 @@ public interface ILaserTarget {
 }
 ```
 
-- [ ] **Step 3: Create AssemblyRecipe**
+- [x] **Step 3: Create AssemblyRecipe**
 
 ```java
 // src/main/java/com/thepigcat/buildcraft/api/recipes/AssemblyRecipe.java
@@ -75,7 +78,7 @@ import java.util.Set;
 public record AssemblyRecipe(ResourceLocation id, Set<Ingredient> inputs, ItemStack output, int feCost) {}
 ```
 
-- [ ] **Step 4: Create AssemblyRecipeRegistry**
+- [x] **Step 4: Create AssemblyRecipeRegistry**
 
 ```java
 // src/main/java/com/thepigcat/buildcraft/api/recipes/AssemblyRecipeRegistry.java
@@ -106,14 +109,14 @@ public final class AssemblyRecipeRegistry {
 }
 ```
 
-- [ ] **Step 5: Compile**
+- [x] **Step 5: Compile**
 
 ```bash
 bash /run/media/fabi/SSD/codeing/Buildcraft-Legacy/gradlew compileJava 2>&1 | tail -5
 ```
 Expected: `BUILD SUCCESSFUL`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/enums/EnumAssemblyRecipeState.java \
@@ -131,7 +134,7 @@ git commit -m "feat(silicon): add AssemblyRecipe registry, ILaserTarget, EnumAss
 - Modify: `src/main/java/com/thepigcat/buildcraft/BCConfig.java`
 - Modify: `src/main/java/com/thepigcat/buildcraft/registries/BCItems.java`
 
-- [ ] **Step 1: Add config values to BCConfig**
+- [x] **Step 1: Add config values to BCConfig**
 
 Add after the existing `@ConfigValue` fields (before the closing brace):
 
@@ -157,7 +160,7 @@ public static int quartzChipsetFeCost = 60_000;
 public static int diamondChipsetFeCost = 80_000;
 ```
 
-- [ ] **Step 2: Add chipset items to BCItems**
+- [x] **Step 2: Add chipset items to BCItems**
 
 Add after the `DIAMOND_GEAR` line:
 
@@ -170,7 +173,7 @@ public static final DeferredItem<Item> QUARTZ_CHIPSET  = registerItem("quartz_ch
 public static final DeferredItem<Item> DIAMOND_CHIPSET = registerItem("diamond_chipset", Item::new);
 ```
 
-- [ ] **Step 3: Add placeholder chipset textures**
+- [x] **Step 3: Add placeholder chipset textures**
 
 Run this Python script to generate 16×16 placeholder PNGs for each chipset:
 
@@ -203,13 +206,13 @@ for name, color in chipsets.items():
 python3 /tmp/gen_chipsets.py
 ```
 
-- [ ] **Step 4: Compile**
+- [x] **Step 4: Compile**
 
 ```bash
 bash /run/media/fabi/SSD/codeing/Buildcraft-Legacy/gradlew compileJava 2>&1 | tail -5
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/BCConfig.java \
@@ -232,7 +235,7 @@ git commit -m "feat(silicon): add chipset items, BCConfig laser/assembly entries
 - Modify: `src/main/java/com/thepigcat/buildcraft/registries/BCBlocks.java`
 - Modify: `src/main/java/com/thepigcat/buildcraft/registries/BCBlockEntities.java`
 
-- [ ] **Step 1: Create LaserBlock**
+- [x] **Step 1: Create LaserBlock**
 
 ```java
 // src/main/java/com/thepigcat/buildcraft/content/blocks/LaserBlock.java
@@ -298,7 +301,7 @@ public class LaserBlock extends BaseEntityBlock {
 }
 ```
 
-- [ ] **Step 2: Create AssemblyTableBlock**
+- [x] **Step 2: Create AssemblyTableBlock**
 
 ```java
 // src/main/java/com/thepigcat/buildcraft/content/blocks/AssemblyTableBlock.java
@@ -356,7 +359,7 @@ public class AssemblyTableBlock extends BaseEntityBlock {
 }
 ```
 
-- [ ] **Step 3: Register blocks in BCBlocks**
+- [x] **Step 3: Register blocks in BCBlocks**
 
 Add after the `QUARRY` line:
 
@@ -374,7 +377,7 @@ import com.thepigcat.buildcraft.content.blocks.LaserBlock;
 import com.thepigcat.buildcraft.content.blocks.AssemblyTableBlock;
 ```
 
-- [ ] **Step 4: Register block entities in BCBlockEntities**
+- [x] **Step 4: Register block entities in BCBlockEntities**
 
 Add after the `EXTRACTING_FLUID_PIPE` entry (before the `collectBlocks` helpers):
 
@@ -391,7 +394,7 @@ import com.thepigcat.buildcraft.content.blockentities.LaserBE;
 import com.thepigcat.buildcraft.content.blockentities.AssemblyTableBE;
 ```
 
-- [ ] **Step 5: Create skeleton LaserBE** (just enough to compile with the static `serverTick` reference)
+- [x] **Step 5: Create skeleton LaserBE** (just enough to compile with the static `serverTick` reference)
 
 ```java
 // src/main/java/com/thepigcat/buildcraft/content/blockentities/LaserBE.java
@@ -419,7 +422,7 @@ public class LaserBE extends ContainerBlockEntity {
 }
 ```
 
-- [ ] **Step 6: Create skeleton AssemblyTableBE**
+- [x] **Step 6: Create skeleton AssemblyTableBE**
 
 ```java
 // src/main/java/com/thepigcat/buildcraft/content/blockentities/AssemblyTableBE.java
@@ -470,7 +473,7 @@ public class AssemblyTableBE extends ContainerBlockEntity implements ILaserTarge
 
 **Note:** `AssemblyTableMenu` does not exist yet — create a minimal skeleton next.
 
-- [ ] **Step 7: Create skeleton AssemblyTableMenu** (enough to compile)
+- [x] **Step 7: Create skeleton AssemblyTableMenu** (enough to compile)
 
 ```java
 // src/main/java/com/thepigcat/buildcraft/content/menus/AssemblyTableMenu.java
@@ -508,7 +511,7 @@ public class AssemblyTableMenu extends PDLAbstractContainerMenu<AssemblyTableBE>
 }
 ```
 
-- [ ] **Step 8: Register AssemblyTable menu type in BCMenuTypes**
+- [x] **Step 8: Register AssemblyTable menu type in BCMenuTypes**
 
 Add after the `DIAMOND_FLUID_PIPE` line:
 
@@ -522,14 +525,14 @@ Add import:
 import com.thepigcat.buildcraft.content.menus.AssemblyTableMenu;
 ```
 
-- [ ] **Step 9: Compile**
+- [x] **Step 9: Compile**
 
 ```bash
 bash /run/media/fabi/SSD/codeing/Buildcraft-Legacy/gradlew compileJava 2>&1 | tail -5
 ```
 Expected: `BUILD SUCCESSFUL`
 
-- [ ] **Step 10: Commit**
+- [x] **Step 10: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blocks/LaserBlock.java \
@@ -550,7 +553,7 @@ git commit -m "feat(silicon): add LaserBlock, AssemblyTableBlock, skeleton BEs +
 **Files:**
 - Modify: `src/main/java/com/thepigcat/buildcraft/content/blockentities/LaserBE.java`
 
-- [ ] **Step 1: Implement full LaserBE**
+- [x] **Step 1: Implement full LaserBE**
 
 Replace the file content with:
 
@@ -694,13 +697,13 @@ public class LaserBE extends ContainerBlockEntity {
 }
 ```
 
-- [ ] **Step 2: Compile**
+- [x] **Step 2: Compile**
 
 ```bash
 bash /run/media/fabi/SSD/codeing/Buildcraft-Legacy/gradlew compileJava 2>&1 | tail -5
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blockentities/LaserBE.java
@@ -714,7 +717,7 @@ git commit -m "feat(silicon): implement LaserBE — cone scan, FE push, target s
 **Files:**
 - Modify: `src/main/java/com/thepigcat/buildcraft/content/blockentities/AssemblyTableBE.java`
 
-- [ ] **Step 1: Implement full AssemblyTableBE**
+- [x] **Step 1: Implement full AssemblyTableBE**
 
 Replace the file content with:
 
@@ -1001,13 +1004,13 @@ public class AssemblyTableBE extends ContainerBlockEntity implements ILaserTarge
 }
 ```
 
-- [ ] **Step 2: Compile**
+- [x] **Step 2: Compile**
 
 ```bash
 bash /run/media/fabi/SSD/codeing/Buildcraft-Legacy/gradlew compileJava 2>&1 | tail -5
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blockentities/AssemblyTableBE.java
@@ -1022,7 +1025,7 @@ git commit -m "feat(silicon): implement AssemblyTableBE — recipe state machine
 - Create: `src/main/java/com/thepigcat/buildcraft/networking/SetRecipeStatePayload.java`
 - Modify: `src/main/java/com/thepigcat/buildcraft/BuildcraftLegacy.java`
 
-- [ ] **Step 1: Create SetRecipeStatePayload**
+- [x] **Step 1: Create SetRecipeStatePayload**
 
 ```java
 // src/main/java/com/thepigcat/buildcraft/networking/SetRecipeStatePayload.java
@@ -1064,7 +1067,7 @@ public record SetRecipeStatePayload(BlockPos pos, ResourceLocation recipeId) imp
 }
 ```
 
-- [ ] **Step 2: Register payload in BuildcraftLegacy.registerPayloads()**
+- [x] **Step 2: Register payload in BuildcraftLegacy.registerPayloads()**
 
 Add to the `registerPayloads` method body:
 
@@ -1077,7 +1080,7 @@ Also add the import at the top of BuildcraftLegacy.java:
 import com.thepigcat.buildcraft.networking.SetRecipeStatePayload;
 ```
 
-- [ ] **Step 3: Register Laser FE capability in BuildcraftLegacy.attachCaps()**
+- [x] **Step 3: Register Laser FE capability in BuildcraftLegacy.attachCaps()**
 
 In the `attachCaps` method, add:
 
@@ -1092,7 +1095,7 @@ import com.thepigcat.buildcraft.content.blockentities.LaserBE;
 import com.thepigcat.buildcraft.registries.BCBlockEntities; // already present
 ```
 
-- [ ] **Step 4: Register chipset assembly recipes in BuildcraftLegacy**
+- [x] **Step 4: Register chipset assembly recipes in BuildcraftLegacy**
 
 Add a new `registerAssemblyRecipes()` method and call it from the mod constructor:
 
@@ -1144,13 +1147,13 @@ import net.neoforged.neoforge.common.Tags;
 import java.util.Set;
 ```
 
-- [ ] **Step 5: Compile**
+- [x] **Step 5: Compile**
 
 ```bash
 bash /run/media/fabi/SSD/codeing/Buildcraft-Legacy/gradlew compileJava 2>&1 | tail -5
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/networking/SetRecipeStatePayload.java \
@@ -1167,7 +1170,7 @@ git commit -m "feat(silicon): add SetRecipeStatePayload, FE capability for Laser
 - Create: `src/main/java/com/thepigcat/buildcraft/client/screens/AssemblyTableScreen.java`
 - Modify: `src/main/java/com/thepigcat/buildcraft/BuildcraftLegacy.java` (register screen)
 
-- [ ] **Step 1: Finalize AssemblyTableMenu**
+- [x] **Step 1: Finalize AssemblyTableMenu**
 
 Replace the file content with:
 
@@ -1219,7 +1222,7 @@ public class AssemblyTableMenu extends PDLAbstractContainerMenu<AssemblyTableBE>
 }
 ```
 
-- [ ] **Step 2: Create placeholder GUI texture**
+- [x] **Step 2: Create placeholder GUI texture**
 
 ```python
 # run once: python3 /tmp/gen_assembly_gui.py
@@ -1256,7 +1259,7 @@ print("Created assembly_table.png")
 python3 /tmp/gen_assembly_gui.py
 ```
 
-- [ ] **Step 3: Create AssemblyTableScreen**
+- [x] **Step 3: Create AssemblyTableScreen**
 
 ```java
 // src/main/java/com/thepigcat/buildcraft/client/screens/AssemblyTableScreen.java
@@ -1381,7 +1384,7 @@ public class AssemblyTableScreen extends PDLAbstractContainerScreen<AssemblyTabl
 }
 ```
 
-- [ ] **Step 4: Register screen in BuildcraftLegacy client setup**
+- [x] **Step 4: Register screen in BuildcraftLegacy client setup**
 
 In `BuildcraftLegacy.java`, find or add a `@EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)` class and add:
 
@@ -1404,13 +1407,13 @@ Look at how existing screens are registered (search for `RegisterMenuScreensEven
 grep -rn "RegisterMenuScreensEvent" /run/media/fabi/SSD/codeing/Buildcraft-Legacy/src/main/java/ | head -5
 ```
 
-- [ ] **Step 5: Compile**
+- [x] **Step 5: Compile**
 
 ```bash
 bash /run/media/fabi/SSD/codeing/Buildcraft-Legacy/gradlew compileJava 2>&1 | tail -5
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/menus/AssemblyTableMenu.java \
@@ -1428,7 +1431,7 @@ git commit -m "feat(silicon): add AssemblyTableScreen with recipe panel, power b
 - Create: `src/main/java/com/thepigcat/buildcraft/client/blockentities/LaserBERenderer.java`
 - Modify: `src/main/java/com/thepigcat/buildcraft/BuildcraftLegacy.java` (register renderer)
 
-- [ ] **Step 1: Create LaserBERenderer**
+- [x] **Step 1: Create LaserBERenderer**
 
 ```java
 // src/main/java/com/thepigcat/buildcraft/client/blockentities/LaserBERenderer.java
@@ -1503,7 +1506,7 @@ public class LaserBERenderer implements BlockEntityRenderer<LaserBE> {
 }
 ```
 
-- [ ] **Step 2: Register the renderer**
+- [x] **Step 2: Register the renderer**
 
 Find where other TESR renderers are registered (search for `BlockEntityRenderers.register` or `RegisterBlockEntityRenderersEvent`):
 
@@ -1521,13 +1524,13 @@ Add import:
 import com.thepigcat.buildcraft.client.blockentities.LaserBERenderer;
 ```
 
-- [ ] **Step 3: Compile**
+- [x] **Step 3: Compile**
 
 ```bash
 bash /run/media/fabi/SSD/codeing/Buildcraft-Legacy/gradlew compileJava 2>&1 | tail -5
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/client/blockentities/LaserBERenderer.java \
@@ -1547,7 +1550,7 @@ git commit -m "feat(silicon): add LaserBERenderer — pulsing cross-beam TESR"
 - Modify: `src/main/java/com/thepigcat/buildcraft/datagen/data/BCRecipeProvider.java`
 - Create: Block texture PNGs for Laser and Assembly Table
 
-- [ ] **Step 1: Create placeholder block textures**
+- [x] **Step 1: Create placeholder block textures**
 
 ```python
 # run: python3 /tmp/gen_block_textures.py
@@ -1579,7 +1582,7 @@ print("Done")
 python3 /tmp/gen_block_textures.py
 ```
 
-- [ ] **Step 2: Add blockstates and models in BCBlockStateProvider**
+- [x] **Step 2: Add blockstates and models in BCBlockStateProvider**
 
 In `registerStatesAndModels()`, add before the pipe loop:
 
@@ -1615,7 +1618,7 @@ BlockModelBuilder tableModel = models().withExistingParent(name(BCBlocks.ASSEMBL
 simpleBlock(BCBlocks.ASSEMBLY_TABLE.get(), tableModel);
 ```
 
-- [ ] **Step 3: Add item models in BCItemModelProvider**
+- [x] **Step 3: Add item models in BCItemModelProvider**
 
 In `registerModels()`, add:
 
@@ -1642,7 +1645,7 @@ private static final Set<Block> DEFAULT_MODEL_BLACKLIST = Set.of(
 );
 ```
 
-- [ ] **Step 4: Add lang entries in BCEnUSLangProvider**
+- [x] **Step 4: Add lang entries in BCEnUSLangProvider**
 
 Find the `addTranslations()` (or equivalent) method and add:
 
@@ -1657,7 +1660,7 @@ add(BCItems.DIAMOND_CHIPSET.get(), "Diamond Chipset");
 add("container.buildcraft.assembly_table", "Assembly Table");
 ```
 
-- [ ] **Step 5: Add loot tables in BCBlockLootTableProvider**
+- [x] **Step 5: Add loot tables in BCBlockLootTableProvider**
 
 In `generate()` (or `getBlockTables()`), add:
 
@@ -1666,7 +1669,7 @@ dropSelf(BCBlocks.LASER.get());
 dropSelf(BCBlocks.ASSEMBLY_TABLE.get());
 ```
 
-- [ ] **Step 6: Add crafting recipes in BCRecipeProvider**
+- [x] **Step 6: Add crafting recipes in BCRecipeProvider**
 
 In `buildRecipes()`, add:
 
@@ -1697,20 +1700,20 @@ ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BCBlocks.ASSEMBLY_TABLE)
 
 Add import if missing: `import net.minecraft.world.level.block.Blocks;`
 
-- [ ] **Step 7: Run datagen**
+- [x] **Step 7: Run datagen**
 
 ```bash
 bash /run/media/fabi/SSD/codeing/Buildcraft-Legacy/gradlew runData 2>&1 | tail -10
 ```
 Expected: `BUILD SUCCESSFUL`
 
-- [ ] **Step 8: Compile**
+- [x] **Step 8: Compile**
 
 ```bash
 bash /run/media/fabi/SSD/codeing/Buildcraft-Legacy/gradlew compileJava 2>&1 | tail -5
 ```
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/datagen/ \
