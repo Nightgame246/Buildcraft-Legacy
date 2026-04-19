@@ -2,8 +2,6 @@ package com.thepigcat.buildcraft.client.screens;
 
 import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
 import com.thepigcat.buildcraft.BuildcraftLegacy;
-import com.thepigcat.buildcraft.api.recipes.AssemblyRecipe;
-import com.thepigcat.buildcraft.api.recipes.AssemblyRecipeRegistry;
 import com.thepigcat.buildcraft.content.enums.EnumAssemblyRecipeState;
 import com.thepigcat.buildcraft.content.menus.AssemblyTableMenu;
 import com.thepigcat.buildcraft.networking.SetRecipeStatePayload;
@@ -19,101 +17,81 @@ import java.util.List;
 import java.util.Map;
 
 public class AssemblyTableScreen extends PDLAbstractContainerScreen<AssemblyTableMenu> {
-    private static final int RECIPE_PANEL_X = 112;
-    private static final int RECIPE_PANEL_Y = 18;
-    private static final int RECIPE_PANEL_W = 56;
-    private static final int RECIPE_PANEL_ENTRY_H = 20;
-    private int recipeScrollOffset = 0;
-    private static final int VISIBLE_RECIPES = 6;
+    private static final ResourceLocation TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(BuildcraftLegacy.MODID, "textures/gui/assembly_table.png");
+
+    // State icon UV offsets in the texture (at x=176)
+    private static final int UV_SAVED           = 0;
+    private static final int UV_SAVED_ENOUGH    = 16;
+    private static final int UV_ACTIVE          = 32;
+    // Progress bar UV (x=176, y=48), 4px wide x 70px tall, fills from bottom
+    private static final int PROGRESS_X = 86;
+    private static final int PROGRESS_Y = 36;
+    private static final int PROGRESS_H = 70;
 
     public AssemblyTableScreen(AssemblyTableMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
         this.imageWidth = 176;
-        this.imageHeight = 250;
+        this.imageHeight = 207;
+        this.inventoryLabelY = this.imageHeight - 94; // = 113, just above player inv at y=123
     }
 
     @Override
     public @NotNull ResourceLocation getBackgroundTexture() {
-        return ResourceLocation.fromNamespaceAndPath(BuildcraftLegacy.MODID, "textures/gui/assembly_table.png");
+        return TEXTURE;
     }
 
     @Override
     protected void renderBg(GuiGraphics g, float partialTick, int mx, int my) {
         super.renderBg(g, partialTick, mx, my);
-        renderRecipePanel(g, mx, my);
-        renderPowerBar(g);
+        renderProgressBar(g);
+        renderStateIcons(g);
     }
 
-    private void renderRecipePanel(GuiGraphics g, int mx, int my) {
-        Map<ResourceLocation, EnumAssemblyRecipeState> states = menu.getRecipeStates();
-        List<Map.Entry<ResourceLocation, EnumAssemblyRecipeState>> visible = new ArrayList<>();
-        int skip = 0;
-        for (var entry : states.entrySet()) {
-            if (skip++ < recipeScrollOffset) continue;
-            if (visible.size() >= VISIBLE_RECIPES) break;
-            visible.add(entry);
-        }
-
-        int px = leftPos + RECIPE_PANEL_X;
-        int py = topPos + RECIPE_PANEL_Y;
-        for (int i = 0; i < visible.size(); i++) {
-            var entry = visible.get(i);
-            AssemblyRecipe recipe = AssemblyRecipeRegistry.get(entry.getKey());
-            if (recipe == null) continue;
-
-            int ey = py + i * RECIPE_PANEL_ENTRY_H;
-            int color = switch (entry.getValue()) {
-                case POSSIBLE -> 0xFF555555;
-                case SAVED -> 0xFF886600;
-                case SAVED_ENOUGH -> 0xFF226622;
-                case SAVED_ENOUGH_ACTIVE -> 0xFF44AA44;
-            };
-            g.fill(px, ey, px + RECIPE_PANEL_W, ey + RECIPE_PANEL_ENTRY_H - 1, color);
-            g.renderItem(recipe.output(), px + 2, ey + 2);
-            if (mx >= px && mx < px + RECIPE_PANEL_W && my >= ey && my < ey + RECIPE_PANEL_ENTRY_H) {
-                g.fill(px, ey, px + RECIPE_PANEL_W, ey + RECIPE_PANEL_ENTRY_H - 1, 0x44FFFFFF);
-            }
-        }
-    }
-
-    private void renderPowerBar(GuiGraphics g) {
+    private void renderProgressBar(GuiGraphics g) {
         long power = menu.getPower();
         long target = menu.getTarget();
         if (target <= 0) return;
         float frac = Math.min(1f, (float) power / target);
-        int barX = leftPos + 8;
-        int barY = topPos + 160;
-        int barW = (int) (160 * frac);
-        g.fill(barX, barY, barX + barW, barY + 8, 0xFF44AA44);
+        int fillH = (int) (PROGRESS_H * frac);
+        if (fillH <= 0) return;
+        int skipH = PROGRESS_H - fillH;
+        g.blit(TEXTURE, leftPos + PROGRESS_X, topPos + PROGRESS_Y + skipH, 176, 48 + skipH, 4, fillH);
+    }
+
+    private void renderStateIcons(GuiGraphics g) {
+        Map<ResourceLocation, EnumAssemblyRecipeState> states = menu.getRecipeStates();
+        List<Map.Entry<ResourceLocation, EnumAssemblyRecipeState>> entries = new ArrayList<>(states.entrySet());
+        for (int i = 0; i < Math.min(12, entries.size()); i++) {
+            int iconV = switch (entries.get(i).getValue()) {
+                case SAVED -> UV_SAVED;
+                case SAVED_ENOUGH -> UV_SAVED_ENOUGH;
+                case SAVED_ENOUGH_ACTIVE -> UV_ACTIVE;
+                default -> -1; // POSSIBLE: no icon
+            };
+            if (iconV < 0) continue;
+            int col = i % 3;
+            int row = i / 3;
+            g.blit(TEXTURE, leftPos + 116 + col * 18, topPos + 36 + row * 18, 176, iconV, 16, 16);
+        }
     }
 
     @Override
     public boolean mouseClicked(double mx, double my, int button) {
-        int px = leftPos + RECIPE_PANEL_X;
-        int py = topPos + RECIPE_PANEL_Y;
-        int panelH = VISIBLE_RECIPES * RECIPE_PANEL_ENTRY_H;
-        if (mx >= px && mx < px + RECIPE_PANEL_W && my >= py && my < py + panelH) {
-            Map<ResourceLocation, EnumAssemblyRecipeState> states = menu.getRecipeStates();
-            List<ResourceLocation> ids = new ArrayList<>(states.keySet());
-            int relY = (int) my - py;
-            int idx = recipeScrollOffset + relY / RECIPE_PANEL_ENTRY_H;
-            if (idx >= 0 && idx < ids.size()) {
-                PacketDistributor.sendToServer(new SetRecipeStatePayload(menu.blockEntity.getBlockPos(), ids.get(idx)));
-                return true;
+        if (button == 0) {
+            List<ResourceLocation> ids = new ArrayList<>(menu.getRecipeStates().keySet());
+            for (int i = 0; i < Math.min(12, ids.size()); i++) {
+                int col = i % 3;
+                int row = i / 3;
+                int slotX = leftPos + 116 + col * 18;
+                int slotY = topPos + 36 + row * 18;
+                if (mx >= slotX && mx < slotX + 16 && my >= slotY && my < slotY + 16) {
+                    PacketDistributor.sendToServer(
+                            new SetRecipeStatePayload(menu.blockEntity.getBlockPos(), ids.get(i)));
+                    return true;
+                }
             }
         }
         return super.mouseClicked(mx, my, button);
-    }
-
-    @Override
-    public boolean mouseScrolled(double mx, double my, double scrollX, double scrollY) {
-        int px = leftPos + RECIPE_PANEL_X;
-        int py = topPos + RECIPE_PANEL_Y;
-        if (mx >= px && mx < px + RECIPE_PANEL_W && my >= py && my < py + VISIBLE_RECIPES * RECIPE_PANEL_ENTRY_H) {
-            int maxOffset = Math.max(0, menu.getRecipeStates().size() - VISIBLE_RECIPES);
-            recipeScrollOffset = Math.max(0, Math.min(maxOffset, recipeScrollOffset - (int) Math.signum(scrollY)));
-            return true;
-        }
-        return super.mouseScrolled(mx, my, scrollX, scrollY);
     }
 }
