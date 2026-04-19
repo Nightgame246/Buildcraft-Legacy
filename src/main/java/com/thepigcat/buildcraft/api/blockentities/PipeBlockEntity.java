@@ -91,7 +91,7 @@ public abstract class PipeBlockEntity<CAP> extends BlockEntity {
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
         CompoundTag tag = pkt.getTag();
         if (tag != null) {
-            loadAdditional(tag, lookupProvider);
+            handleUpdateTag(tag, lookupProvider);
             if (level != null && level.isClientSide) {
                 level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
             }
