@@ -51,6 +51,12 @@ public final class BCBlocks {
     public static final DeferredBlock<QuarryBlock> QUARRY = registerBlockAndItem("quarry", QuarryBlock::new,
             BlockBehaviour.Properties.of().strength(5.0f).sound(SoundType.METAL).mapColor(MapColor.METAL).requiresCorrectToolForDrops());
 
+    // Silicon
+    public static final DeferredBlock<LaserBlock> LASER = registerBlockAndItem("laser", LaserBlock::new,
+            BlockBehaviour.Properties.of().strength(2.0f).sound(SoundType.METAL).mapColor(MapColor.METAL).requiresCorrectToolForDrops());
+    public static final DeferredBlock<AssemblyTableBlock> ASSEMBLY_TABLE = registerBlockAndItem("assembly_table", AssemblyTableBlock::new,
+            BlockBehaviour.Properties.of().strength(3.0f).sound(SoundType.METAL).mapColor(MapColor.METAL).requiresCorrectToolForDrops());
+
     public static <T extends Block> DeferredBlock<T> registerBlockAndItem(String name, Function<BlockBehaviour.Properties, T> blockConstructor, BlockBehaviour.Properties props) {
         DeferredBlock<T> toReturn = BLOCKS.registerBlock(name, blockConstructor, props);
         DeferredItem<BlockItem> item = BCItems.ITEMS.registerSimpleBlockItem(toReturn);

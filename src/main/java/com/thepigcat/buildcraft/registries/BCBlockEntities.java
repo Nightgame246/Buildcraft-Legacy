@@ -79,6 +79,11 @@ public final class BCBlockEntities {
     public static final Supplier<BlockEntityType<DiamondFluidPipeBE>> DIAMOND_FLUID_PIPE = BLOCK_ENTITIES.register("diamond_fluid_pipe",
             () -> BlockEntityType.Builder.of(DiamondFluidPipeBE::new, collectBlocks(DiamondFluidPipeBlock.class)).build(null));
 
+    public static final Supplier<BlockEntityType<LaserBE>> LASER = BLOCK_ENTITIES.register("laser",
+            () -> BlockEntityType.Builder.of(LaserBE::new, BCBlocks.LASER.get()).build(null));
+    public static final Supplier<BlockEntityType<AssemblyTableBE>> ASSEMBLY_TABLE = BLOCK_ENTITIES.register("assembly_table",
+            () -> BlockEntityType.Builder.of(AssemblyTableBE::new, BCBlocks.ASSEMBLY_TABLE.get()).build(null));
+
     private static Block[] collectBlocks(Class<? extends Block> clazz) {
         return BuiltInRegistries.BLOCK.stream().filter(clazz::isInstance).toList().toArray(Block[]::new);
     }
