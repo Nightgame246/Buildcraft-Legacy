@@ -145,12 +145,6 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
         return displayFlowsOut[dir];
     }
 
-    /** @deprecated remove after Task 4 updates the renderer */
-    @Deprecated
-    public float getDisplayPower(float partialTick) {
-        return getSectionPower(6, partialTick);
-    }
-
     // ── Tick ──────────────────────────────────────────────────────────────
 
     @Override

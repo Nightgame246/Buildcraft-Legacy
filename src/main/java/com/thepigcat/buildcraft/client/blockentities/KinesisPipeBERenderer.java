@@ -35,19 +35,13 @@ public class KinesisPipeBERenderer implements BlockEntityRenderer<KinesisPipeBE>
 
     @Override
     public void render(KinesisPipeBE be, float partialTick, PoseStack ps, MultiBufferSource buffers, int packedLight, int packedOverlay) {
-        // Use smoothed display power from the BE (client-side interpolated)
-        float power = be.getDisplayPower(partialTick);
-        if (power <= 0.001f) return;
-
-        // Continuous radius with sqrt curve (original BC used sqrt for visual emphasis)
-        float radius = MAX_RADIUS * (float) Math.sqrt(power);
+        float centerPower = be.getSectionPower(6, partialTick);
+        if (centerPower <= 0.001f) return;
 
         VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(POWER_FLOW_TEXTURE));
         Matrix4f pose = ps.last().pose();
-        // Full brightness — energy beams glow like original BC
         int light = LightTexture.FULL_BRIGHT;
 
-        // Animated UV base offset
         float time = 0;
         if (be.getLevel() != null) {
             time = (be.getLevel().getGameTime() + partialTick) * SCROLL_SPEED;
@@ -55,18 +49,24 @@ public class KinesisPipeBERenderer implements BlockEntityRenderer<KinesisPipeBE>
 
         BlockState state = be.getBlockState();
 
-        // Center cube — static UVs (no scroll)
-        renderCenterCube(pose, vc, radius, light, packedOverlay);
+        // Center cube — radius driven by center section power
+        float centerRadius = MAX_RADIUS * (float) Math.sqrt(centerPower);
+        renderCenterCube(pose, vc, centerRadius, light, packedOverlay);
 
-        // Connection strips — direction-aware UV scroll
+        // Connection strips — per-section radius, flow-direction-aware UV scroll
         for (Direction dir : Direction.values()) {
             PipeBlock.PipeState pipeState = state.getValue(PipeBlock.CONNECTION[dir.get3DDataValue()]);
-            if (pipeState != PipeBlock.PipeState.NONE) {
-                // Scroll direction matches axis: positive dirs flow outward, negative dirs flow inward
-                float dirScroll = time * dir.getAxisDirection().getStep();
-                float uvOffset = dirScroll % 1.0f;
-                renderConnectionStrip(pose, vc, dir, radius, uvOffset, light, packedOverlay);
-            }
+            if (pipeState == PipeBlock.PipeState.NONE) continue;
+
+            int d = dir.get3DDataValue();
+            float armPower = be.getSectionPower(d, partialTick);
+            if (armPower <= 0.001f) continue;
+
+            float armRadius = MAX_RADIUS * (float) Math.sqrt(armPower);
+            // outgoing: scroll away from center; incoming: scroll toward center
+            float flowSign = be.getSectionFlowsOut(d) ? -1f : 1f;
+            float uvOffset = (time * flowSign) % 1.0f;
+            renderConnectionStrip(pose, vc, dir, armRadius, uvOffset, light, packedOverlay);
         }
     }
 
