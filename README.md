@@ -33,9 +33,11 @@ feature parity. All code remains subject to the terms of the Mozilla Public Lice
 
 ## About
 
-This project, originally created for Modfest 2024, is an attempt at porting Buildcraft, step-by-step. This is why the mod only has a handful of features right now, but will be expanded gradually. The mod is not a 1:1 replica of the Buildcraft mod, but still very faithful. I decided to also include features from other old mods, that people used a lot with buildcraft like the Factorization Barrels.
+This project is a faithful, step-by-step port of BuildCraft from Forge 1.12.2 to NeoForge 1.21.1. The goal is full feature parity with the original — all pipes, machines, engines, and automation systems — staying as close to the original behaviour as possible.
 
-The mod is still in its early stages and prone to bugs.
+The mod already covers a large portion of the original: all item, fluid, and kinesis pipes with full special logic, all three engines, tank, crate, and a basic quarry. Further phases will bring the refinery, factory machines, builders, silicon/gates, and a full quarry overhaul.
+
+The mod is functional but still under active development — bugs are possible.
 
 ## Current Status
 
