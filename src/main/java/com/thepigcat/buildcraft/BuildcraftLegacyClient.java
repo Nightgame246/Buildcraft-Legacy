@@ -4,6 +4,7 @@ import com.thepigcat.buildcraft.client.blockentities.CrateBERenderer;
 import com.thepigcat.buildcraft.client.blockentities.EngineBERenderer;
 import com.thepigcat.buildcraft.client.blockentities.FluidPipeBERenderer;
 import com.thepigcat.buildcraft.client.blockentities.KinesisPipeBERenderer;
+import com.thepigcat.buildcraft.client.blockentities.LaserBERenderer;
 import com.thepigcat.buildcraft.client.blockentities.PipeBERenderer;
 import com.thepigcat.buildcraft.client.blockentities.TankBERenderer;
 import com.thepigcat.buildcraft.client.items.CrateItemRenderer;
@@ -101,6 +102,7 @@ public final class BuildcraftLegacyClient {
         event.registerBlockEntityRenderer(BCBlockEntities.IRON_FLUID_PIPE.get(), FluidPipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.CLAY_FLUID_PIPE.get(), FluidPipeBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.DIAMOND_FLUID_PIPE.get(), FluidPipeBERenderer::new);
+        event.registerBlockEntityRenderer(BCBlockEntities.LASER.get(), LaserBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.CRATE.get(), CrateBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.TANK.get(), TankBERenderer::new);
         event.registerBlockEntityRenderer(BCBlockEntities.REDSTONE_ENGINE.get(), ctx -> new EngineBERenderer(ctx, ResourceLocation.fromNamespaceAndPath(BuildcraftLegacy.MODID, "entity/wooden_engine_piston")));
