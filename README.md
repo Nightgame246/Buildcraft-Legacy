@@ -42,14 +42,16 @@ The mod is still in its early stages and prone to bugs.
 | Phase | Module | Description | Status |
 | :--- | :--- | :--- | :--- |
 | A | **Transport** | **Basic Item Pipes**: Stone, Sandstone, Quartz, Void, Cobblestone | Done |
-| B | **Transport** | **Specialized Item Pipes**: Iron, Obsidian, Emerald, Clay, Diamond, Lapis, Daizuli, Stripe (blocks exist, special logic WIP) | In Progress |
-| C | **Transport** | **Energy Pipes**: Kinesis (Power) Pipes with 6 materials, energy loss, TESR rendering | Done |
-| C | **Transport** | **Fluid Pipes**: Section-based fluid transport with 4 materials, proportional extraction, TESR rendering | Done |
-| D | **Energy & Factory** | **Power & Machines**: Engines, Quarry, Pump, Tank, Crate, Auto-Workbench | In Progress |
-| E | **Silicon** | **Logic & Automation**: Structure Pipes, Gates, Wires, Triggers, Assembly Table, Lasers | Planned |
-| F | **Builders** | **Construction**: Architect Table, Builder, Library, Blueprints | Planned |
-| G | **Robotics** | **Advanced Automation**: Robots, Docking Stations | Planned |
-| H | **Polish** | **Final Touches**: Creative Tabs separation, performance fixes, advanced animations | Planned |
+| B | **Transport** | **Specialized Item Pipes**: Iron, Obsidian, Clay, Diamond, Lapis, Daizuli, Stripe, Emerald — full special logic | Done |
+| C | **Transport & Energy** | **Energy & Fluid Pipes**: Kinesis Pipes (6 materials, heat-map TESR), Fluid Pipes (10 materials, section-based transport) | Done |
+| D | **Energy & Factory** | **Engines & Machines**: Redstone/Stirling/Combustion Engines, Tank (stackable), Crate, Quarry (basic) | Done |
+| E | **Silicon** | **Logic & Automation**: Gates, Triggers, Actions, Emzuli Pipe, Laser, Assembly Table, Chipsets | Planned |
+| F | **Factory** | **Refinery**: Distiller, Heat Exchanger, Fuel fluids (fuel_light, fuel_dense, fuel_gaseous, etc.) | Planned |
+| G | **Factory** | **Factory Machines**: Mining Well, Pump, Flood Gate, Chute, Auto Workbench, Filtered Buffer | Planned |
+| H | **Builders** | **Construction**: Filler, Builder, Architect Table, Electronic Library, Replacer, Frame Block, Blueprints | Planned |
+| I | **Transport & Core** | **Markers & Tools**: Marker Volume/Path, Paintbrush, Structure Pipe, Wire | Planned |
+| J | **Builders** | **Quarry Overhaul**: Frame blocks, marker-based area, animated drill head, chunk loading, laser rendering | Planned |
+| Z | **Optional** | **Low Priority**: RF Pipes, Zone Planner, DEV blocks (only if needed by other phases) | Optional |
 
 ## Discord
 
