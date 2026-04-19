@@ -35,7 +35,7 @@ public class AssemblyTableBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof AssemblyTableBE be) {
-            player.openMenu(be);
+            player.openMenu(be, pos);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
