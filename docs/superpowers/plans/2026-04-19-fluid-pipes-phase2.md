@@ -1,6 +1,6 @@
 # Fluid Pipes Phase 2 (Clay + Diamond) Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Add Clay Fluid Pipe (40 mB/t, prefers non-pipe neighbors) and Diamond Fluid Pipe (80 mB/t, 6-direction fluid filter GUI) following the exact BC 1.12 behavior.
 
@@ -41,7 +41,7 @@
 - Create: `src/main/resources/assets/buildcraft/textures/block/clay_fluid_pipe.png`
 - Create: `src/main/resources/assets/buildcraft/textures/block/diamond_fluid_pipe.png`
 
-- [ ] **Step 1: Copy textures from original BC 1.12**
+- [x] **Step 1: Copy textures from original BC 1.12**
 
 ```bash
 cp "/run/media/fabi/SSD/codeing/BuildCraft-1.12/buildcraft_resources/assets/buildcrafttransport/textures/pipes/clay_fluid.png" \
@@ -51,7 +51,7 @@ cp "/run/media/fabi/SSD/codeing/BuildCraft-1.12/buildcraft_resources/assets/buil
    "src/main/resources/assets/buildcraft/textures/block/diamond_fluid_pipe.png"
 ```
 
-- [ ] **Step 2: Verify files exist**
+- [x] **Step 2: Verify files exist**
 
 ```bash
 ls -la src/main/resources/assets/buildcraft/textures/block/clay_fluid_pipe.png \
@@ -60,7 +60,7 @@ ls -la src/main/resources/assets/buildcraft/textures/block/clay_fluid_pipe.png \
 
 Expected: both files present, non-zero size.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/main/resources/assets/buildcraft/textures/block/clay_fluid_pipe.png \
@@ -81,7 +81,7 @@ The goal is to:
 3. Add `getCurrentFluid()` getter for use in `DiamondFluidPipeBE`.
 4. Add `selectOutputDirections(List<Direction>)` hook and call it in `moveFromCenter()`.
 
-- [ ] **Step 1: Change `applyMaterialProperties` from `private` to `protected`**
+- [x] **Step 1: Change `applyMaterialProperties` from `private` to `protected`**
 
 In `FluidPipeBE.java`, change line:
 ```java
@@ -92,7 +92,7 @@ to:
 protected void applyMaterialProperties() {
 ```
 
-- [ ] **Step 2: Add `setMaterialProperties` helper after `applyMaterialProperties()`**
+- [x] **Step 2: Add `setMaterialProperties` helper after `applyMaterialProperties()`**
 
 After the closing brace of `applyMaterialProperties()`, add:
 ```java
@@ -106,14 +106,14 @@ protected void setMaterialProperties(int transferPerTick, int delay) {
 }
 ```
 
-- [ ] **Step 3: Add `getCurrentFluid()` getter**
+- [x] **Step 3: Add `getCurrentFluid()` getter**
 
 After `setMaterialProperties`, add:
 ```java
 protected FluidStack getCurrentFluid() { return currentFluid; }
 ```
 
-- [ ] **Step 4: Add `selectOutputDirections` hook**
+- [x] **Step 4: Add `selectOutputDirections` hook**
 
 After `getCurrentFluid()`, add:
 ```java
@@ -122,7 +122,7 @@ protected List<Direction> selectOutputDirections(List<Direction> candidates) {
 }
 ```
 
-- [ ] **Step 5: Call the hook in `moveFromCenter()`**
+- [x] **Step 5: Call the hook in `moveFromCenter()`**
 
 In `moveFromCenter()`, find the block that ends the candidate collection:
 ```java
@@ -138,11 +138,11 @@ Replace with:
         Collections.shuffle(outputDirs);
 ```
 
-- [ ] **Step 6: Add missing import for List if needed**
+- [x] **Step 6: Add missing import for List if needed**
 
 Check that `java.util.List` is already imported (it is — `List.of(0,1,2,3,4,5)` is used in `moveToCenter`). No change needed.
 
-- [ ] **Step 7: Compile check**
+- [x] **Step 7: Compile check**
 
 ```bash
 ./gradlew compileJava 2>&1 | tail -20
@@ -150,7 +150,7 @@ Check that `java.util.List` is already imported (it is — `List.of(0,1,2,3,4,5)
 
 Expected: `BUILD SUCCESSFUL`
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blockentities/FluidPipeBE.java
@@ -165,7 +165,7 @@ git commit -m "feat(fluid-pipe): add selectOutputDirections hook + setMaterialPr
 - Create: `src/main/java/com/thepigcat/buildcraft/content/blocks/ClayFluidPipeBlock.java`
 - Create: `src/main/java/com/thepigcat/buildcraft/content/blockentities/ClayFluidPipeBE.java`
 
-- [ ] **Step 1: Create `ClayFluidPipeBlock.java`**
+- [x] **Step 1: Create `ClayFluidPipeBlock.java`**
 
 ```java
 package com.thepigcat.buildcraft.content.blocks;
@@ -193,7 +193,7 @@ public class ClayFluidPipeBlock extends FluidPipeBlock {
 }
 ```
 
-- [ ] **Step 2: Create `ClayFluidPipeBE.java`**
+- [x] **Step 2: Create `ClayFluidPipeBE.java`**
 
 ```java
 package com.thepigcat.buildcraft.content.blockentities;
@@ -226,7 +226,7 @@ public class ClayFluidPipeBE extends FluidPipeBE {
 }
 ```
 
-- [ ] **Step 3: Compile check**
+- [x] **Step 3: Compile check**
 
 ```bash
 ./gradlew compileJava 2>&1 | tail -20
@@ -234,7 +234,7 @@ public class ClayFluidPipeBE extends FluidPipeBE {
 
 Expected: `BUILD SUCCESSFUL`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blocks/ClayFluidPipeBlock.java \
@@ -249,7 +249,7 @@ git commit -m "feat(fluid-pipes-phase2): add ClayFluidPipeBlock and ClayFluidPip
 **Files:**
 - Create: `src/main/java/com/thepigcat/buildcraft/content/blockentities/DiamondFluidPipeBE.java`
 
-- [ ] **Step 1: Create `DiamondFluidPipeBE.java`**
+- [x] **Step 1: Create `DiamondFluidPipeBE.java`**
 
 ```java
 package com.thepigcat.buildcraft.content.blockentities;
@@ -362,7 +362,7 @@ public class DiamondFluidPipeBE extends FluidPipeBE {
 }
 ```
 
-- [ ] **Step 2: Compile check**
+- [x] **Step 2: Compile check**
 
 ```bash
 ./gradlew compileJava 2>&1 | tail -20
@@ -370,7 +370,7 @@ public class DiamondFluidPipeBE extends FluidPipeBE {
 
 Expected: `BUILD SUCCESSFUL`
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blockentities/DiamondFluidPipeBE.java
@@ -386,7 +386,7 @@ git commit -m "feat(fluid-pipes-phase2): add DiamondFluidPipeBE with 6-direction
 - Create: `src/main/java/com/thepigcat/buildcraft/content/menus/DiamondFluidPipeMenu.java`
 - Create: `src/main/java/com/thepigcat/buildcraft/client/screens/DiamondFluidPipeScreen.java`
 
-- [ ] **Step 1: Create `DiamondFluidPipeBlock.java`**
+- [x] **Step 1: Create `DiamondFluidPipeBlock.java`**
 
 ```java
 package com.thepigcat.buildcraft.content.blocks;
@@ -442,7 +442,7 @@ public class DiamondFluidPipeBlock extends FluidPipeBlock {
 }
 ```
 
-- [ ] **Step 2: Create `DiamondFluidPipeMenu.java`**
+- [x] **Step 2: Create `DiamondFluidPipeMenu.java`**
 
 ```java
 package com.thepigcat.buildcraft.content.menus;
@@ -540,7 +540,7 @@ public class DiamondFluidPipeMenu extends AbstractContainerMenu {
 }
 ```
 
-- [ ] **Step 3: Create `DiamondFluidPipeScreen.java`**
+- [x] **Step 3: Create `DiamondFluidPipeScreen.java`**
 
 ```java
 package com.thepigcat.buildcraft.client.screens;
@@ -585,7 +585,7 @@ public class DiamondFluidPipeScreen extends AbstractContainerScreen<DiamondFluid
 }
 ```
 
-- [ ] **Step 4: Compile check**
+- [x] **Step 4: Compile check**
 
 ```bash
 ./gradlew compileJava 2>&1 | tail -20
@@ -593,7 +593,7 @@ public class DiamondFluidPipeScreen extends AbstractContainerScreen<DiamondFluid
 
 Expected: `BUILD SUCCESSFUL`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blocks/DiamondFluidPipeBlock.java \
@@ -612,7 +612,7 @@ git commit -m "feat(fluid-pipes-phase2): add DiamondFluidPipeBlock, Menu and Scr
 - Modify: `src/main/java/com/thepigcat/buildcraft/registries/BCBlockEntities.java`
 - Modify: `src/main/java/com/thepigcat/buildcraft/registries/BCMenuTypes.java`
 
-- [ ] **Step 1: Add pipe types to `BCPipeTypes.java`**
+- [x] **Step 1: Add pipe types to `BCPipeTypes.java`**
 
 Add after the `FLUID_IRON` declaration (before `public static void init()`):
 
@@ -634,7 +634,7 @@ import com.thepigcat.buildcraft.content.blocks.ClayFluidPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.DiamondFluidPipeBlock;
 ```
 
-- [ ] **Step 2: Add pipe entries to `BCPipes.java`**
+- [x] **Step 2: Add pipe entries to `BCPipes.java`**
 
 Add after `IRON_FLUID` (before the closing `}`):
 
@@ -657,7 +657,7 @@ Check existing imports at the top of `BCPipes.java` — `Items`, `Tags.Items.GEM
 import net.minecraft.world.item.Items;
 ```
 
-- [ ] **Step 3: Add BlockEntity types to `BCBlockEntities.java`**
+- [x] **Step 3: Add BlockEntity types to `BCBlockEntities.java`**
 
 Add after `IRON_FLUID_PIPE` registration:
 
@@ -677,7 +677,7 @@ import com.thepigcat.buildcraft.content.blocks.ClayFluidPipeBlock;
 import com.thepigcat.buildcraft.content.blocks.DiamondFluidPipeBlock;
 ```
 
-- [ ] **Step 4: Add menu type to `BCMenuTypes.java`**
+- [x] **Step 4: Add menu type to `BCMenuTypes.java`**
 
 Add after `EMERALD_PIPE`:
 ```java
@@ -690,7 +690,7 @@ Add import:
 import com.thepigcat.buildcraft.content.menus.DiamondFluidPipeMenu;
 ```
 
-- [ ] **Step 5: Compile check**
+- [x] **Step 5: Compile check**
 
 ```bash
 ./gradlew compileJava 2>&1 | tail -20
@@ -698,7 +698,7 @@ import com.thepigcat.buildcraft.content.menus.DiamondFluidPipeMenu;
 
 Expected: `BUILD SUCCESSFUL`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/registries/BCPipeTypes.java \
@@ -716,7 +716,7 @@ git commit -m "feat(fluid-pipes-phase2): register clay/diamond fluid pipe types,
 - Modify: `src/main/java/com/thepigcat/buildcraft/BuildcraftLegacy.java`
 - Modify: `src/main/java/com/thepigcat/buildcraft/BuildcraftLegacyClient.java`
 
-- [ ] **Step 1: Register fluid capabilities in `BuildcraftLegacy.java`**
+- [x] **Step 1: Register fluid capabilities in `BuildcraftLegacy.java`**
 
 In `attachCaps()`, after the `IRON_FLUID_PIPE` registration:
 ```java
@@ -728,7 +728,7 @@ event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
 
 No new imports needed (all types already imported).
 
-- [ ] **Step 2: Register screen in `BuildcraftLegacyClient.java`**
+- [x] **Step 2: Register screen in `BuildcraftLegacyClient.java`**
 
 In `registerMenuScreens()`, after the `DIAMOND_PIPE` registration:
 ```java
@@ -743,7 +743,7 @@ import com.thepigcat.buildcraft.registries.BCMenuTypes;
 
 (`BCMenuTypes` may already be imported — check first.)
 
-- [ ] **Step 3: Compile check**
+- [x] **Step 3: Compile check**
 
 ```bash
 ./gradlew compileJava 2>&1 | tail -20
@@ -751,7 +751,7 @@ import com.thepigcat.buildcraft.registries.BCMenuTypes;
 
 Expected: `BUILD SUCCESSFUL`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/BuildcraftLegacy.java \
@@ -767,7 +767,7 @@ git commit -m "feat(fluid-pipes-phase2): register caps and screen for clay/diamo
 - Modify: `src/main/java/com/thepigcat/buildcraft/datagen/data/BCRecipeProvider.java`
 - Modify: `src/main/java/com/thepigcat/buildcraft/datagen/assets/BCEnUSLangProvider.java`
 
-- [ ] **Step 1: Add fluid pipe recipes in `BCRecipeProvider.java`**
+- [x] **Step 1: Add fluid pipe recipes in `BCRecipeProvider.java`**
 
 In `generate()`, find the existing fluid pipe recipe block:
 ```java
@@ -783,7 +783,7 @@ Add after `void`:
 
 The `fluidPipeRecipe(out, "clay")` call looks up `clay_pipe` item + slimeball → `clay_fluid_pipe`. The `fluidPipeRecipe(out, "diamond")` looks up `diamond_pipe` + slimeball → `diamond_fluid_pipe`. Both pipe items already exist in the dynamic pipe registry.
 
-- [ ] **Step 2: Add menu title lang key in `BCEnUSLangProvider.java`**
+- [x] **Step 2: Add menu title lang key in `BCEnUSLangProvider.java`**
 
 Find the line:
 ```java
@@ -795,7 +795,7 @@ Add below it:
         add("menu.buildcraft.diamond_fluid_pipe", "Diamond Fluid Pipe");
 ```
 
-- [ ] **Step 3: Run datagen**
+- [x] **Step 3: Run datagen**
 
 ```bash
 ./gradlew runData 2>&1 | tail -30
@@ -803,7 +803,7 @@ Add below it:
 
 Expected: `BUILD SUCCESSFUL`, new recipe files generated in `src/generated/`.
 
-- [ ] **Step 4: Verify generated files**
+- [x] **Step 4: Verify generated files**
 
 ```bash
 find src/generated -name "*clay_fluid*" -o -name "*diamond_fluid*" 2>/dev/null | sort
@@ -811,7 +811,7 @@ find src/generated -name "*clay_fluid*" -o -name "*diamond_fluid*" 2>/dev/null |
 
 Expected: at least `clay_fluid_pipe.json` and `diamond_fluid_pipe.json` recipe files.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/datagen/data/BCRecipeProvider.java \
@@ -824,20 +824,20 @@ git commit -m "feat(fluid-pipes-phase2): add recipes and lang for clay/diamond f
 
 ## Task 9: Integration Test — runClient
 
-- [ ] **Step 1: Build and start client**
+- [x] **Step 1: Build and start client**
 
 ```bash
 ./gradlew runClient
 ```
 
-- [ ] **Step 2: In-game test — Clay Fluid Pipe**
+- [x] **Step 2: In-game test — Clay Fluid Pipe**
 
 1. Craft a clay fluid pipe (`clay_pipe` + slimeball in crafting table → 1 clay fluid pipe).
 2. Place a fluid tank with water, connect clay fluid pipe, connect a second pipe network leading to two targets: one machine (tank), one plain pipe segment.
 3. Observe: fluid routes preferentially into the machine/tank rather than continuing into the pipe network.
 4. In a pipe-only network (no machine neighbors), confirm fluid still flows normally (no deadlock).
 
-- [ ] **Step 3: In-game test — Diamond Fluid Pipe**
+- [x] **Step 3: In-game test — Diamond Fluid Pipe**
 
 1. Craft a diamond fluid pipe (`diamond_pipe` + slimeball → 1 diamond fluid pipe).
 2. Place it, right-click → filter GUI opens with 6×9 ghost slots + player inventory.
@@ -848,7 +848,7 @@ git commit -m "feat(fluid-pipes-phase2): add recipes and lang for clay/diamond f
    - If all directions are filtered but none match, fluid still moves (deadlock guard).
 5. Confirm ghost slots: placing a bucket in filter doesn't consume the bucket from inventory.
 
-- [ ] **Step 4: Check item names in-game**
+- [x] **Step 4: Check item names in-game**
 
 Both pipes should show correct display names in inventory: "Clay Fluid Pipe", "Diamond Fluid Pipe".
 
