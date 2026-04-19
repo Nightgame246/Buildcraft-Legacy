@@ -95,6 +95,8 @@ public class BCRecipeProvider extends net.minecraft.data.recipes.RecipeProvider 
         fluidPipeRecipe(recipeOutput, "gold");
         fluidPipeRecipe(recipeOutput, "sandstone");
         fluidPipeRecipe(recipeOutput, "void");
+        fluidPipeRecipe(recipeOutput, "clay");
+        fluidPipeRecipe(recipeOutput, "diamond");
 
         engineRecipe(recipeOutput, ItemTags.PLANKS, BCTags.Items.WOODEN_GEAR, BCBlocks.REDSTONE_ENGINE);
         engineRecipe(recipeOutput, Tags.Items.COBBLESTONES, BCTags.Items.STONE_GEAR, BCBlocks.STIRLING_ENGINE);

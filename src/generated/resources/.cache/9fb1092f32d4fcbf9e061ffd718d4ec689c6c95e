@@ -1,12 +1,14 @@
-// 1.21.1	2026-04-18T20:50:53.260888644	Recipes
+// 1.21.1	2026-04-19T15:41:24.509791689	Recipes
 88cc2edfe29d3f0478fd055713bba10b3c2a8672 data/buildcraft/advancement/recipes/decorations/crate.json
 0f51aae86513bdbfee33c12878fa6076139a36e7 data/buildcraft/advancement/recipes/decorations/tank.json
+2516a6d7d33628fe8e8426dd8cb943fbc32cc8e0 data/buildcraft/advancement/recipes/misc/clay_fluid_pipe.json
 5f2342a1ce9f35c2a4fbe8f58fb15dbc37fa8eca data/buildcraft/advancement/recipes/misc/clay_pipe.json
 51f67af70703d807bfa455daa5892f1760262e9e data/buildcraft/advancement/recipes/misc/cobblestone_fluid_pipe.json
 8a2d71a2ddc258b324c36cab5404d6c1fcf44d9a data/buildcraft/advancement/recipes/misc/cobblestone_kinesis_pipe.json
 a4dd5b92409eea08e8df6abf8d9b3e86a152fe33 data/buildcraft/advancement/recipes/misc/cobblestone_pipe.json
 668ec437fe36f6f959e44cb481c3f406051b2b45 data/buildcraft/advancement/recipes/misc/combustion_engine.json
 1286d0bf994f28d7f5010a5a797dc9af304e9495 data/buildcraft/advancement/recipes/misc/daizuli_pipe.json
+6c59bfef9fe7aa3e4fd7153f9ba865dd92e4320b data/buildcraft/advancement/recipes/misc/diamond_fluid_pipe.json
 9cb8863afc5322b7475aeab8d63a85792f4c870a data/buildcraft/advancement/recipes/misc/diamond_gear.json
 8fa269d0c040c4e1b7977e7541e558aee24b7ea1 data/buildcraft/advancement/recipes/misc/diamond_kinesis_pipe.json
 c3f49318cdca7e29c6883998a10a9b4980111c3d data/buildcraft/advancement/recipes/misc/diamond_pipe.json
@@ -41,6 +43,7 @@ fa8b54c1bcbbf140b2bcd98ec97d6d404dcd7fd1 data/buildcraft/advancement/recipes/mis
 5fbabd7f714da57bc7e9dc1ce5aa2f9b52ef454b data/buildcraft/advancement/recipes/misc/wooden_kinesis_pipe.json
 f16fd069b748c69777710c726897afb8dea53bd4 data/buildcraft/advancement/recipes/misc/wooden_pipe.json
 ce088b172986441de4a99e61ccc71d1f4a7c1b43 data/buildcraft/advancement/recipes/tools/wrench.json
+1ac9073171c3d5b1ed35939525c6796a3ebb2433 data/buildcraft/recipe/clay_fluid_pipe.json
 74df1e0caafe7cac3d5b68ae131638177440a6e1 data/buildcraft/recipe/clay_pipe.json
 26c90436569f0cfdccf2e90ad72cae8a24b08be2 data/buildcraft/recipe/cobblestone_fluid_pipe.json
 2b4a44c191ffea7c28f61891563a73a2a5bc4776 data/buildcraft/recipe/cobblestone_kinesis_pipe.json
@@ -48,6 +51,7 @@ d941de91e19301321cb6dd9d0a08df279c47936e data/buildcraft/recipe/cobblestone_pipe
 c091d0b2c3b313c9ada5b325ce3f97d11cd60dcd data/buildcraft/recipe/combustion_engine.json
 6b2c5dad8975e41304a42ff306c515098726056a data/buildcraft/recipe/crate.json
 32ea2375399828c5f10dc8dffb0dd2a94e8130e5 data/buildcraft/recipe/daizuli_pipe.json
+e1c4fbd660230aeddeaf56c520ee98c028e997b4 data/buildcraft/recipe/diamond_fluid_pipe.json
 07707b8d6e79b3edb8b378fb185d0acb6a1eb342 data/buildcraft/recipe/diamond_gear.json
 43fc8c5b36ed1b6fdf4de5b23dc5a4dea2f38b21 data/buildcraft/recipe/diamond_kinesis_pipe.json
 2da3ebff1e77fbd482ba3f68571e169b09208d73 data/buildcraft/recipe/diamond_pipe.json

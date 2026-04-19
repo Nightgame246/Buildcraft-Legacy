@@ -60,6 +60,7 @@ public class BCEnUSLangProvider extends LanguageProvider {
 
         add("itemGroup.buildcraft.bc_tab", "Buildcraft");
         add("menu.buildcraft.diamond_pipe", "Diamond Pipe");
+        add("menu.buildcraft.diamond_fluid_pipe", "Diamond Fluid Pipe");
 
         addRedstoneSignalType(RedstoneBlockEntity.RedstoneSignalType.IGNORED, "Ignored");
         addRedstoneSignalType(RedstoneBlockEntity.RedstoneSignalType.LOW_SIGNAL, "Low Signal");

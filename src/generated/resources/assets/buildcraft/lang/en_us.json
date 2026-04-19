@@ -1,4 +1,5 @@
 {
+  "block.buildcraft.clay_fluid_pipe": "Clay Fluid Pipe",
   "block.buildcraft.clay_pipe": "Clay Pipe",
   "block.buildcraft.cobblestone_fluid_pipe": "Cobblestone Fluid Pipe",
   "block.buildcraft.cobblestone_kinesis_pipe": "Cobblestone Kinesis Pipe",
@@ -6,6 +7,7 @@
   "block.buildcraft.combustion_engine": "Combustion Engine",
   "block.buildcraft.crate": "Crate",
   "block.buildcraft.daizuli_pipe": "Daizuli Pipe",
+  "block.buildcraft.diamond_fluid_pipe": "Diamond Fluid Pipe",
   "block.buildcraft.diamond_kinesis_pipe": "Diamond Kinesis Pipe",
   "block.buildcraft.diamond_pipe": "Diamond Pipe",
   "block.buildcraft.emerald_pipe": "Emerald Pipe",
@@ -66,6 +68,7 @@
   "item.buildcraft.wooden_gear": "Wooden Gear",
   "item.buildcraft.wrench": "Wrench",
   "itemGroup.buildcraft.bc_tab": "Buildcraft",
+  "menu.buildcraft.diamond_fluid_pipe": "Diamond Fluid Pipe",
   "menu.buildcraft.diamond_pipe": "Diamond Pipe",
   "redstone_signal_type.buildcraft.high_signal": "High Signal",
   "redstone_signal_type.buildcraft.ignored": "Ignored",
