@@ -18,7 +18,11 @@ import com.thepigcat.buildcraft.content.blockentities.KinesisPipeBE;
 import com.thepigcat.buildcraft.content.blockentities.QuarryBE;
 import com.thepigcat.buildcraft.content.blockentities.TankBE;
 import com.thepigcat.buildcraft.data.BCDataComponents;
+import com.thepigcat.buildcraft.api.recipes.AssemblyRecipe;
+import com.thepigcat.buildcraft.api.recipes.AssemblyRecipeRegistry;
+import com.thepigcat.buildcraft.content.blockentities.LaserBE;
 import com.thepigcat.buildcraft.networking.RedstoneSignalTypeSyncPayload;
+import com.thepigcat.buildcraft.networking.SetRecipeStatePayload;
 import com.thepigcat.buildcraft.networking.SyncFluidPipePayload;
 import com.thepigcat.buildcraft.networking.SyncPipeDirectionPayload;
 import com.thepigcat.buildcraft.networking.SyncPipeMovementPayload;
@@ -28,6 +32,9 @@ import com.thepigcat.buildcraft.util.PipeRegistrationHelper;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -51,8 +58,11 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import net.neoforged.neoforge.common.Tags;
+
 import java.util.Comparator;
 import java.util.Map;
+import java.util.Set;
 
 @Mod(BuildcraftLegacy.MODID)
 public final class BuildcraftLegacy {
@@ -99,6 +109,35 @@ public final class BuildcraftLegacy {
         modEventBus.addListener(this::onCommonSetup);
         modEventBus.addListener(this::registerPayloads);
         modEventBus.addListener(this::onRegister);
+        registerAssemblyRecipes();
+    }
+
+    private static void registerAssemblyRecipes() {
+        AssemblyRecipeRegistry.register(new AssemblyRecipe(
+                BuildcraftLegacy.rl("red_chipset"),
+                Set.of(Ingredient.of(Items.REDSTONE)),
+                new ItemStack(BCItems.RED_CHIPSET.get()),
+                BCConfig.redChipsetFeCost));
+        AssemblyRecipeRegistry.register(new AssemblyRecipe(
+                BuildcraftLegacy.rl("iron_chipset"),
+                Set.of(Ingredient.of(Items.REDSTONE), Ingredient.of(Tags.Items.INGOTS_IRON)),
+                new ItemStack(BCItems.IRON_CHIPSET.get()),
+                BCConfig.ironChipsetFeCost));
+        AssemblyRecipeRegistry.register(new AssemblyRecipe(
+                BuildcraftLegacy.rl("gold_chipset"),
+                Set.of(Ingredient.of(Items.REDSTONE), Ingredient.of(Tags.Items.INGOTS_GOLD)),
+                new ItemStack(BCItems.GOLD_CHIPSET.get()),
+                BCConfig.goldChipsetFeCost));
+        AssemblyRecipeRegistry.register(new AssemblyRecipe(
+                BuildcraftLegacy.rl("quartz_chipset"),
+                Set.of(Ingredient.of(Items.REDSTONE), Ingredient.of(Tags.Items.GEMS_QUARTZ)),
+                new ItemStack(BCItems.QUARTZ_CHIPSET.get()),
+                BCConfig.quartzChipsetFeCost));
+        AssemblyRecipeRegistry.register(new AssemblyRecipe(
+                BuildcraftLegacy.rl("diamond_chipset"),
+                Set.of(Ingredient.of(Items.REDSTONE), Ingredient.of(Tags.Items.GEMS_DIAMOND)),
+                new ItemStack(BCItems.DIAMOND_CHIPSET.get()),
+                BCConfig.diamondChipsetFeCost));
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
@@ -145,6 +184,9 @@ public final class BuildcraftLegacy {
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.EXTRACTING_FLUID_PIPE.get(), ExtractingFluidPipeBE::getEnergyStorage);
 
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.LASER.get(),
+                (be, side) -> be.getEnergyStorage());
+
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.QUARRY.get(), QuarryBE::getItemHandler);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.QUARRY.get(), ContainerBlockEntity::getEnergyStorageOnSide);
 
@@ -159,6 +201,7 @@ public final class BuildcraftLegacy {
         registrar.playToServer(RedstoneSignalTypeSyncPayload.TYPE, RedstoneSignalTypeSyncPayload.STREAM_CODEC, RedstoneSignalTypeSyncPayload::handle);
         registrar.playToClient(SyncFluidPipePayload.TYPE, SyncFluidPipePayload.STREAM_CODEC, SyncFluidPipePayload::handle);
         registrar.playToServer(ToggleFilterModePayload.TYPE, ToggleFilterModePayload.STREAM_CODEC, ToggleFilterModePayload::handle);
+        registrar.playToServer(SetRecipeStatePayload.TYPE, SetRecipeStatePayload.STREAM_CODEC, SetRecipeStatePayload::handle);
     }
 
     private void onRegister(RegisterEvent event) {
