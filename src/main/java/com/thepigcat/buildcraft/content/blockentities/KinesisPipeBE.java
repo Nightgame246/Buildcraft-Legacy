@@ -47,6 +47,9 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
     private final int[] incomingThisTick = new int[6];
     private final int[] outgoingThisTick = new int[6];
     private final float[] lastSentSectionPower = new float[7];
+    // Client-side targets populated by handleUpdateTag
+    private final float[] targetSectionPower = new float[7];
+    private final boolean[] targetFlowsOut = new boolean[6];
     private final IEnergyStorage[] directionWrappers = new IEnergyStorage[6];
 
     public KinesisPipeBE(BlockPos pos, BlockState blockState) {
@@ -147,6 +150,7 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
         }
 
         distributeEnergy();
+        syncSectionPowerIfNeeded();
         updatePowerLevel();
     }
 
@@ -249,6 +253,77 @@ public class KinesisPipeBE extends PipeBlockEntity<IEnergyStorage> {
         if (totalConsumed > 0) {
             energyStorage.extractEnergy(totalConsumed, false);
             setChanged();
+        }
+    }
+
+    private void syncSectionPowerIfNeeded() {
+        float[] current = new float[7];
+        for (int d = 0; d < 6; d++) {
+            current[d] = maxTransfer > 0
+                ? Math.min(1f, (float) Math.max(incomingThisTick[d], outgoingThisTick[d]) / maxTransfer)
+                : 0f;
+        }
+        int maxArmFlow = 0;
+        for (int d = 0; d < 6; d++) {
+            maxArmFlow = Math.max(maxArmFlow, Math.max(incomingThisTick[d], outgoingThisTick[d]));
+        }
+        if (maxArmFlow > 0 && maxTransfer > 0) {
+            current[6] = Math.min(1f, (float) maxArmFlow / maxTransfer);
+        } else {
+            int capacity = energyStorage.getMaxEnergyStored();
+            current[6] = capacity > 0 ? Math.min(1f, (float) energyStorage.getEnergyStored() / capacity) : 0f;
+        }
+
+        boolean changed = false;
+        for (int s = 0; s < 7; s++) {
+            if (Math.abs(current[s] - lastSentSectionPower[s]) > 0.05f) { changed = true; break; }
+        }
+        if (!changed) {
+            boolean wasActive = false, nowActive = false;
+            for (int s = 0; s < 7; s++) {
+                if (lastSentSectionPower[s] > 0.005f) wasActive = true;
+                if (current[s] > 0.005f) nowActive = true;
+            }
+            if (wasActive && !nowActive) changed = true;
+        }
+        if (changed) {
+            System.arraycopy(current, 0, lastSentSectionPower, 0, 7);
+            if (level != null) {
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
+        }
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        net.minecraft.nbt.ListTag powerList = new net.minecraft.nbt.ListTag();
+        for (float v : lastSentSectionPower) {
+            powerList.add(net.minecraft.nbt.FloatTag.valueOf(v));
+        }
+        tag.put("section_power", powerList);
+        byte flowsOutBits = 0;
+        for (int d = 0; d < 6; d++) {
+            if (outgoingThisTick[d] > 0) flowsOutBits |= (byte) (1 << d);
+        }
+        tag.putByte("flows_out", flowsOutBits);
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
+        super.handleUpdateTag(tag, registries);
+        if (tag.contains("section_power")) {
+            net.minecraft.nbt.ListTag list = tag.getList("section_power", net.minecraft.nbt.Tag.TAG_FLOAT);
+            for (int s = 0; s < Math.min(7, list.size()); s++) {
+                targetSectionPower[s] = list.getFloat(s);
+            }
+        }
+        if (tag.contains("flows_out")) {
+            byte bits = tag.getByte("flows_out");
+            for (int d = 0; d < 6; d++) {
+                targetFlowsOut[d] = (bits & (1 << d)) != 0;
+            }
         }
     }
 
