@@ -13,8 +13,10 @@ public class AdvancedCraftingTableScreen extends PDLAbstractContainerScreen<Adva
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(BuildcraftLegacy.MODID, "textures/gui/advanced_crafting_table.png");
 
-    // Progress bar: source strip at (176, 0), 4px wide x 70px tall, drawn at (86, 36), fills bottom-up.
-    private static final int PROGRESS_X = 86;
+    // Progress bar: source strip at (176, 0), 4px wide x 70px tall, fills bottom-up.
+    // Drawn in the empty column x:[98,116) between the materials/blueprint grids (end x=98)
+    // and the results grid (start x=116) — NOT at x=86, which overlaps live slot columns here.
+    private static final int PROGRESS_X = 104;
     private static final int PROGRESS_Y = 36;
     private static final int PROGRESS_W = 4;
     private static final int PROGRESS_H = 70;
