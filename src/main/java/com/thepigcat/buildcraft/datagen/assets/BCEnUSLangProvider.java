@@ -59,12 +59,14 @@ public class BCEnUSLangProvider extends LanguageProvider {
         // Silicon
         addBlock(BCBlocks.LASER, "Laser");
         addBlock(BCBlocks.ASSEMBLY_TABLE, "Assembly Table");
+        addBlock(BCBlocks.ADVANCED_CRAFTING_TABLE, "Advanced Crafting Table");
         addItem(BCItems.RED_CHIPSET, "Redstone Chipset");
         addItem(BCItems.IRON_CHIPSET, "Iron Chipset");
         addItem(BCItems.GOLD_CHIPSET, "Gold Chipset");
         addItem(BCItems.QUARTZ_CHIPSET, "Quartz Chipset");
         addItem(BCItems.DIAMOND_CHIPSET, "Diamond Chipset");
         add("container.buildcraft.assembly_table", "Assembly Table");
+        add("container.buildcraft.advanced_crafting_table", "Advanced Crafting Table");
 
         addFluidType(BCFluids.OIL.fluidType, "Oil");
 

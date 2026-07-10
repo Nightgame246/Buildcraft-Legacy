@@ -1,6 +1,7 @@
-// 1.21.1	2026-04-19T20:13:14.423023756	Recipes
+// 1.21.1	2026-07-10T22:23:54.061065409	Recipes
 88cc2edfe29d3f0478fd055713bba10b3c2a8672 data/buildcraft/advancement/recipes/decorations/crate.json
 0f51aae86513bdbfee33c12878fa6076139a36e7 data/buildcraft/advancement/recipes/decorations/tank.json
+d36f0f6ae7c706ba701cc7297ed5181854807e2d data/buildcraft/advancement/recipes/misc/advanced_crafting_table.json
 7519ecb7fcdff537a4b8acfa2e8acaa96421581c data/buildcraft/advancement/recipes/misc/assembly_table.json
 2516a6d7d33628fe8e8426dd8cb943fbc32cc8e0 data/buildcraft/advancement/recipes/misc/clay_fluid_pipe.json
 5f2342a1ce9f35c2a4fbe8f58fb15dbc37fa8eca data/buildcraft/advancement/recipes/misc/clay_pipe.json
@@ -45,6 +46,7 @@ fa8b54c1bcbbf140b2bcd98ec97d6d404dcd7fd1 data/buildcraft/advancement/recipes/mis
 5fbabd7f714da57bc7e9dc1ce5aa2f9b52ef454b data/buildcraft/advancement/recipes/misc/wooden_kinesis_pipe.json
 f16fd069b748c69777710c726897afb8dea53bd4 data/buildcraft/advancement/recipes/misc/wooden_pipe.json
 ce088b172986441de4a99e61ccc71d1f4a7c1b43 data/buildcraft/advancement/recipes/tools/wrench.json
+bf728d773ca470922a9009823f44ba5a23cfc34e data/buildcraft/recipe/advanced_crafting_table.json
 e2ed381f0427e657b03ab802afd96673c396b7bc data/buildcraft/recipe/assembly_table.json
 1ac9073171c3d5b1ed35939525c6796a3ebb2433 data/buildcraft/recipe/clay_fluid_pipe.json
 74df1e0caafe7cac3d5b68ae131638177440a6e1 data/buildcraft/recipe/clay_pipe.json

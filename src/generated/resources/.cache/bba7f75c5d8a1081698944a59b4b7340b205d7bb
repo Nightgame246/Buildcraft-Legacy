@@ -1,4 +1,5 @@
-// 1.21.1	2026-04-19T20:13:14.420278266	Block States: buildcraft
+// 1.21.1	2026-07-10T22:23:54.058470964	Block States: buildcraft
+9509c2e2d64d6b9dc155673edbb152728a981a2e assets/buildcraft/blockstates/advanced_crafting_table.json
 ca9d637985321401ecdb034c44cd3bef4e910bf5 assets/buildcraft/blockstates/assembly_table.json
 9493a9bec7d99c0799c66d58f9d48927a6925b02 assets/buildcraft/blockstates/clay_fluid_pipe.json
 66793c88ac718c9cb2a4aa7704cca611bf95b75f assets/buildcraft/blockstates/clay_pipe.json
@@ -38,6 +39,7 @@ cef114988e30a308c6a30d527a0a9942b1c4178b assets/buildcraft/blockstates/stone_kin
 7fb9561177fda99d079e30e89f26e1ee592b3248 assets/buildcraft/blockstates/wooden_fluid_pipe.json
 61198ab4974ac8886740ecaa270804294285b0e0 assets/buildcraft/blockstates/wooden_kinesis_pipe.json
 f65d91e718bcc109d36ae60e9f90ae79551db632 assets/buildcraft/blockstates/wooden_pipe.json
+da5d7e5009f7ecd6ae389310959da6dd4b57a1ac assets/buildcraft/models/block/advanced_crafting_table.json
 ff2ad9ae6d1d9cd634e695b1579efb5ee4839ff4 assets/buildcraft/models/block/assembly_table.json
 23b5b3604200aaf40cc4b9943271468569ea12eb assets/buildcraft/models/block/clay_fluid_pipe_base.json
 cf0fe604b7437acdf24683b31bda928ec232b7d1 assets/buildcraft/models/block/clay_fluid_pipe_connection.json

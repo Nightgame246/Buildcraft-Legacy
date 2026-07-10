@@ -157,6 +157,17 @@ public class BCRecipeProvider extends net.minecraft.data.recipes.RecipeProvider 
                 .define('L', Items.LAPIS_LAZULI)
                 .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
                 .save(recipeOutput);
+
+        // Advanced Crafting Table
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BCBlocks.ADVANCED_CRAFTING_TABLE)
+                .pattern("IRI")
+                .pattern("RCR")
+                .pattern("IRI")
+                .define('I', Tags.Items.INGOTS_IRON)
+                .define('R', Items.REDSTONE)
+                .define('C', Blocks.CRAFTING_TABLE)
+                .unlockedBy("has_crafting_table", has(Blocks.CRAFTING_TABLE))
+                .save(recipeOutput);
     }
 
     public static Criterion<InventoryChangeTrigger.TriggerInstance> has(TagKey<Item> tag) {

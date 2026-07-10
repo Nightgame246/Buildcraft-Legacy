@@ -35,6 +35,7 @@ public class BCBlockLootTableProvider extends BlockLootSubProvider {
         // Silicon
         dropSelf(BCBlocks.LASER.get());
         dropSelf(BCBlocks.ASSEMBLY_TABLE.get());
+        dropSelf(BCBlocks.ADVANCED_CRAFTING_TABLE.get());
     }
 
     @Override

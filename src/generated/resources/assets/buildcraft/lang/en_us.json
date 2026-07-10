@@ -1,4 +1,5 @@
 {
+  "block.buildcraft.advanced_crafting_table": "Advanced Crafting Table",
   "block.buildcraft.assembly_table": "Assembly Table",
   "block.buildcraft.clay_fluid_pipe": "Clay Fluid Pipe",
   "block.buildcraft.clay_pipe": "Clay Pipe",
@@ -39,6 +40,8 @@
   "block.buildcraft.wooden_fluid_pipe": "Wooden Fluid Pipe",
   "block.buildcraft.wooden_kinesis_pipe": "Wooden Kinesis Pipe",
   "block.buildcraft.wooden_pipe": "Wooden Pipe",
+  "buildcraft.configuration.advanced_crafting": "Advanced_crafting",
+  "buildcraft.configuration.advanced_crafting_table_fe_cost": "Advanced Crafting Table FE Cost",
   "buildcraft.configuration.assembly": "Assembly",
   "buildcraft.configuration.capacity.energy": "Capacity.energy",
   "buildcraft.configuration.capacity.fluid": "Capacity.fluid",
@@ -70,6 +73,7 @@
   "buildcraft.configuration.stirling_engine_energy_production": "Stirling Engine Energy Production",
   "buildcraft.configuration.tank_capacity": "Tank Capacity",
   "buildcraft.configuration.tank_retain_fluids": "Tank Retain Fluids",
+  "container.buildcraft.advanced_crafting_table": "Advanced Crafting Table",
   "container.buildcraft.assembly_table": "Assembly Table",
   "fluid_type.buildcraft.oil": "Oil",
   "item.buildcraft.diamond_chipset": "Diamond Chipset",

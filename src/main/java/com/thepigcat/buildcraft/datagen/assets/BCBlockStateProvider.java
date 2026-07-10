@@ -39,6 +39,7 @@ public class BCBlockStateProvider extends BlockStateProvider {
         // Silicon machines
         laserBlock(BCBlocks.LASER.get());
         assemblyTableBlock(BCBlocks.ASSEMBLY_TABLE.get());
+        advancedCraftingTableBlock(BCBlocks.ADVANCED_CRAFTING_TABLE.get());
 
         for (Block block : BCBlocks.BLOCKS.getRegistry().get()) {
             String path = BuiltInRegistries.BLOCK.getKey(block).getPath();
@@ -362,6 +363,14 @@ public class BCBlockStateProvider extends BlockStateProvider {
                 .texture("top",    modLoc("block/assembly_table_top"))
                 .texture("bottom", modLoc("block/assembly_table_top"))
                 .texture("side",   modLoc("block/assembly_table_side"));
+        simpleBlock(block, tableModel);
+    }
+
+    private void advancedCraftingTableBlock(Block block) {
+        BlockModelBuilder tableModel = models().withExistingParent(name(block), mcLoc("block/cube_bottom_top"))
+                .texture("top",    modLoc("block/advanced_crafting_table_top"))
+                .texture("bottom", modLoc("block/advanced_crafting_table_top"))
+                .texture("side",   modLoc("block/advanced_crafting_table_side"));
         simpleBlock(block, tableModel);
     }
 
