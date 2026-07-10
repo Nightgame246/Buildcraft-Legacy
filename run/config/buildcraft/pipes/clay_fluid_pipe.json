@@ -1,0 +1,19 @@
+{
+  "ingredient": {
+    "item": "minecraft:clay_ball"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 38,
+  "transfer_speed": 0.0,
+  "textures": [
+    "buildcraft:block/clay_fluid_pipe"
+  ],
+  "properties": {
+    "copy_of": "minecraft:clay"
+  },
+  "drop_item": "buildcraft:clay_fluid_pipe",
+  "type": "buildcraft:fluid_clay",
+  "name": "Clay Fluid Pipe"
+}

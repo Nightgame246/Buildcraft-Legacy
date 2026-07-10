@@ -1,0 +1,25 @@
+{
+  "ingredient": {
+    "tag": "c:gems/diamond"
+  },
+  "mining_tools": [
+    "minecraft:mineable/pickaxe"
+  ],
+  "tab_ordering_priority": 39,
+  "transfer_speed": 0.0,
+  "textures": [
+    "buildcraft:block/diamond_fluid_pipe",
+    "buildcraft:block/diamond_fluid_pipe_down",
+    "buildcraft:block/diamond_fluid_pipe_up",
+    "buildcraft:block/diamond_fluid_pipe_north",
+    "buildcraft:block/diamond_fluid_pipe_south",
+    "buildcraft:block/diamond_fluid_pipe_west",
+    "buildcraft:block/diamond_fluid_pipe_east"
+  ],
+  "properties": {
+    "copy_of": "minecraft:diamond_block"
+  },
+  "drop_item": "buildcraft:diamond_fluid_pipe",
+  "type": "buildcraft:fluid_diamond",
+  "name": "Diamond Fluid Pipe"
+}

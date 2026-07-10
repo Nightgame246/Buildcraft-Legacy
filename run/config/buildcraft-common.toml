@@ -34,6 +34,14 @@ crate_retain_items = true
 		# Default: 1000
 		# Range: > 0
 		extraction_pipe_energy_capacity = 1000
+		#FE capacity of the Laser block
+		# Default: 4000
+		# Range: > 0
+		laser_battery_capacity = 4000
+		#Max FE/t the Laser accepts from kinesis pipes
+		# Default: 200
+		# Range: > 0
+		laser_max_receive = 200
 
 	[capacity.fluid]
 		#The maximum amount of fluid a combustion engine can store
@@ -66,9 +74,35 @@ crate_retain_items = true
 		# Default: 10
 		# Range: > 0
 		extraction_energy_cost = 10
+		#Max FE/t the Laser pushes to Assembly Table per tick
+		# Default: 40
+		# Range: > 0
+		laser_max_output = 40
 
 	[production.fluid]
 		#Millibuckets of fluid extracted per FE consumed by wooden fluid pipe (like original BC: engine power determines extraction speed)
 		# Default: 5
 		# Range: > 0
 		fluid_extraction_rate = 5
+
+[assembly]
+	#FE required to craft a Quartz Chipset
+	# Default: 60000
+	# Range: > 0
+	quartz_chipset_fe_cost = 60000
+	#FE required to craft an Iron Chipset
+	# Default: 20000
+	# Range: > 0
+	iron_chipset_fe_cost = 20000
+	#FE required to craft a Gold Chipset
+	# Default: 40000
+	# Range: > 0
+	gold_chipset_fe_cost = 40000
+	#FE required to craft a Diamond Chipset
+	# Default: 80000
+	# Range: > 0
+	diamond_chipset_fe_cost = 80000
+	#FE required to craft a Red (Redstone) Chipset
+	# Default: 10000
+	# Range: > 0
+	red_chipset_fe_cost = 10000
