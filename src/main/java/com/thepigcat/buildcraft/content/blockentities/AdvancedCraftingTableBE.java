@@ -1,27 +1,41 @@
 package com.thepigcat.buildcraft.content.blockentities;
 
 import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
+import com.thepigcat.buildcraft.BCConfig;
 import com.thepigcat.buildcraft.api.blockentities.ILaserTarget;
 import com.thepigcat.buildcraft.content.menus.AdvancedCraftingTableMenu;
 import com.thepigcat.buildcraft.registries.BCBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class AdvancedCraftingTableBE extends ContainerBlockEntity implements ILaserTarget, MenuProvider {
     public static final int BLUEPRINT_SLOTS = 9;
@@ -31,6 +45,7 @@ public class AdvancedCraftingTableBE extends ContainerBlockEntity implements ILa
     public int power = 0;
     public ItemStack assumedResult = ItemStack.EMPTY;
     protected boolean blueprintDirty = true;
+    @Nullable private RecipeHolder<CraftingRecipe> currentRecipe = null;
 
     private final ItemStackHandler blueprint = new ItemStackHandler(BLUEPRINT_SLOTS) {
         @Override protected void onContentsChanged(int slot) {
@@ -57,13 +72,140 @@ public class AdvancedCraftingTableBE extends ContainerBlockEntity implements ILa
     public ItemStack getAssumedResult() { return assumedResult; }
     public int getPower() { return power; }
 
-    // ── ILaserTarget (real impl added in crafting task) ──────────────────────
-    @Override public int getRequiredLaserPower() { return 0; }
+    // ── ILaserTarget ───────────────────────────────────────────────────────────
+    @Override public int getRequiredLaserPower() {
+        return canCraft() ? Math.max(0, BCConfig.advancedCraftingTableFeCost - power) : 0;
+    }
     @Override public void receiveLaserPower(int fe) { power += fe; setChanged(); }
 
-    // ── Tick (crafting added in a later task) ────────────────────────────────
+    // ── Tick ─────────────────────────────────────────────────────────────────
     public static void serverTick(Level level, BlockPos pos, BlockState state, AdvancedCraftingTableBE be) {
-        // no-op until crafting task
+        if (level.isClientSide) return;
+        boolean changed = false;
+
+        if (be.blueprintDirty) {
+            be.recomputeRecipe(level);
+            changed = true;
+        }
+
+        int cost = BCConfig.advancedCraftingTableFeCost;
+        if (be.canCraft() && be.power >= cost) {
+            be.power -= cost;
+            be.craft(level);
+            changed = true;
+        }
+
+        if (changed) {
+            level.sendBlockUpdated(pos, state, state, 3);
+            be.setChanged();
+        }
+    }
+
+    private void recomputeRecipe(Level level) {
+        blueprintDirty = false;
+        CraftingInput input = blueprintInput();
+        if (input.isEmpty()) {
+            currentRecipe = null;
+            assumedResult = ItemStack.EMPTY;
+            return;
+        }
+        Optional<RecipeHolder<CraftingRecipe>> match =
+                level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, input, level);
+        if (match.isPresent()) {
+            currentRecipe = match.get();
+            assumedResult = currentRecipe.value().assemble(input, level.registryAccess());
+        } else {
+            currentRecipe = null;
+            assumedResult = ItemStack.EMPTY;
+        }
+    }
+
+    /** 3x3 CraftingInput built from the ghost blueprint items (positions preserved). */
+    private CraftingInput blueprintInput() {
+        List<ItemStack> items = new ArrayList<>(BLUEPRINT_SLOTS);
+        for (int i = 0; i < BLUEPRINT_SLOTS; i++) items.add(blueprint.getStackInSlot(i));
+        return CraftingInput.of(3, 3, items);
+    }
+
+    private boolean canCraft() {
+        if (currentRecipe == null || assumedResult.isEmpty()) return false;
+        return hasMaterials() && resultsCanAccept(assumedResult);
+    }
+
+    /** True if materials contain the exact stack for every non-empty ghost slot (counts included). */
+    private boolean hasMaterials() {
+        int[] avail = new int[MATERIAL_SLOTS];
+        for (int s = 0; s < MATERIAL_SLOTS; s++) avail[s] = materials.getStackInSlot(s).getCount();
+        for (int i = 0; i < BLUEPRINT_SLOTS; i++) {
+            ItemStack ghost = blueprint.getStackInSlot(i);
+            if (ghost.isEmpty()) continue;
+            boolean satisfied = false;
+            for (int s = 0; s < MATERIAL_SLOTS; s++) {
+                if (avail[s] > 0 && ItemStack.isSameItemSameComponents(materials.getStackInSlot(s), ghost)) {
+                    avail[s]--;
+                    satisfied = true;
+                    break;
+                }
+            }
+            if (!satisfied) return false;
+        }
+        return true;
+    }
+
+    private boolean resultsCanAccept(ItemStack out) {
+        ItemStack remainder = out.copy();
+        for (int s = 0; s < RESULT_SLOTS && !remainder.isEmpty(); s++) {
+            remainder = results.insertItem(s, remainder, true);
+        }
+        return remainder.isEmpty();
+    }
+
+    private void craft(Level level) {
+        // Pull one exact material per ghost slot into a positioned 3x3 list.
+        List<ItemStack> pulled = new ArrayList<>(BLUEPRINT_SLOTS);
+        for (int i = 0; i < BLUEPRINT_SLOTS; i++) {
+            ItemStack ghost = blueprint.getStackInSlot(i);
+            pulled.add(ghost.isEmpty() ? ItemStack.EMPTY : extractExact(ghost));
+        }
+        CraftingInput input = CraftingInput.of(3, 3, pulled);
+
+        if (currentRecipe == null || !currentRecipe.value().matches(input, level)) {
+            // Safety: recipe no longer matches — return everything we pulled.
+            for (ItemStack st : pulled) if (!st.isEmpty()) insertOrEject(materials, st);
+            return;
+        }
+
+        ItemStack output = currentRecipe.value().assemble(input, level.registryAccess());
+        insertOrEject(results, output);
+
+        NonNullList<ItemStack> remaining = currentRecipe.value().getRemainingItems(input);
+        for (ItemStack r : remaining) if (!r.isEmpty()) insertOrEject(materials, r);
+    }
+
+    /** Extract exactly one item matching the ghost stack from materials. */
+    private ItemStack extractExact(ItemStack ghost) {
+        for (int s = 0; s < MATERIAL_SLOTS; s++) {
+            if (ItemStack.isSameItemSameComponents(materials.getStackInSlot(s), ghost)) {
+                return materials.extractItem(s, 1, false);
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    /** Insert into the given handler; overflow goes to an adjacent inventory, else drops in-world. */
+    private void insertOrEject(ItemStackHandler handler, ItemStack stack) {
+        ItemStack remainder = ItemHandlerHelper.insertItem(handler, stack, false);
+        if (remainder.isEmpty() || level == null) return;
+        for (Direction dir : Direction.values()) {
+            var cap = level.getCapability(Capabilities.ItemHandler.BLOCK, worldPosition.relative(dir), dir.getOpposite());
+            if (cap != null) {
+                remainder = ItemHandlerHelper.insertItem(cap, remainder, false);
+                if (remainder.isEmpty()) return;
+            }
+        }
+        ItemEntity entity = new ItemEntity(level,
+                worldPosition.getX() + 0.5, worldPosition.getY() + 1, worldPosition.getZ() + 0.5, remainder);
+        level.addFreshEntity(entity);
     }
 
     // ── Sync ─────────────────────────────────────────────────────────────────
