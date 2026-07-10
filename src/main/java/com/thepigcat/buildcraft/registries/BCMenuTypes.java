@@ -1,6 +1,7 @@
 package com.thepigcat.buildcraft.registries;
 
 import com.thepigcat.buildcraft.BuildcraftLegacy;
+import com.thepigcat.buildcraft.content.menus.AdvancedCraftingTableMenu;
 import com.thepigcat.buildcraft.content.menus.AssemblyTableMenu;
 import com.thepigcat.buildcraft.content.menus.CombustionEngineMenu;
 import com.thepigcat.buildcraft.content.menus.DiamondFluidPipeMenu;
@@ -32,6 +33,8 @@ public final class BCMenuTypes {
             registerMenuType("diamond_fluid_pipe", DiamondFluidPipeMenu::new);
     public static final Supplier<MenuType<AssemblyTableMenu>> ASSEMBLY_TABLE =
             registerMenuType("assembly_table", AssemblyTableMenu::new);
+    public static final Supplier<MenuType<AdvancedCraftingTableMenu>> ADVANCED_CRAFTING_TABLE =
+            registerMenuType("advanced_crafting_table", AdvancedCraftingTableMenu::new);
 
     private static <T extends AbstractContainerMenu> Supplier<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));

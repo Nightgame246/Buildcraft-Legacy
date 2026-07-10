@@ -73,4 +73,7 @@ public final class BCConfig {
     public static int quartzChipsetFeCost = 60_000;
     @ConfigValue(name = "Diamond Chipset FE Cost", comment = "FE required to craft a Diamond Chipset", category = "assembly")
     public static int diamondChipsetFeCost = 80_000;
+
+    @ConfigValue(name = "Advanced Crafting Table FE Cost", comment = "FE required per craft in the Advanced Crafting Table", category = "advanced_crafting")
+    public static int advancedCraftingTableFeCost = 5000;
 }

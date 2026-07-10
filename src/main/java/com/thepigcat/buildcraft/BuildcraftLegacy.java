@@ -190,6 +190,9 @@ public final class BuildcraftLegacy {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.QUARRY.get(), QuarryBE::getItemHandler);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.QUARRY.get(), ContainerBlockEntity::getEnergyStorageOnSide);
 
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.ADVANCED_CRAFTING_TABLE.get(),
+                (be, side) -> be.getIOHandler());
+
         event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new JumboItemHandlerItemWrapper(stack), BCBlocks.CRATE);
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(BCDataComponents.TANK_CONTENT, stack, BCConfig.tankCapacity), BCBlocks.TANK);
     }

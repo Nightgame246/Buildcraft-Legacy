@@ -56,6 +56,8 @@ public final class BCBlocks {
             BlockBehaviour.Properties.of().strength(2.0f).sound(SoundType.METAL).mapColor(MapColor.METAL).requiresCorrectToolForDrops());
     public static final DeferredBlock<AssemblyTableBlock> ASSEMBLY_TABLE = registerBlockAndItem("assembly_table", AssemblyTableBlock::new,
             BlockBehaviour.Properties.of().strength(3.0f).sound(SoundType.METAL).mapColor(MapColor.METAL).requiresCorrectToolForDrops());
+    public static final DeferredBlock<AdvancedCraftingTableBlock> ADVANCED_CRAFTING_TABLE = registerBlockAndItem("advanced_crafting_table", AdvancedCraftingTableBlock::new,
+            BlockBehaviour.Properties.of().strength(3.0f).sound(SoundType.METAL).mapColor(MapColor.METAL).requiresCorrectToolForDrops());
 
     public static <T extends Block> DeferredBlock<T> registerBlockAndItem(String name, Function<BlockBehaviour.Properties, T> blockConstructor, BlockBehaviour.Properties props) {
         DeferredBlock<T> toReturn = BLOCKS.registerBlock(name, blockConstructor, props);
