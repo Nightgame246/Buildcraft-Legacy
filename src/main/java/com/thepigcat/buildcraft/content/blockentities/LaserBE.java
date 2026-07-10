@@ -3,6 +3,7 @@ package com.thepigcat.buildcraft.content.blockentities;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.utils.capabilities.HandlerUtils;
 import com.thepigcat.buildcraft.BCConfig;
+import com.thepigcat.buildcraft.api.blockentities.ILaserTarget;
 import com.thepigcat.buildcraft.content.blocks.LaserBlock;
 import com.thepigcat.buildcraft.registries.BCBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -42,7 +43,7 @@ public class LaserBE extends ContainerBlockEntity {
 
         // Re-select if current target no longer needs power
         if (be.targetPos != null) {
-            if (!(level.getBlockEntity(be.targetPos) instanceof AssemblyTableBE tbl) || tbl.getRequiredLaserPower() <= 0) {
+            if (!(level.getBlockEntity(be.targetPos) instanceof ILaserTarget tbl) || tbl.getRequiredLaserPower() <= 0) {
                 be.targetPos = null;
             }
         }
@@ -53,7 +54,7 @@ public class LaserBE extends ContainerBlockEntity {
             be.pickTarget();
         }
 
-        if (be.targetPos != null && level.getBlockEntity(be.targetPos) instanceof AssemblyTableBE target) {
+        if (be.targetPos != null && level.getBlockEntity(be.targetPos) instanceof ILaserTarget target) {
             IEnergyStorage battery = be.getEnergyStorage();
             if (battery != null) {
                 int toSend = Math.min(BCConfig.laserMaxOutput, battery.getEnergyStored());
@@ -96,7 +97,7 @@ public class LaserBE extends ContainerBlockEntity {
                         case UP    -> origin.offset(a, dist, b);
                         case DOWN  -> origin.offset(a, -dist, b);
                     };
-                    if (level.getBlockEntity(check) instanceof AssemblyTableBE) {
+                    if (level.getBlockEntity(check) instanceof ILaserTarget) {
                         candidates.add(check);
                     }
                 }
@@ -107,7 +108,7 @@ public class LaserBE extends ContainerBlockEntity {
     private void pickTarget() {
         if (level == null || candidates.isEmpty()) return;
         for (BlockPos candidate : candidates) {
-            if (level.getBlockEntity(candidate) instanceof AssemblyTableBE tbl && tbl.getRequiredLaserPower() > 0) {
+            if (level.getBlockEntity(candidate) instanceof ILaserTarget tbl && tbl.getRequiredLaserPower() > 0) {
                 targetPos = candidate;
                 return;
             }
