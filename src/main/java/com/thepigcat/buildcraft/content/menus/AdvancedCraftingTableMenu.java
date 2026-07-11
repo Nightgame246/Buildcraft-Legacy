@@ -26,26 +26,27 @@ public class AdvancedCraftingTableMenu extends PDLAbstractContainerMenu<Advanced
     public AdvancedCraftingTableMenu(int id, @NotNull Inventory inv, @NotNull AdvancedCraftingTableBE be) {
         super(BCMenuTypes.ADVANCED_CRAFTING_TABLE.get(), id, inv, be);
 
-        // Materials 5x3 (menu indices 0..14)
+        // Coordinates match the original BC 1.12 advanced_crafting_table.png (176x241 layout).
+        // Materials 5x3 (menu indices 0..14) — original origin (15, 85)
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 5; col++)
-                addSlot(new SlotItemHandler(be.getMaterials(), row * 5 + col, 8 + col * 18, 84 + row * 18));
+                addSlot(new SlotItemHandler(be.getMaterials(), row * 5 + col, 15 + col * 18, 85 + row * 18));
 
-        // Results 3x3 (menu indices 15..23)
+        // Results 3x3 (menu indices 15..23) — original origin (109, 85)
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 3; col++)
-                addSlot(new SlotItemHandler(be.getResults(), row * 3 + col, 116 + col * 18, 84 + row * 18));
+                addSlot(new SlotItemHandler(be.getResults(), row * 3 + col, 109 + col * 18, 85 + row * 18));
 
-        // Blueprint phantom 3x3 (menu indices 24..32)
+        // Blueprint phantom 3x3 (menu indices 24..32) — original origin (33, 16)
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 3; col++)
-                addSlot(new PhantomSlot(be.getBlueprint(), row * 3 + col, 44 + col * 18, 18 + row * 18));
+                addSlot(new PhantomSlot(be.getBlueprint(), row * 3 + col, 33 + col * 18, 16 + row * 18));
 
-        // Result preview (menu index 33)
-        addSlot(new SlotDisplay(be::getAssumedResult, 134, 36));
+        // Result preview (menu index 33) — original (127, 33)
+        addSlot(new SlotDisplay(be::getAssumedResult, 127, 33));
 
-        addPlayerInventory(inv, 123);
-        addPlayerHotbar(inv, 181);
+        addPlayerInventory(inv, 153);
+        addPlayerHotbar(inv, 211);
     }
 
     public AdvancedCraftingTableMenu(int id, @NotNull Inventory inv, @NotNull RegistryFriendlyByteBuf buf) {

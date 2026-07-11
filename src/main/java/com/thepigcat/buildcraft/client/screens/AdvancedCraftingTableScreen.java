@@ -13,19 +13,18 @@ public class AdvancedCraftingTableScreen extends PDLAbstractContainerScreen<Adva
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(BuildcraftLegacy.MODID, "textures/gui/advanced_crafting_table.png");
 
-    // Progress bar: source strip at (176, 0), 4px wide x 70px tall, fills bottom-up.
-    // Drawn in the empty column x:[98,116) between the materials/blueprint grids (end x=98)
-    // and the results grid (start x=116) — NOT at x=86, which overlaps live slot columns here.
-    private static final int PROGRESS_X = 104;
-    private static final int PROGRESS_Y = 36;
+    // Progress bar matches original BC 1.12: source strip at texture (176, 0), 4px x 70px,
+    // drawn at (164, 7), fills bottom-up. This is the far-right column of the 176-wide GUI.
+    private static final int PROGRESS_X = 164;
+    private static final int PROGRESS_Y = 7;
     private static final int PROGRESS_W = 4;
     private static final int PROGRESS_H = 70;
 
     public AdvancedCraftingTableScreen(AdvancedCraftingTableMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
         this.imageWidth = 176;
-        this.imageHeight = 207;
-        this.inventoryLabelY = this.imageHeight - 94;
+        this.imageHeight = 241; // matches the original advanced_crafting_table.png layout
+        this.inventoryLabelY = this.imageHeight - 94; // = 147, just above player inv at y=153
     }
 
     @Override
