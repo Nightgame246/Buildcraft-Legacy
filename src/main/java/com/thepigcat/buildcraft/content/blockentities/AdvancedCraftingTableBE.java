@@ -222,6 +222,22 @@ public class AdvancedCraftingTableBE extends ContainerBlockEntity implements ILa
 
     @Override public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
         super.handleUpdateTag(tag, registries);
+        applyClientSync(tag, registries);
+    }
+
+    // NeoForge's default onDataPacket routes runtime block-entity updates through
+    // loadWithComponents()/loadData(), NOT handleUpdateTag(). We override it to apply only
+    // the client-visible fields (power + assumedResult) directly, so the preview and progress
+    // bar update live. We intentionally do NOT call super/loadData here: blueprint/materials/
+    // results are synced through the container menu slots, and loadData would clobber them
+    // from an update tag that doesn't carry them.
+    @Override public void onDataPacket(net.minecraft.network.Connection net,
+                                       ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) applyClientSync(tag, registries);
+    }
+
+    private void applyClientSync(CompoundTag tag, HolderLookup.Provider registries) {
         power = tag.getInt("power");
         assumedResult = ItemStack.parseOptional(registries, tag.getCompound("assumed"));
     }
