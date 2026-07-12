@@ -8,9 +8,14 @@
 
 **Tech Stack:** Java 21, NeoForge 1.21.1, PortingDeadLibs 1.1.7 (`ContainerBlockEntity`, `PDLAbstractContainerMenu`, `PDLAbstractContainerScreen`), NeoForge capabilities & item handlers.
 
-> **STATUS (2026-07-10): ✅ IMPLEMENTED & REVIEWED — in-game verification pending.**
-> All 5 tasks executed subagent-driven, each compiled (`compileJava` / `runData` BUILD SUCCESSFUL), reviewed clean, and committed to `main`. Final whole-branch review (opus): **READY TO MERGE**, no Critical/Important findings. Commits: `ddb27d7` (scaffold) · `606c604` (screen) · `d334347` (progress-bar layout fix) · `1e5b456` (crafting logic) · `281e955` (laser→ILaserTarget) · `c40a50d` (datagen+textures).
-> The two unchecked steps below are the interactive `runClient` in-game checks — deferred to the developer (a subagent can't drive the GUI). See the in-game test checklist handed over at hand-off.
+> **STATUS (2026-07-12): ✅ COMPLETE & VERIFIED IN-GAME.**
+> All 5 tasks executed subagent-driven, reviewed clean, committed to `main`. Final whole-branch review (opus): READY TO MERGE.
+> Implementation commits: `ddb27d7` (scaffold) · `606c604` (screen) · `d334347` (progress-bar layout) · `1e5b456` (crafting logic) · `281e955` (laser→ILaserTarget) · `c40a50d` (datagen+textures).
+> **In-game testing found two runtime-only bugs the compile/review gates could not catch — both fixed & user-verified:**
+> - `dd88503` — GUI layout: slot coords/imageHeight were mirrored from the Assembly Table instead of matching the copied 176×241 texture → slots overlapped the player inventory. Re-aligned to the original BC layout.
+> - `99607e4` — Runtime sync: NeoForge routes runtime BE updates through `onDataPacket`→`loadData` (not `handleUpdateTag`), and `loadData` never read `assumedResult` → the recipe preview & progress bar froze after the first sync. Fixed by overriding `onDataPacket` to apply `power`+`assumedResult` directly.
+>
+> **Lesson:** subagent reviews verified compile + logic but a headless agent cannot drive the GUI — client/server sync and GUI-layout defects surface only in `runClient`. In-game verification by the developer is essential for any block with a GUI or client sync.
 
 ## Global Constraints
 
@@ -468,7 +473,7 @@ In `BuildcraftLegacy.java` `attachCaps(...)`, after the QUARRY item-handler regi
 Run: `./gradlew compileJava 2>&1 | tail -20`
 Expected: `BUILD SUCCESSFUL`. If `ContainerBlockEntity` complains about a missing registered handler at class-init, it will surface here — none is expected because we never call `getItemHandler()`.
 
-- [ ] **Step 12: In-game smoke test (no GUI yet — no screen registered)**
+- [x] **Step 12: In-game smoke test (no GUI yet — no screen registered)**
 
 Run: `./gradlew runClient`
 In a creative world:
@@ -575,7 +580,7 @@ Add the import: `import com.thepigcat.buildcraft.client.screens.AdvancedCrafting
 Run: `./gradlew compileJava 2>&1 | tail -20`
 Expected: `BUILD SUCCESSFUL`.
 
-- [ ] **Step 4: In-game test (GUI opens; texture is still missing until datagen task)**
+- [x] **Step 4: In-game test (GUI opens; texture is still missing until datagen task)**
 
 Run: `./gradlew runClient`
 1. Place the table, right-click it. GUI opens without crashing (background may be the missing-texture checkerboard — that is fine; datagen adds the texture in Task 5).
