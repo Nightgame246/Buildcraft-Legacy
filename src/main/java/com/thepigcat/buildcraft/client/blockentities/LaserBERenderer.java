@@ -41,7 +41,11 @@ public class LaserBERenderer implements BlockEntityRenderer<LaserBE> {
         float fx = 0.5f, fy = 0.5f, fz = 0.5f;
         float tx = dx + 0.5f, ty = dy + 0.5f, tz = dz + 0.5f;
 
-        VertexConsumer vc = buffers.getBuffer(RenderType.translucent());
+        // POSITION_COLOR (no texture/normal/light) — a plain additive colored beam.
+        // RenderType.translucent() uses the BLOCK format, which REQUIRES a Normal element
+        // (and samples the block atlas); omitting setNormal there crashes with
+        // "Missing elements in vertex: Normal".
+        VertexConsumer vc = buffers.getBuffer(RenderType.lightning());
         Matrix4f pose = ps.last().pose();
 
         drawBeamQuad(pose, vc, fx, fy, fz, tx, ty, tz, right.x, right.y, right.z, r, g, 200);
@@ -53,10 +57,10 @@ public class LaserBERenderer implements BlockEntityRenderer<LaserBE> {
                                      float tx, float ty, float tz,
                                      float ox, float oy, float oz,
                                      int r, int g, int a) {
-        vc.addVertex(pose, fx + ox, fy + oy, fz + oz).setColor(r, g, 0, a).setUv(0, 0).setLight(0xF000F0);
-        vc.addVertex(pose, fx - ox, fy - oy, fz - oz).setColor(r, g, 0, a).setUv(1, 0).setLight(0xF000F0);
-        vc.addVertex(pose, tx - ox, ty - oy, tz - oz).setColor(r, g, 0, a).setUv(1, 1).setLight(0xF000F0);
-        vc.addVertex(pose, tx + ox, ty + oy, tz + oz).setColor(r, g, 0, a).setUv(0, 1).setLight(0xF000F0);
+        vc.addVertex(pose, fx + ox, fy + oy, fz + oz).setColor(r, g, 0, a);
+        vc.addVertex(pose, fx - ox, fy - oy, fz - oz).setColor(r, g, 0, a);
+        vc.addVertex(pose, tx - ox, ty - oy, tz - oz).setColor(r, g, 0, a);
+        vc.addVertex(pose, tx + ox, ty + oy, tz + oz).setColor(r, g, 0, a);
     }
 
     @Override
