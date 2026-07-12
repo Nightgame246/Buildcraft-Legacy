@@ -43,6 +43,8 @@ public class IntegrationTableBE extends ContainerBlockEntity implements ILaserTa
     public ItemStack assumedOutput = ItemStack.EMPTY;
     protected boolean recipeDirty = true;
     @Nullable private IntegrationRecipe currentRecipe = null;
+    private int syncCooldown = 0;      // throttles the charging-progress sync
+    private int lastSyncedPower = 0;   // last power value pushed to clients
 
     private final ItemStackHandler inputs = new ItemStackHandler(INPUT_SLOTS) {
         @Override protected void onContentsChanged(int slot) {
@@ -88,7 +90,16 @@ public class IntegrationTableBE extends ContainerBlockEntity implements ILaserTa
             changed = true;
         }
 
+        // Heartbeat so the GUI progress bar fills gradually while charging: push power to
+        // clients every few ticks whenever it has changed since the last sync (receiveLaserPower
+        // only calls setChanged, which does not send a block update on its own).
+        if (!changed && be.power != be.lastSyncedPower && --be.syncCooldown <= 0) {
+            changed = true;
+        }
+
         if (changed) {
+            be.syncCooldown = 5;
+            be.lastSyncedPower = be.power;
             level.sendBlockUpdated(pos, state, state, 3);
             be.setChanged();
         }
