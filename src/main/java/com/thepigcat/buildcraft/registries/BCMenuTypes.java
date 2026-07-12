@@ -7,6 +7,7 @@ import com.thepigcat.buildcraft.content.menus.CombustionEngineMenu;
 import com.thepigcat.buildcraft.content.menus.DiamondFluidPipeMenu;
 import com.thepigcat.buildcraft.content.menus.DiamondPipeMenu;
 import com.thepigcat.buildcraft.content.menus.EmeraldPipeMenu;
+import com.thepigcat.buildcraft.content.menus.IntegrationTableMenu;
 import com.thepigcat.buildcraft.content.menus.StirlingEngineMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -35,6 +36,8 @@ public final class BCMenuTypes {
             registerMenuType("assembly_table", AssemblyTableMenu::new);
     public static final Supplier<MenuType<AdvancedCraftingTableMenu>> ADVANCED_CRAFTING_TABLE =
             registerMenuType("advanced_crafting_table", AdvancedCraftingTableMenu::new);
+    public static final Supplier<MenuType<IntegrationTableMenu>> INTEGRATION_TABLE =
+            registerMenuType("integration_table", IntegrationTableMenu::new);
 
     private static <T extends AbstractContainerMenu> Supplier<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));

@@ -76,4 +76,7 @@ public final class BCConfig {
 
     @ConfigValue(name = "Advanced Crafting Table FE Cost", comment = "FE required per craft in the Advanced Crafting Table", category = "advanced_crafting")
     public static int advancedCraftingTableFeCost = 5000;
+
+    @ConfigValue(name = "Integration Table FE Cost", comment = "FE required per craft in the Integration Table", category = "integration")
+    public static int integrationTableFeCost = 5000;
 }

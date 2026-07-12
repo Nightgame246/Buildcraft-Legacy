@@ -139,9 +139,14 @@ public final class BuildcraftLegacy {
                 BCConfig.diamondChipsetFeCost));
     }
 
+    private static void registerIntegrationRecipes() {
+        // Placeholder recipes added in a later task.
+    }
+
     private void onCommonSetup(FMLCommonSetupEvent event) {
         PipesRegistry.writeDefaultPipeFiles();
         registerAssemblyRecipes();
+        registerIntegrationRecipes();
     }
 
     private void attachCaps(RegisterCapabilitiesEvent event) {
@@ -191,6 +196,9 @@ public final class BuildcraftLegacy {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, BCBlockEntities.QUARRY.get(), ContainerBlockEntity::getEnergyStorageOnSide);
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.ADVANCED_CRAFTING_TABLE.get(),
+                (be, side) -> be.getIOHandler());
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BCBlockEntities.INTEGRATION_TABLE.get(),
                 (be, side) -> be.getIOHandler());
 
         event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new JumboItemHandlerItemWrapper(stack), BCBlocks.CRATE);

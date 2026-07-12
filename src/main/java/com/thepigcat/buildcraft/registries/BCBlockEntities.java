@@ -85,6 +85,8 @@ public final class BCBlockEntities {
             () -> BlockEntityType.Builder.of(AssemblyTableBE::new, BCBlocks.ASSEMBLY_TABLE.get()).build(null));
     public static final Supplier<BlockEntityType<AdvancedCraftingTableBE>> ADVANCED_CRAFTING_TABLE = BLOCK_ENTITIES.register("advanced_crafting_table",
             () -> BlockEntityType.Builder.of(AdvancedCraftingTableBE::new, BCBlocks.ADVANCED_CRAFTING_TABLE.get()).build(null));
+    public static final Supplier<BlockEntityType<IntegrationTableBE>> INTEGRATION_TABLE = BLOCK_ENTITIES.register("integration_table",
+            () -> BlockEntityType.Builder.of(IntegrationTableBE::new, BCBlocks.INTEGRATION_TABLE.get()).build(null));
 
     private static Block[] collectBlocks(Class<? extends Block> clazz) {
         return BuiltInRegistries.BLOCK.stream().filter(clazz::isInstance).toList().toArray(Block[]::new);
