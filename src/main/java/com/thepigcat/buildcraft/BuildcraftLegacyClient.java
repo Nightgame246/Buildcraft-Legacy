@@ -17,6 +17,7 @@ import com.thepigcat.buildcraft.client.screens.CombustionEngineScreen;
 import com.thepigcat.buildcraft.client.screens.DiamondFluidPipeScreen;
 import com.thepigcat.buildcraft.client.screens.DiamondPipeScreen;
 import com.thepigcat.buildcraft.client.screens.EmeraldPipeScreen;
+import com.thepigcat.buildcraft.client.screens.IntegrationTableScreen;
 import com.thepigcat.buildcraft.client.screens.StirlingEngineScreen;
 import com.thepigcat.buildcraft.registries.BCBlockEntities;
 import com.thepigcat.buildcraft.registries.BCBlocks;
@@ -132,5 +133,6 @@ public final class BuildcraftLegacyClient {
         event.register(BCMenuTypes.EMERALD_PIPE.get(), EmeraldPipeScreen::new);
         event.register(BCMenuTypes.ASSEMBLY_TABLE.get(), AssemblyTableScreen::new);
         event.register(BCMenuTypes.ADVANCED_CRAFTING_TABLE.get(), AdvancedCraftingTableScreen::new);
+        event.register(BCMenuTypes.INTEGRATION_TABLE.get(), IntegrationTableScreen::new);
     }
 }
