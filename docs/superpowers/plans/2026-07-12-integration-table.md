@@ -8,6 +8,11 @@
 
 **Tech Stack:** Java 21, NeoForge 1.21.1, PortingDeadLibs 1.1.7 (`ContainerBlockEntity`, `PDLAbstractContainerMenu`, `PDLAbstractContainerScreen`), NeoForge capabilities & item handlers.
 
+> **STATUS (2026-07-12): ✅ IMPLEMENTED & REVIEWED — in-game verification pending.**
+> All 4 tasks executed subagent-driven, each compiled (`compileJava` / `runData` BUILD SUCCESSFUL), reviewed clean, committed to `main`. Final whole-branch review (opus): **READY FOR IN-GAME TEST / MERGE**, no blocking defects. Both prior lessons applied from the start (original GUI coords 176×191, `onDataPacket` runtime sync) — so no runtime GUI/sync bugs are expected this time. Commits: `c08bc76` (scaffold) · `64b0a8a` (screen) · `47a26d9` (crafting+demo recipe) · `3bb7884` (datagen+slab model+textures).
+> **Deferred to the Gates phase (non-blocking, recorded):** (1) ring `matches()` is greedy, not a true bipartite match → false-negatives possible with overlapping/tag-based ring ingredients (safe now: inert for the demo recipe, never dupe/loss; `matches()` and `craft()` share the same greedy assignment so no under-consumption). When real Gate recipes with overlapping ingredients land, upgrade BOTH `matches()` and `craft()` to a shared backtracking assignment. (2) `IntegrationRecipe.feCost()` is unused (BE reads the global config) — wire per-recipe cost when Gate recipes need it.
+> The unchecked steps below are the interactive `runClient` in-game checks — deferred to the developer.
+
 ## Global Constraints
 
 - Root package: `com.thepigcat.buildcraft`. Mod id: `buildcraft`.
@@ -48,7 +53,7 @@ One atomic unit: MC registration mutually references block ↔ block entity ↔ 
   - `IntegrationTableMenu`: constructors `(int, Inventory, IntegrationTableBE)` and `(int, Inventory, RegistryFriendlyByteBuf)`; `getPower()`, `getFeCost()`, `getAssumedOutput()`.
   - `BCBlocks.INTEGRATION_TABLE`, `BCBlockEntities.INTEGRATION_TABLE`, `BCMenuTypes.INTEGRATION_TABLE`, `BCConfig.integrationTableFeCost`.
 
-- [ ] **Step 1: Add the config field**
+- [x] **Step 1: Add the config field**
 
 In `BCConfig.java`, after the `advancedCraftingTableFeCost` field, add:
 
@@ -58,7 +63,7 @@ In `BCConfig.java`, after the `advancedCraftingTableFeCost` field, add:
     public static int integrationTableFeCost = 5000;
 ```
 
-- [ ] **Step 2: Create the recipe record**
+- [x] **Step 2: Create the recipe record**
 
 Create `api/recipes/IntegrationRecipe.java`:
 
@@ -81,7 +86,7 @@ public record IntegrationRecipe(ResourceLocation id, Ingredient center, int cent
                                 List<Ingredient> ring, ItemStack output, int feCost) {}
 ```
 
-- [ ] **Step 3: Create the recipe registry**
+- [x] **Step 3: Create the recipe registry**
 
 Create `api/recipes/IntegrationRecipeRegistry.java` (mirrors `AssemblyRecipeRegistry`):
 
@@ -114,7 +119,7 @@ public final class IntegrationRecipeRegistry {
 }
 ```
 
-- [ ] **Step 4: Create the IO capability wrapper**
+- [x] **Step 4: Create the IO capability wrapper**
 
 Create `content/blockentities/IntegrationTableIOHandler.java` (2-handler wrapper, identical shape to `AdvancedCraftingTableIOHandler`: insert→inputs, extract→output):
 
@@ -170,7 +175,7 @@ public class IntegrationTableIOHandler implements IItemHandler {
 }
 ```
 
-- [ ] **Step 5: Create the block entity (inventories/sync/NBT only — crafting stubbed)**
+- [x] **Step 5: Create the block entity (inventories/sync/NBT only — crafting stubbed)**
 
 Create `content/blockentities/IntegrationTableBE.java`:
 
@@ -297,7 +302,7 @@ public class IntegrationTableBE extends ContainerBlockEntity implements ILaserTa
 }
 ```
 
-- [ ] **Step 6: Create the menu**
+- [x] **Step 6: Create the menu**
 
 Create `content/menus/IntegrationTableMenu.java`. Coordinates match the original BC `integration_table.png` (176×191). Slot add-order → menu indices: inputs grid 0–8 (grid reading order, middle cell = center handler idx 0, others = ring handler idx 1..8), preview 9, real output 10, player inv/hotbar 11+.
 
@@ -381,7 +386,7 @@ public class IntegrationTableMenu extends PDLAbstractContainerMenu<IntegrationTa
 
 Note: `addPlayerHotbar(inv, 167)` = 109 (inv top) + 58, matching the vanilla 3-row + gap offset used by the sibling menus.
 
-- [ ] **Step 7: Create the block (9px slab)**
+- [x] **Step 7: Create the block (9px slab)**
 
 Create `content/blocks/IntegrationTableBlock.java`:
 
@@ -451,7 +456,7 @@ public class IntegrationTableBlock extends BaseEntityBlock {
 }
 ```
 
-- [ ] **Step 8: Register the block**
+- [x] **Step 8: Register the block**
 
 In `BCBlocks.java`, after the `ADVANCED_CRAFTING_TABLE` entry, add (`.noOcclusion()` because it is not a full cube):
 
@@ -462,7 +467,7 @@ In `BCBlocks.java`, after the `ADVANCED_CRAFTING_TABLE` entry, add (`.noOcclusio
 
 Add import: `import com.thepigcat.buildcraft.content.blocks.IntegrationTableBlock;`.
 
-- [ ] **Step 9: Register the block entity type**
+- [x] **Step 9: Register the block entity type**
 
 In `BCBlockEntities.java`, after the `ADVANCED_CRAFTING_TABLE` entry, add:
 
@@ -473,7 +478,7 @@ In `BCBlockEntities.java`, after the `ADVANCED_CRAFTING_TABLE` entry, add:
 
 Add import: `import com.thepigcat.buildcraft.content.blockentities.IntegrationTableBE;`.
 
-- [ ] **Step 10: Register the menu type**
+- [x] **Step 10: Register the menu type**
 
 In `BCMenuTypes.java`, after the `ADVANCED_CRAFTING_TABLE` entry, add:
 
@@ -484,7 +489,7 @@ In `BCMenuTypes.java`, after the `ADVANCED_CRAFTING_TABLE` entry, add:
 
 Add import: `import com.thepigcat.buildcraft.content.menus.IntegrationTableMenu;`.
 
-- [ ] **Step 11: Attach the capability + add empty recipe registration hook**
+- [x] **Step 11: Attach the capability + add empty recipe registration hook**
 
 In `BuildcraftLegacy.java` `attachCaps(...)`, after the ADVANCED_CRAFTING_TABLE item-handler registration, add:
 
@@ -507,7 +512,7 @@ And call it in `onCommonSetup`, right after `registerAssemblyRecipes();`:
         registerIntegrationRecipes();
 ```
 
-- [ ] **Step 12: Compile**
+- [x] **Step 12: Compile**
 
 Run: `bash gradlew compileJava 2>&1 | tail -20`
 Expected: `BUILD SUCCESSFUL`.
@@ -521,7 +526,7 @@ Run: `bash gradlew runClient`
 
 Expected: slab renders at correct height, hopper insertion works, no server errors.
 
-- [ ] **Step 14: Commit**
+- [x] **Step 14: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/BCConfig.java \
@@ -551,7 +556,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 **Interfaces:**
 - Consumes: `IntegrationTableMenu.getPower()`, `getFeCost()`; `BCMenuTypes.INTEGRATION_TABLE`.
 
-- [ ] **Step 1: Create the screen**
+- [x] **Step 1: Create the screen**
 
 Create `client/screens/IntegrationTableScreen.java` (matches the original BC layout: `imageHeight=191`, progress bar dest `(164,22)`, source strip at `(176,0)`):
 
@@ -604,7 +609,7 @@ public class IntegrationTableScreen extends PDLAbstractContainerScreen<Integrati
 }
 ```
 
-- [ ] **Step 2: Register the screen**
+- [x] **Step 2: Register the screen**
 
 In `BuildcraftLegacyClient.java` `registerMenuScreens(...)`, after the `ADVANCED_CRAFTING_TABLE` registration, add:
 
@@ -614,7 +619,7 @@ In `BuildcraftLegacyClient.java` `registerMenuScreens(...)`, after the `ADVANCED
 
 Add import: `import com.thepigcat.buildcraft.client.screens.IntegrationTableScreen;`.
 
-- [ ] **Step 3: Compile**
+- [x] **Step 3: Compile**
 
 Run: `bash gradlew compileJava 2>&1 | tail -20`
 Expected: `BUILD SUCCESSFUL`.
@@ -628,7 +633,7 @@ Run: `bash gradlew runClient`
 
 Expected: GUI opens, layout usable, shift-click routing correct.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/client/screens/IntegrationTableScreen.java \
@@ -652,7 +657,7 @@ Implements ring multiset matching, recipe resolution, the craft, real `ILaserTar
 - Consumes: `BCConfig.integrationTableFeCost`, `IntegrationRecipe`, `IntegrationRecipeRegistry`.
 - Produces: real `getRequiredLaserPower()`, populated `assumedOutput`, functioning `serverTick`.
 
-- [ ] **Step 1: Add imports to the BE**
+- [x] **Step 1: Add imports to the BE**
 
 At the top of `IntegrationTableBE.java`, add:
 
@@ -670,7 +675,7 @@ import java.util.ArrayList;
 import java.util.List;
 ```
 
-- [ ] **Step 2: Add the cached recipe field**
+- [x] **Step 2: Add the cached recipe field**
 
 Below `protected boolean recipeDirty = true;` add:
 
@@ -678,7 +683,7 @@ Below `protected boolean recipeDirty = true;` add:
     @Nullable private IntegrationRecipe currentRecipe = null;
 ```
 
-- [ ] **Step 3: Replace the ILaserTarget stub**
+- [x] **Step 3: Replace the ILaserTarget stub**
 
 Replace:
 
@@ -694,7 +699,7 @@ with:
     }
 ```
 
-- [ ] **Step 4: Replace the serverTick stub and add the crafting helpers**
+- [x] **Step 4: Replace the serverTick stub and add the crafting helpers**
 
 Replace the no-op `serverTick` with:
 
@@ -807,7 +812,7 @@ Replace the no-op `serverTick` with:
     }
 ```
 
-- [ ] **Step 5: Register the demo recipe**
+- [x] **Step 5: Register the demo recipe**
 
 In `BuildcraftLegacy.java`, replace the placeholder body of `registerIntegrationRecipes()` with a demo recipe (center: 1 red_chipset; ring: exactly 4 redstone in 4 ring slots → iron_chipset):
 
@@ -827,7 +832,7 @@ In `BuildcraftLegacy.java`, replace the placeholder body of `registerIntegration
 
 Ensure these imports exist in `BuildcraftLegacy.java` (some already do for the assembly recipes): `com.thepigcat.buildcraft.api.recipes.IntegrationRecipe`, `com.thepigcat.buildcraft.api.recipes.IntegrationRecipeRegistry`, `net.minecraft.world.item.crafting.Ingredient`, `net.minecraft.world.item.Items`, `net.minecraft.world.item.ItemStack`, `com.thepigcat.buildcraft.registries.BCItems`.
 
-- [ ] **Step 6: Compile**
+- [x] **Step 6: Compile**
 
 Run: `bash gradlew compileJava 2>&1 | tail -20`
 Expected: `BUILD SUCCESSFUL`.
@@ -843,7 +848,7 @@ Run: `bash gradlew runClient`
 
 Expected: preview live-updates, craft works end-to-end, pipe sidedness correct, state persists.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/content/blockentities/IntegrationTableBE.java \
@@ -865,7 +870,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 - Modify: `src/main/java/com/thepigcat/buildcraft/datagen/data/BCBlockLootTableProvider.java`
 - Modify: `src/main/java/com/thepigcat/buildcraft/datagen/data/BCRecipeProvider.java`
 
-- [ ] **Step 1: Copy textures from the original BC 1.12 assets**
+- [x] **Step 1: Copy textures from the original BC 1.12 assets**
 
 ```bash
 BC=/run/media/fabi/SSD/codeing/BuildCraft-1.12/buildcraft_resources/assets/buildcraftsilicon/textures
@@ -880,7 +885,7 @@ cp "$BC"/gui/integration_table.png           "$DST"/gui/integration_table.png
 
 Verify all six files exist afterward with `ls -la "$DST"/block/integration_table_*.png "$DST"/gui/integration_table.png`. (If a source path differs, locate it with `find /run/media/fabi/SSD/codeing/BuildCraft-1.12 -path '*table/integration*' -name '*.png'`.)
 
-- [ ] **Step 2: Hand-author the block model (the 12-element 9px slab, textures repointed to buildcraft)**
+- [x] **Step 2: Hand-author the block model (the 12-element 9px slab, textures repointed to buildcraft)**
 
 Create `src/main/resources/assets/buildcraft/models/block/integration_table.json`:
 
@@ -933,7 +938,7 @@ Create `src/main/resources/assets/buildcraft/models/block/integration_table.json
 }
 ```
 
-- [ ] **Step 3: Blockstate datagen pointing at the hand-authored model**
+- [x] **Step 3: Blockstate datagen pointing at the hand-authored model**
 
 In `BCBlockStateProvider.java`, add a call in the silicon-machines section (after `advancedCraftingTableBlock(...)`):
 
@@ -951,7 +956,7 @@ Add the helper method next to `advancedCraftingTableBlock` (it references the ha
 
 (The block item model is auto-generated by `BCItemModelProvider.blockItems()` → `parentItemBlock`, whose parent is `block/integration_table`; no item-model change is needed.)
 
-- [ ] **Step 4: Lang entries**
+- [x] **Step 4: Lang entries**
 
 In `BCEnUSLangProvider.java`, after the advanced crafting table entries, add:
 
@@ -965,7 +970,7 @@ and:
         add("container.buildcraft.integration_table", "Integration Table");
 ```
 
-- [ ] **Step 5: Loot table**
+- [x] **Step 5: Loot table**
 
 In `BCBlockLootTableProvider.java`, after the advanced crafting table line, add:
 
@@ -973,7 +978,7 @@ In `BCBlockLootTableProvider.java`, after the advanced crafting table line, add:
         dropSelf(BCBlocks.INTEGRATION_TABLE.get());
 ```
 
-- [ ] **Step 6: Crafting recipe for the block (original OiO/OrO/OgO)**
+- [x] **Step 6: Crafting recipe for the block (original OiO/OrO/OgO)**
 
 In `BCRecipeProvider.java`, after the advanced crafting table recipe, add:
 
@@ -993,7 +998,7 @@ In `BCRecipeProvider.java`, after the advanced crafting table recipe, add:
 
 Ensure `BCItems`, `Blocks`, and `Tags` are imported in `BCRecipeProvider.java` (Blocks/Tags already used by sibling recipes; add `import com.thepigcat.buildcraft.registries.BCItems;` if absent).
 
-- [ ] **Step 7: Run datagen + compile**
+- [x] **Step 7: Run datagen + compile**
 
 Run: `bash gradlew runData 2>&1 | tail -20`
 Expected: `BUILD SUCCESSFUL`; generated blockstate `integration_table.json` (referencing `buildcraft:block/integration_table`), item model, `lang/en_us.json` entries, loot table, and recipe json appear under `src/generated/resources/`.
@@ -1008,7 +1013,7 @@ Run: `bash gradlew runClient`
 
 Expected: textures, name, GUI background, slab model, drop, and recipe all correct.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add src/main/java/com/thepigcat/buildcraft/datagen/ \
