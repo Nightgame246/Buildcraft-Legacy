@@ -40,6 +40,7 @@ public class BCBlockStateProvider extends BlockStateProvider {
         laserBlock(BCBlocks.LASER.get());
         assemblyTableBlock(BCBlocks.ASSEMBLY_TABLE.get());
         advancedCraftingTableBlock(BCBlocks.ADVANCED_CRAFTING_TABLE.get());
+        integrationTableBlock(BCBlocks.INTEGRATION_TABLE.get());
 
         for (Block block : BCBlocks.BLOCKS.getRegistry().get()) {
             String path = BuiltInRegistries.BLOCK.getKey(block).getPath();
@@ -372,6 +373,10 @@ public class BCBlockStateProvider extends BlockStateProvider {
                 .texture("bottom", modLoc("block/advanced_crafting_table_top"))
                 .texture("side",   modLoc("block/advanced_crafting_table_side"));
         simpleBlock(block, tableModel);
+    }
+
+    private void integrationTableBlock(Block block) {
+        simpleBlock(block, models().getExistingFile(modLoc("block/integration_table")));
     }
 
 }

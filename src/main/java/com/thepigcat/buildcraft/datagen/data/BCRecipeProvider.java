@@ -168,6 +168,18 @@ public class BCRecipeProvider extends net.minecraft.data.recipes.RecipeProvider 
                 .define('C', Blocks.CRAFTING_TABLE)
                 .unlockedBy("has_crafting_table", has(Blocks.CRAFTING_TABLE))
                 .save(recipeOutput);
+
+        // Integration Table (original BC 1.12 recipe)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BCBlocks.INTEGRATION_TABLE)
+                .pattern("OiO")
+                .pattern("OrO")
+                .pattern("OgO")
+                .define('O', Blocks.OBSIDIAN)
+                .define('i', Tags.Items.INGOTS_GOLD)
+                .define('r', BCItems.RED_CHIPSET.get())
+                .define('g', BCItems.DIAMOND_GEAR.get())
+                .unlockedBy("has_red_chipset", has(BCItems.RED_CHIPSET.get()))
+                .save(recipeOutput);
     }
 
     public static Criterion<InventoryChangeTrigger.TriggerInstance> has(TagKey<Item> tag) {

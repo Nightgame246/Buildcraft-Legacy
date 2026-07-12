@@ -1,8 +1,9 @@
-// 1.21.1	2026-07-10T22:23:54.060527472	Loot Tables
+// 1.21.1	2026-07-12T17:27:59.022535161	Loot Tables
 2330e84e9a2a1d20291d76b93e31934987d0fc64 data/buildcraft/loot_table/blocks/advanced_crafting_table.json
 c3c9c1234ad14c1046832b1bad677bac23c12dc8 data/buildcraft/loot_table/blocks/assembly_table.json
 c21809addc58ab140075c66b458cd9dfd4662000 data/buildcraft/loot_table/blocks/combustion_engine.json
 f2441cab3a04d892d386100c0e4a85a6e195ddd4 data/buildcraft/loot_table/blocks/crate.json
+b851e5f2c3461523eeda383430839d1968852b2d data/buildcraft/loot_table/blocks/integration_table.json
 c1f360ce826d2f44c2d340cbd75436bbb89b29c4 data/buildcraft/loot_table/blocks/laser.json
 c478a59d8aefb18c64f4dc88b5527c26691da938 data/buildcraft/loot_table/blocks/quarry.json
 604b01d975055f698cb350b1d28671e707a8de1c data/buildcraft/loot_table/blocks/redstone_engine.json

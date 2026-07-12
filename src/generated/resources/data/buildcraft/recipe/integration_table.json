@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "g": {
+      "item": "buildcraft:diamond_gear"
+    },
+    "i": {
+      "tag": "c:ingots/gold"
+    },
+    "r": {
+      "item": "buildcraft:red_chipset"
+    }
+  },
+  "pattern": [
+    "OiO",
+    "OrO",
+    "OgO"
+  ],
+  "result": {
+    "count": 1,
+    "id": "buildcraft:integration_table"
+  }
+}

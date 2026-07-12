@@ -1,4 +1,4 @@
-// 1.21.1	2026-07-10T22:23:54.058470964	Block States: buildcraft
+// 1.21.1	2026-07-12T17:27:59.02058833	Block States: buildcraft
 9509c2e2d64d6b9dc155673edbb152728a981a2e assets/buildcraft/blockstates/advanced_crafting_table.json
 ca9d637985321401ecdb034c44cd3bef4e910bf5 assets/buildcraft/blockstates/assembly_table.json
 9493a9bec7d99c0799c66d58f9d48927a6925b02 assets/buildcraft/blockstates/clay_fluid_pipe.json
@@ -16,6 +16,7 @@ e0f4f992ee1687f4e64ee762411ed5717b31d386 assets/buildcraft/blockstates/diamond_k
 af6571510376659afd80ec196630053e81e56ba8 assets/buildcraft/blockstates/gold_fluid_pipe.json
 e198984ede49ba0e2a0124a6f05ac8a2cd00187e assets/buildcraft/blockstates/gold_kinesis_pipe.json
 76d04b3ebe89aed1ee28ca22f5465196951b4886 assets/buildcraft/blockstates/gold_pipe.json
+dec263c7487cffe59c86034776a259849940b461 assets/buildcraft/blockstates/integration_table.json
 0a86617e1d01c1df932f2e271148966b2505c65c assets/buildcraft/blockstates/iron_fluid_pipe.json
 4cc065f4e5e91acea373198fc82582b0cd4d287d assets/buildcraft/blockstates/iron_pipe.json
 aa748300efa5500990d1bd9641df387dd9869d63 assets/buildcraft/blockstates/lapis_pipe.json

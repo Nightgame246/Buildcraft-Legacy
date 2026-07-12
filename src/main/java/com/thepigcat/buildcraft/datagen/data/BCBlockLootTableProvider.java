@@ -36,6 +36,7 @@ public class BCBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(BCBlocks.LASER.get());
         dropSelf(BCBlocks.ASSEMBLY_TABLE.get());
         dropSelf(BCBlocks.ADVANCED_CRAFTING_TABLE.get());
+        dropSelf(BCBlocks.INTEGRATION_TABLE.get());
     }
 
     @Override
