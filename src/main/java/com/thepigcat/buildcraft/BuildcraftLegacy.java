@@ -20,6 +20,8 @@ import com.thepigcat.buildcraft.content.blockentities.TankBE;
 import com.thepigcat.buildcraft.data.BCDataComponents;
 import com.thepigcat.buildcraft.api.recipes.AssemblyRecipe;
 import com.thepigcat.buildcraft.api.recipes.AssemblyRecipeRegistry;
+import com.thepigcat.buildcraft.api.recipes.IntegrationRecipe;
+import com.thepigcat.buildcraft.api.recipes.IntegrationRecipeRegistry;
 import com.thepigcat.buildcraft.content.blockentities.LaserBE;
 import com.thepigcat.buildcraft.networking.RedstoneSignalTypeSyncPayload;
 import com.thepigcat.buildcraft.networking.SetRecipeStatePayload;
@@ -140,7 +142,15 @@ public final class BuildcraftLegacy {
     }
 
     private static void registerIntegrationRecipes() {
-        // Placeholder recipes added in a later task.
+        // DEMO / placeholder recipe — replace with real gate recipes when the Gates phase lands.
+        IntegrationRecipeRegistry.register(new IntegrationRecipe(
+                BuildcraftLegacy.rl("demo_chipset_upgrade"),
+                Ingredient.of(BCItems.RED_CHIPSET.get()), 1,
+                java.util.List.of(
+                        Ingredient.of(Items.REDSTONE), Ingredient.of(Items.REDSTONE),
+                        Ingredient.of(Items.REDSTONE), Ingredient.of(Items.REDSTONE)),
+                new ItemStack(BCItems.IRON_CHIPSET.get()),
+                BCConfig.integrationTableFeCost));
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
