@@ -39,6 +39,8 @@ import java.util.Map;
 public class AssemblyTableBE extends ContainerBlockEntity implements ILaserTarget, MenuProvider {
     public long power = 0;
     public final Map<ResourceLocation, EnumAssemblyRecipeState> recipeStates = new LinkedHashMap<>();
+    private int syncCooldown = 0;       // throttles the charging-progress sync
+    private long lastSyncedPower = 0;   // last power value pushed to clients
 
     public AssemblyTableBE(BlockPos pos, BlockState state) {
         super(BCBlockEntities.ASSEMBLY_TABLE.get(), pos, state);
@@ -74,7 +76,14 @@ public class AssemblyTableBE extends ContainerBlockEntity implements ILaserTarge
             be.activateNextRecipe();
             changed = true;
         }
+        // Heartbeat so the GUI progress bar fills gradually while charging (receiveLaserPower
+        // only calls setChanged, which doesn't send a block update on its own).
+        if (!changed && be.power != be.lastSyncedPower && --be.syncCooldown <= 0) {
+            changed = true;
+        }
         if (changed) {
+            be.syncCooldown = 5;
+            be.lastSyncedPower = be.power;
             level.sendBlockUpdated(pos, state, state, 3);
             be.setChanged();
         }

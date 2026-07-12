@@ -46,6 +46,8 @@ public class AdvancedCraftingTableBE extends ContainerBlockEntity implements ILa
     public ItemStack assumedResult = ItemStack.EMPTY;
     protected boolean blueprintDirty = true;
     @Nullable private RecipeHolder<CraftingRecipe> currentRecipe = null;
+    private int syncCooldown = 0;      // throttles the charging-progress sync
+    private int lastSyncedPower = 0;   // last power value pushed to clients
 
     private final ItemStackHandler blueprint = new ItemStackHandler(BLUEPRINT_SLOTS) {
         @Override protected void onContentsChanged(int slot) {
@@ -95,7 +97,15 @@ public class AdvancedCraftingTableBE extends ContainerBlockEntity implements ILa
             changed = true;
         }
 
+        // Heartbeat so the GUI progress bar fills gradually while charging (receiveLaserPower
+        // only calls setChanged, which doesn't send a block update on its own).
+        if (!changed && be.power != be.lastSyncedPower && --be.syncCooldown <= 0) {
+            changed = true;
+        }
+
         if (changed) {
+            be.syncCooldown = 5;
+            be.lastSyncedPower = be.power;
             level.sendBlockUpdated(pos, state, state, 3);
             be.setChanged();
         }
